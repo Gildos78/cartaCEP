@@ -1,0 +1,87 @@
+#signinBtn, #loginBtn, #cadOpBtn{
+	color:white;
+}
+#idProfile{
+	font-size:18px;
+	}
+#profileImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background:#000080;
+  font-size: 30px;
+  font-weight:bold;
+  color: #ffffff;
+  text-align: center;
+  line-height:50px;
+  margin: auto;
+}
+.avatar{
+	float:right;
+}
+#alertForm{
+	background-color:grey;
+}
+.changePassword{
+	margin-left:10px;
+	margin-right:10px;
+	padding-bottom:10px;
+	border: 0;
+	color:grey;
+	background-color: transparent;
+}
+.exitWord{
+	font-weight:bold;
+}
+#modalAviso, .modalEditar{
+	display:none;
+}
+.sizeTableCards {
+	width: 100%;
+	height: 70px;
+}
+.cardTd {
+	min-width: 250px;
+	max-width: 450px;
+	height: 50px;
+	margin: auto;
+	padding-left: 10px;
+}
+.cardShift {
+	min-width: 250px;
+	height: 50px;
+	margin: auto;
+	padding-left: 10px;
+	cursor: pointer;
+}
+#cardLines{
+	text-decoration: none;
+}
+#am1{
+	width:100%;
+}
+#cardSize{
+	height:500px;
+}
+#alignHisto{
+	height:100%;
+}
+.avatarImage {
+  vertical-align: middle;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+#imagemPro{
+	margin-left:15px;
+}
+#btnPro{
+	padding-bottom:10px;
+}
+.avatarImagePro{
+ 
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+   margin: auto;
+}

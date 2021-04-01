@@ -1,0 +1,61 @@
+package br.com.cartacep.modelo;
+
+import java.io.Serializable;
+import java.util.Date;
+
+public class Medicao implements Serializable{
+
+	
+	private static final long serialVersionUID = 1L;
+	private int idMedicao;
+	private String dataHora;
+	private String obs;
+	private int codeProd;
+	private int idOperador;
+	private int idEsp;
+	private int countMed;
+	
+	public int getIdMedicao() {
+		return idMedicao;
+	}
+	public void setIdMedicao(int idMedicao) {
+		this.idMedicao = idMedicao;
+	}
+	public String getDataHora() {
+		return dataHora;
+	}
+	public void setDataHora(String dataHora) {
+		this.dataHora = dataHora;
+	}
+	public String getObs() {
+		return obs;
+	}
+	public void setObs(String obs) {
+		this.obs = obs;
+	}
+	public int getCodeProd() {
+		return codeProd;
+	}
+	public void setCodeProd(int codeProd) {
+		this.codeProd = codeProd;
+	}
+	public int getIdOperador() {
+		return idOperador;
+	}
+	public void setIdOperador(int idOperador) {
+		this.idOperador = idOperador;
+	}
+	public int getIdEsp() {
+		return idEsp;
+	}
+	public void setIdEsp(int idEsp) {
+		this.idEsp = idEsp;
+	}
+	public int getCountMed() {
+		return countMed;
+	}
+	public void setCountMed(int countMed) {
+		this.countMed = countMed;
+	}
+	
+}

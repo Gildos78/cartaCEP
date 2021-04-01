@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<link href="../img/logo/logo.png" rel="icon">
+<title>Carta CEP</title>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	crossorigin="anonymous"></script>
+	<link
+	href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css"
+	rel="stylesheet">
+<script
+	src="//cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
+<link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+	type="text/css">
+<link href="../css/ruang-admin.min.css" rel="stylesheet">
+<link href="../css/style.css" rel="stylesheet">
+<script src="../js/sidebarJQ.js"></script>
+<script src="../js/producao.js"></script>
+<script src='../js/bsCustomFileInput.js'></script>
+   
+</head>
+
+<body id="page-top">
+	<div id="wrapper">
+		<div class="callSidebar"></div>
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<!-- TopBar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+					<button id="sidebarToggleTop"
+						class="btn btn-link rounded-circle mr-3">
+						<i class="fa fa-bars"></i>
+					</button>
+					<ul class="navbar-nav ml-auto">
+
+						<li class="nav-item dropdown no-arrow">
+							<div class="avatar"></div>
+						</li>
+					</ul>
+				</nav>
+				<!-- Topbar -->
+
+				<!-- Container Fluid-->
+				<div class="container-fluid" id="container-wrapper">
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">Produção</h1>
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="./">Home</a></li>
+							<li class="breadcrumb-item active" aria-current="page">Produção</li>
+						</ol>
+					</div>
+					<div class="row m-0 p-0">
+						<a href="#cadprod" class="btn btn-primary btn-icon-split m-2"
+							data-toggle="collapse"> <span class="icon text-white-50">
+								<i class="fas fa-plus"></i>
+						</span> <span class="text">Cadastrar Produção</span>
+						</a>
+					</div>
+
+					<div class="row collapse" id="cadprod">
+						<div class="col-lg-6 mb-4 p-0 small card">
+							<!-- Simple Tables -->
+
+							<div
+								class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+								<h6 class="m-0 font-weight-bold text-primary">1) Cadastrar
+									Produção</h6>
+							</div>
+							<div class="card-body">
+								<form name="frmOrdemProd" class="frmOrdemProd" id="addProducao" >
+									<div class="form-group">
+										<label for="cliente">Cliente</label> <input type="text"
+											class="form-control form-control-sm" name="cliente"
+											id="cliente" aria-describedby="emailHelp"
+											placeholder="Nome do cliente">
+									</div>
+									<div class="form-group">
+										<label for="ordem">Ordem de Produção</label> <input
+											type="text" class="form-control form-control-sm" id="ordemP"
+											name="ordemP" aria-describedby="emailHelp"
+											placeholder="# Ordem">
+									</div>
+									<div class="form-group">
+										<label for="ordem">Data Inicial</label> <input
+											type="datetime-local" class="form-control form-control-sm"
+											id="dataI" aria-describedby="emailHelp"
+											placeholder="Data Inicial">
+									</div>
+									<div class="form-group">
+										<label for="dataF">Data Final</label> <input
+											type="datetime-local" class="form-control form-control-sm"
+											id="dataF" aria-describedby="emailHelp"
+											placeholder="Data Final">
+									</div>
+									<div class="form-group">
+										<label for="descricao">Descrição da Peça</label> <input
+											type="text" class="form-control form-control-sm"
+											id="descricao" aria-describedby="emailHelp"
+											placeholder="Descrição da Peça">
+									</div>
+									<div class="form-group">
+										<label for="qtdAm">Número de Amostras</label> <input
+											type="number" class="form-control form-control-sm"
+											id="qtdAmostras" aria-describedby="emailHelp"
+											placeholder="Número de Amostras">
+									</div>
+									<div class="form-group">
+										<label for="maquina">Máquina</label> <select
+											class="form-control form-control-sm" name="maquinaId"
+											id="selMaquina">
+											<option value="." class="buscando">Aguarde, buscando
+												máquinas...</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="exampleFormControlSelect1">Operador</label> <select
+											class="form-control form-control-sm" name="operadorId"
+											id="selOperador">
+											<option value="" class="buscando">Aguarde, buscando
+												operadores...</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="operacao">Operação</label> <select
+											class="form-control form-control-sm" name="operacaoId"
+											id="selOperacao">
+											<option value="" class="buscando">Aguarde, buscando
+												operações...</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="exampleFormControlSelect1">Subgrupo</label> <select
+											class="form-control form-control-sm"
+											id="subgrupo">
+											<option>1</option>
+											<option>2</option>
+											<option>3</option>
+											<option>4</option>
+											<option>5</option>
+											<option>6</option>
+											<option>7</option>
+											<option>8</option>
+											<option>9</option>
+											<option>10</option>
+
+										</select>
+									</div>
+									
+								</form>
+								
+							</div>
+
+						</div>
+						<div class="col-lg-6 mb-4 small">
+							<!-- Simple Tables -->
+							<div class="mb-4 card">
+								<form name="frmEspecificacoes" class="frmEspecificacoes" id="frmEsp" enctype="multipart/form-data">
+									<div
+										class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+										<h6 class="m-0 font-weight-bold text-primary">2)
+											Adicionar Medições</h6>
+									</div>
+									<div class="card-body">
+										<div class="form-group">
+											<label for="exampleInputEmail1">Descrição da Medição</label>
+											<input type="text" class="form-control form-control-sm"
+												id="descricaoEsp" aria-describedby="emailHelp"
+												placeholder="Descrição da Medição">
+										</div>
+										<div class="form-group">
+											<label for="ordem">Especificação Mínima</label> <input
+												type="text" class="form-control form-control-sm" id="espMin"
+												aria-describedby="emailHelp"
+												placeholder="Especificação Mínima">
+										</div>
+										<div class="form-group">
+											<label for="ordem">Especificação Máxima</label> <input
+												type="text" class="form-control form-control-sm" id="espMax"
+												aria-describedby="emailHelp"
+												placeholder="Especificação Máxima">
+										</div>
+										<div class="form-group">
+											<label for="ordem">Imagem</label>
+											<div class="custom-file">
+												<input type="file" class="custom-file-input" id="video" name="video">
+												<label class="custom-file-label" for="customFile">Escolha
+													a Imagem</label>
+											</div>
+										</div>
+<input type="hidden" id="codeProd">
+										<div class="form-group m-4 text-right">
+											<a type="button" class="btn btn-success" id="loginBtn"
+												onclick="CARTACEP.amostra.uploadRename()">Adicionar
+												Medição</a>
+										</div>
+<div id="listaEspecificacoes"></div>
+								
+
+										<a type="button" class="btn btn-primary m-4"  id="loginBtn" onclick="CARTACEP.producao.getTotalEsp()">Finalizar
+											Cadastro</a>
+									</div>
+								</form>
+								<form name="renomear" id="renomear">
+					<input id="renameUpload" class="form-control" type="hidden">
+				</form>
+							</div>
+						</div>
+					</div>
+					<div>
+						<BR>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 mb-4">
+						
+							<!-- Simple Tables -->
+							<div class="card p-1">
+								<div class="table-responsive small">
+									<div id="listaOrdens"></div>
+								</div>
+								<div class="card-footer"></div>
+							</div>
+						</div>
+					</div>
+					<!--Row-->
+
+
+
+					<!-- Modal Logout -->
+					<div class="modalLogOut"></div>
+
+				</div>
+				<!---Container Fluid-->
+			</div>
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white">
+				<div class="container my-auto">
+					<div class="copyright text-center my-auto">
+						<span>Copyright &copy; <script>
+							document.write(new Date().getFullYear());
+						</script>
+							- Carta CEP</b>
+						</span>
+					</div>
+				</div>
+			</footer>
+			<!-- Footer -->
+		</div>
+	</div>
+
+	<!-- Scroll to top -->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+
+	<script src="../vendor/jquery/jquery.min.js"></script>
+	<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+	<script src="../js/ruang-admin.min.js"></script>
+	<script src="../vendor/chart.js/Chart.min.js"></script>
+	<script src="../js/demo/chart-area-demo.js"></script>
+</body>
+
+</html>

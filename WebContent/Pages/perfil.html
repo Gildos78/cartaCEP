@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<link href="../img/logo/logo.png" rel="icon">
+<title>Carta CEP</title>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	crossorigin="anonymous"></script>
+<link
+	href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css"
+	rel="stylesheet">
+<script
+	src="//cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
+<link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+	type="text/css">
+<link href="../css/ruang-admin.min.css" rel="stylesheet">
+<link href="../css/style.css" rel="stylesheet">
+<script src="../js/sidebarJQ.js"></script>
+
+<script src="../js/bsCustomFileInput.js"></script>
+<script src="../js/profile.js"></script>
+</head>
+
+<body id="page-top">
+	<div id="wrapper">
+		<div class="callSidebar"></div>
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<!-- TopBar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+					<button id="sidebarToggleTop"
+						class="btn btn-link rounded-circle mr-3">
+						<i class="fa fa-bars"></i>
+					</button>
+
+					<ul class="navbar-nav ml-auto" id="avatar">
+						<li class="nav-item dropdown no-arrow">
+							<div class="avatar"></div>
+						</li>
+					</ul>
+				</nav>
+				<!-- Topbar -->
+
+				<!-- Container Fluid-->
+				<div class="container-fluid" id="container-wrapper">
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">Perfil</h1>
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="./">Home</a></li>
+							<li class="breadcrumb-item active" aria-current="page">Perfil</li>
+						</ol>
+					</div>
+
+					<div class="col-md-9 personal-info">
+
+						<div class="alert alert-secondary alert-dismissable">
+
+							<a class="panel-close close" data-dismiss="alert">×</a> <i
+								class="fa fa-coffee"></i> <strong> A mudança do perfil
+								será finalizada no próximo login(editar).</strong>
+						</div>
+
+						<form class="form-horizontal" name="frmProfile" enctype="multipart/form-data">
+							<div class="form-group">
+								<label class="col-lg-3 control-label">Nome:</label>
+								<div class="col-lg-8">
+									<input class="form-control" type="text" id="nomePerfil">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-3 control-label">Email:</label>
+								<div class="col-lg-8">
+									<input class="form-control" type="text" id="emailPerfil">
+								</div>
+							</div>
+							<div class="col-lg-3" id="btnPro">
+								<a type="button" data-toggle='modal' data-target='#modalPicture'
+									class="btn btn-success" id="loginBtn">Trocar foto <i
+									class="fas fa-camera"></i></a>
+
+							</div>
+							<div class="col-lg-3">
+								<a type="button" data-toggle='modal'
+									data-target='#modalPassword' class="btn btn-success"
+									id="loginBtn">Trocar senha <i class="fas fa-key"></i>
+								</a>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-3 control-label"></label>
+								<div class="col-md-8">
+
+
+									<span></span> <input type="button" class="btn btn-primary"
+										value="Salvar alterações"
+										onclick="CARTACEP.usuario.editProfile()">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal fade" id="modalPicture" tabindex="-1"
+						role="dialog" aria-labelledby="exampleModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Foto</h5>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<div class="col-lg-12 mb-4 small">
+
+										<form name="frmEspecificacoes" class="frmEspecificacoes"
+											id="frmEsp" enctype="multipart/form-data">
+
+											<div class="form-group">
+												<label for="ordem">Imagem</label>
+												<div class="custom-file">
+													<input type="file" class="custom-file-input" id="video"
+														name="video"> <label class="custom-file-label"
+														for="customFile">Escolha a Imagem</label>
+												</div>
+											</div>
+
+										</form>
+										<form name="renomear" id="renomear">
+											<input id="renameUpload" class="form-control" type="hidden">
+										</form>
+
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-outline-danger"
+										data-dismiss="modal" >Cancelar</button>
+									<button type="button" class="btn btn-primary"
+										onclick="CARTACEP.amostra.uploadRename()" id="loginBtn1">Salvar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal fade" id="modalPassword" tabindex="-1"
+						role="dialog" aria-labelledby="exampleModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Criar senha</h5>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<form name="frmEditaUsuario" id="editaUsuario"
+										class="frmEditar">
+										<table>
+											<tr>
+
+												<th class="form-group" id="senhaLegenda"><label>Senha:</label>
+												</th>
+												<td><input class="form-control" type="password"
+													id="senhaPerfil"></td>
+
+											</tr>
+											<tr>
+
+												<th class="form-group" id="senhaLegenda"><label>Repita
+														a senha:</label></th>
+
+												<td><input class="form-control" type="password"
+													id="repeteSenhaPerfil"></td>
+
+											</tr>
+										</table>
+										<input type="hidden" name="idUsuario">
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-outline-danger"
+										data-dismiss="modal">Cancelar</button>
+									<button type="button" class="btn btn-primary"
+										onclick="CARTACEP.usuario.passwordProfile()">Salvar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<!-- Modal Logout -->
+					<div class="modalLogOut"></div>
+
+
+				</div>
+				<!---Container Fluid-->
+			</div>
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white">
+				<div class="container my-auto">
+					<div class="copyright text-center my-auto">
+						<span>Copyright &copy; <script>
+							document.write(new Date().getFullYear());
+						</script> - Carta CEP</b>
+						</span>
+					</div>
+				</div>
+			</footer>
+			<!-- Footer -->
+		</div>
+	</div>
+
+	<!-- Scroll to top -->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+
+	<script src="../vendor/jquery/jquery.min.js"></script>
+	<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+	<script src="../js/ruang-admin.min.js"></script>
+	<script src="../vendor/chart.js/Chart.min.js"></script>
+	<script src="../js/demo/chart-area-demo.js"></script>
+</body>
+
+</html>
+

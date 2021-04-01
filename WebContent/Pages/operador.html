@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="../img/logo/logo.png" rel="icon">
+  <title>Carta CEP</title>
+   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	crossorigin="anonymous"></script>
+	<link
+	href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css"
+	rel="stylesheet">
+	<script
+	src="//cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
+  <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../css/ruang-admin.min.css" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
+<script src="../js/sidebarJQ.js"></script>
+<script src='../js/operador.js'></script>
+</head>
+
+<body id="page-top">
+  <div id="wrapper">
+    <div class="callSidebar"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+          <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button> 
+          <ul class="navbar-nav ml-auto">
+            
+            <li class="nav-item dropdown no-arrow">
+              <div class="avatar"></div>
+            </li>
+          </ul>
+        </nav>
+        <!-- Topbar -->
+
+        <!-- Container Fluid-->
+        <div class="container-fluid" id="container-wrapper">
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Operador</h1>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="./">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Operador</li>
+            </ol>
+          </div>
+          
+           
+          <div class="row">
+            <div class="col-lg-7 mb-4">
+              <!-- Simple Tables -->
+              <div class="card p-1">
+                <div class="table-responsive">
+                  <div id="listaOperadores" class="listaRegistrosCad"></div>
+                  <div class="modal fade" id="exampleModal" tabindex="-1"
+										role="dialog" aria-labelledby="exampleModalLabel"
+										aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLabel">Editar
+														Operador</h5>
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<form name="frmEditaOperador" id="editaOperador"
+														class="frmEditar">
+														<table>
+															<tr>
+																<td><label for="exampleInputNome">Nome  </label></td>
+																<td><input type="text" class="form-control" name="operador" id="nome"></td>
+															</tr>
+															<tr>
+																<td><label for="exampleInputMatricula">Matricula  </label></td>
+																<td><input type="text" class="form-control" name="matricula" id="matricula"></td>
+															</tr>
+															<tr>
+																<td><label for="exampleInputFone">Telefone  </label></td>
+																<td><input type="text" class="form-control" name="telefone" id="telefone"></td>
+															</tr>
+														</table>
+														<input type="hidden" name="idOperador">
+													</form>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-outline-danger"
+														data-dismiss="modal">Cancelar</button>
+													<a type="button" class="btn btn-primary" id="loginBtn"
+														onclick="CARTACEP.operador.editar()">Salvar</a>
+												</div>
+											</div>
+										</div>
+									</div>
+                </div>
+                <div class="modal fade" id="modalPassword" tabindex="-1"
+						role="dialog" aria-labelledby="exampleModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Criar senha</h5>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<form name="frmEditaSenha" id="editaSenha"
+										class="frmEditar">
+										<table>
+											<tr>
+
+												<th class="form-group" id="senhaLegenda"><label>Senha:</label>
+												</th>
+												<td><input class="form-control" type="password"
+													id="senhaOp"></td>
+
+											</tr>
+											<tr>
+
+												<th class="form-group" id="senhaLegenda"><label>Repita
+														a senha:</label></th>
+
+												<td><input class="form-control" type="password"
+													id="repeteSenhaOp"></td>
+
+											</tr>
+										</table>
+										<input type="hidden" name="idOperador">
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-outline-danger"
+										data-dismiss="modal">Cancelar</button>
+									<button type="button" class="btn btn-primary"
+										onclick="CARTACEP.operador.alterarSenha()">Salvar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+                <div class="card-footer"></div>
+              </div>
+            </div>
+
+              <div class="col-lg-5 mb-4">
+                <!-- Simple Tables -->
+                  <div class="card mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                      <h6 class="m-0 font-weight-bold text-primary">Cadastrar Operador</h6>
+                    </div>
+                    <div class="card-body">
+                      <form name="frmCadOp" id="cadOp">
+                        <div class="form-group">
+                          <label for="exampleInputNome">Nome</label>
+                          <input type="text" class="form-control" id="exampleInputNome" aria-describedby="emailHelp"
+                            placeholder="Nome do Operador">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputMatricula">Matrícula</label>
+                          <input type="text" class="form-control" id="exampleInputMatricula" aria-describedby="emailHelp"
+                            placeholder="Matrícula">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputFone">Telefone</label>
+                          <input type="text" class="form-control" name="telefone" id="exampleInputFone" maxlength="15" aria-describedby="emailHelp"
+                            placeholder="(00) 00000-0000">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputPassword">Senha</label>
+                          <input type="password" class="form-control" id="exampleInputPassword" placeholder="Mínimo de 6 dígitos">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputPasswordRepeat">Repetir Senha</label>
+                          <input type="password" class="form-control" id="exampleInputPasswordRepeat" placeholder="Mínimo de 6 dígitos">
+                        </div>
+                        <div class="form-group">
+                          <a type="button" class="btn btn-primary btn-block" onclick="CARTACEP.operador.verifyMatricula()" id="cadOpBtn">Cadastrar</a>
+                        </div>
+                      </form>
+                    </div>
+                </div>
+          </div>
+          <!--Row-->
+
+        
+
+          <!-- Modal Logout -->
+          <div class="modalLogOut"></div>
+
+        </div>
+        <!---Container Fluid-->
+      </div>
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; <script> document.write(new Date().getFullYear()); </script> - Carta CEP</b>
+            </span>
+          </div>
+        </div>
+      </footer>
+      <!-- Footer -->
+    </div>
+  </div>
+
+  <!-- Scroll to top -->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <script src="../vendor/jquery/jquery.min.js"></script>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../js/ruang-admin.min.js"></script>
+  <script src="../vendor/chart.js/Chart.min.js"></script>
+  <script src="../js/demo/chart-area-demo.js"></script>  
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<link href="../img/logo/logo.png" rel="icon">
+<title>Carta CEP</title>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	crossorigin="anonymous"></script>
+<link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+	type="text/css">
+<link href="../css/ruang-admin.min.css" rel="stylesheet">
+<link href="../css/style.css" rel="stylesheet">
+<link rel="stylesheet" href="../css/insert.css">
+<script src="../js/insert.js"></script>
+<script src="../js/sidebarJQ.js"></script>
+<script src="../js/cep.js"></script>
+</head>
+
+<body id="page-top">
+	<div id="wrapper">
+		<div class="callSidebar"></div>
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<!-- TopBar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+					<button id="sidebarToggleTop"
+						class="btn btn-link rounded-circle mr-3">
+						<i class="fa fa-bars"></i>
+					</button>
+					<ul class="navbar-nav ml-auto">
+
+						<li class="nav-item dropdown no-arrow">
+							<div class="avatar"></div>
+						</li>
+					</ul>
+				</nav>
+				<!-- Topbar -->
+
+				<!-- Container Fluid-->
+				<div class="container-fluid" id="container-wrapper">
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">Carta CEP</h1>
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+							<li class="breadcrumb-item"><a href="relatorios.html">Relatórios</a></li>
+							<li class="breadcrumb-item active" aria-current="page">Carta
+								CEP</li>
+						</ol>
+					</div>
+
+
+
+
+					<div class="row">
+						<div class="col-lg-12 mb-4">
+							<!-- Simple Tables -->
+							<div class="card p-1">
+								<div class="table-responsive small">
+									<div id="listaOrdemCEP"></div>
+									<!-- 
+                  <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>#</th>
+                        <th>Cliente</th>
+                        <th>Data</th>
+                        <th>Descrição</th>
+                        <th>Amostras (Grupo)</th>
+                        <th>Máquina</th>
+                        <th>Operação</th>
+                        
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>8765</td>
+                        <td>Camillo's Inc</td>
+                        <td>10/09/2020  13/09/2020</td>
+                        <td>AXC78UHJ</td>
+                        <td>10 (3)</td>
+                        <td>Torno</td>
+                        <td>Torneamento</td>
+                        
+                        
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+                   -->
+								</div>
+								<div class="card-footer"></div>
+							</div>
+						</div>
+					</div>
+					<!--Row-->
+
+					<div class="row mb-3">
+						<!-- Earnings (Monthly) Card Example -->
+
+						<div class="col-xl-4 col-md-6 mb-4">
+							<form>
+								<table class="sizeTableCards">
+									<div id="listaAmostras"></div>
+
+								</table>
+							</form>
+
+							<!-- 
+              <div class="card h-100">
+                <div class="card-body text-success">
+                  <div class="row align-items-center">
+                    
+                    <div class="col mr-2">
+                      <a href="#am1" data-toggle="collapse"><div class="text-lg font-weight-bold text-uppercase mb-1">Medição #1 - 240.40</div></a>
+                        <div class="mt-2 mb-0 text-muted text-xs">
+                          <span class="text-danger mr-2"><i class="fa fa-arrow-up"></i> 240.40 - Limite Superior</span>
+                        </div>
+                        <div class="mt-2 mb-0 text-muted text-xs">
+                          <span class="text-danger mr-2"><i class="fa fa-arrow-down"></i> 238.90 - Limite Inferior</span>
+                        </div>                     
+                      </div>
+                      <div class="col-auto">
+                        <i class="fas fa-box fa-2x text-info"></i>
+                      </div>
+                    </div>
+                </div>
+              </div>
+             
+						</div>
+
+						<div class="col-xl-4 col-md-6 mb-4">
+							<div class="card h-100">
+								<div class="card-body">
+									<div class="row align-items-center">
+										<div class="col mr-2">
+											<div class="text-lg font-weight-bold text-uppercase mb-1">Medição
+												#2 - 290.20</div>
+											<div class="mt-2 mb-0 text-muted text-xs">
+												<span class="text-danger mr-2"><i
+													class="fa fa-arrow-up"></i> 298.10 - Limite Superior</span>
+											</div>
+											<div class="mt-2 mb-0 text-muted text-xs">
+												<span class="text-danger mr-2"><i
+													class="fa fa-arrow-down"></i> 288.90 - Limite Inferior</span>
+											</div>
+										</div>
+										<div class="col-auto">
+											<i class="fas fa-box fa-2x text-danger"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-4 col-md-6 mb-4">
+							<div class="card h-100">
+								<div class="card-body">
+									<div class="row align-items-center">
+										<div class="col mr-2">
+											<div class="text-lg font-weight-bold text-uppercase mb-1">Medição
+												#2 - 290.20</div>
+											<div class="mt-2 mb-0 text-muted text-xs">
+												<span class="text-danger mr-2"><i
+													class="fa fa-arrow-up"></i> 298.10 - Limite Superior</span>
+											</div>
+											<div class="mt-2 mb-0 text-muted text-xs">
+												<span class="text-danger mr-2"><i
+													class="fa fa-arrow-down"></i> 288.90 - Limite Inferior</span>
+											</div>
+										</div>
+										<div class="col-auto">
+											<i class="fas fa-box fa-2x text-warning"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						  -->
+						</div>
+						<div id="openPage" class="row collapse">
+							<div>
+								<div class="col-lg-12 mb-4">
+									<div id="listaMedCad"></div>
+
+								</div>
+
+								<input type="hidden" id="quantidadeSub"><input
+									type="hidden" id="idEsp"><input type="hidden"
+									id="idSub"><input type="hidden" id="idMedicao">
+								<input type="hidden" id="qtdAmostras">
+								<div class="col-lg-12 mb-4">
+									<div class="card p-1">
+										<div
+											class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+											<h6 class="m-0 font-weight-bold text-primary">Gráfico de
+												Leituras</h6>
+										</div>
+										<div class="card-body">
+											<div class="chart-area">
+												<canvas id="graficoleituras" height="100"></canvas>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-12 mb-4">
+									<div class="card p-1">
+										<div
+											class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+											<h6 class="m-0 font-weight-bold text-primary">Gráfico de
+												Média</h6>
+										</div>
+										<div class="card-body">
+											<div class="chart-area">
+												<canvas id="graficomedia" height="100"></canvas>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-12 mb-4">
+									<div class="card p-1">
+										<div
+											class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+											<h6 class="m-0 font-weight-bold text-primary">Gráfico de
+												Amplitude</h6>
+										</div>
+										<div class="card-body">
+											<div class="chart-area">
+												<canvas id="graficoamplitude" height="100"></canvas>
+											</div>
+										</div>
+									</div>
+								</div>
+								<table class="HiIn">
+									<tr>
+										<td><div class="col-lg-12 mb-4">
+												<div class="card p-1">
+													<div
+														class="card-header py-3 d-flex flex-row flex-row align-items-center justify-content-between">
+														<h6 class="m-0 font-weight-bold text-primary">Histograma</h6>
+													</div>
+													<div class="card-body">
+														<div class="chart-area">
+															<canvas id="graficohistograma" width="350"></canvas>
+														</div>
+													</div>
+												</div>
+											</div></td>
+										<td class="info"><div class="col-lg-12 mb-4">
+
+												<div class="card p-1">
+													<div
+														class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+														<h6 class="m-0 font-weight-bold text-primary">Informações</h6>
+													</div>
+													<div class="card-body" id="sizeBodyInfo"></div>
+												</div>
+											</div></td>
+									</tr>
+								</table>
+
+
+
+							</div>
+						</div>
+						<!-- Modal Logout -->
+						<div class="modalLogOut"></div>
+
+					</div>
+					<!---Container Fluid-->
+				</div>
+				<!-- Footer -->
+				<footer class="sticky-footer bg-white">
+					<div class="container my-auto">
+						<div class="copyright text-center my-auto">
+							<span>Copyright &copy; <script>
+								document.write(new Date().getFullYear());
+							</script> - Carta CEP</b>
+							</span>
+						</div>
+					</div>
+				</footer>
+				<!-- Footer -->
+			</div>
+		</div>
+
+		<!-- Scroll to top -->
+		<a class="scroll-to-top rounded" href="#page-top"> <i
+			class="fas fa-angle-up"></i>
+		</a>
+
+		<script src="../vendor/jquery/jquery.min.js"></script>
+		<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+		<script src="../js/ruang-admin.min.js"></script>
+		<script src="../vendor/chart.js/Chart.min.js"></script>
+		<script src="../js/demo/chart-area-demo.js"></script>
+</body>
+
+</html>
