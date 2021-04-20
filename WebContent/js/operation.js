@@ -30,6 +30,7 @@ $(document).ready (function(){
 	};
 	CARTACEP.usuario.getProfile = function(){
 		var email = sessionStorage.getItem('email');
+		
 		$.ajax({
 			type: "GET",
 			url: CARTACEP.PATH + "usuario/checkEmail",

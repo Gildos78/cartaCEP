@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import br.com.cartacep.jdbcinterface.MedicaoDAO;
 import br.com.cartacep.modelo.Medicao;
+import br.com.cartacep.modelo.Producao;
 
 public class JDBCMedicaoDAO implements MedicaoDAO{
 
@@ -126,8 +127,20 @@ public class JDBCMedicaoDAO implements MedicaoDAO{
 		}
 		return true;
 	}
+	public boolean deletarMedEsp(int id) {
+		String comando = "DELETE FROM medicoes WHERE idEsp = ?";
+		PreparedStatement p;
+		try {
+			p=this.conexao.prepareStatement(comando);
+			p.setInt(1, id);
+			p.execute();
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 	public List<JsonObject> getSamplesComplete (int id){
-		System.out.println(id);
 		String comando = "select * from subgrupo_medicoes "
 				+ "inner join subgrupo on subgrupo.idSubgrupo = subgrupo_medicoes.idSubgrupo "
 				+ "inner join especificacoes on especificacoes.idEspecificacoes = subgrupo_medicoes.idEspecificacao "
@@ -153,6 +166,7 @@ public class JDBCMedicaoDAO implements MedicaoDAO{
 				int code = rs.getInt("codeProd");
 				int espMinimo = rs.getInt("espMinimo");
 				int espMaximo = rs.getInt("espMaximo");
+				String obs = rs.getString("obs");
 				medicao = new JsonObject();
 				medicao.addProperty("valor", valor);
 				medicao.addProperty("subgrupo", subgrupo);
@@ -162,7 +176,38 @@ public class JDBCMedicaoDAO implements MedicaoDAO{
 				medicao.addProperty("code", code);
 				medicao.addProperty("espMinimo", espMinimo);
 				medicao.addProperty("espMaximo", espMaximo);
+				medicao.addProperty("obs", obs);
+				listaMedicoes.add(medicao);
+			}
 
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listaMedicoes;
+	}
+	public List<JsonObject> getMeasureId (int code){
+		String comando = "select * from medicoes where codeProd = "+code+" ";
+				
+		
+		List<JsonObject> listaMedicoes = new ArrayList<JsonObject>();
+		JsonObject medicao = null;
+
+		try {
+
+			Statement stmt = conexao.createStatement();
+			ResultSet rs = stmt.executeQuery(comando);
+
+			while(rs.next()) {
+
+				int idM = rs.getInt("idMedicoes");
+			
+				int idEsp = rs.getInt("idEsp");
+				
+				medicao = new JsonObject();
+				medicao.addProperty("idMed", idM);
+				
+				medicao.addProperty("idEsp", idEsp);
+				
 				listaMedicoes.add(medicao);
 			}
 

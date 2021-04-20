@@ -20,7 +20,6 @@ import com.google.gson.JsonObject;
 
 import br.com.cartacep.bd.Conexao;
 import br.com.cartacep.jdbc.JDBCMedicaoDAO;
-import br.com.cartacep.jdbc.JDBCProducaoDAO;
 import br.com.cartacep.modelo.Medicao;
 
 
@@ -145,5 +144,54 @@ public class MedicaoRest extends UtilRest{
 			e.printStackTrace();
 			return this.buildErrorResponse(e.getMessage());
 		}				
+	}
+	@GET
+	@Path("/getMeasureId")
+	@Consumes("application/*")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getMeasureId(@QueryParam("code") int  code) {
+		try {
+			List<JsonObject> listaMedicoes = new ArrayList<JsonObject>();
+			
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+			JDBCMedicaoDAO jdbcMedicao = new JDBCMedicaoDAO(conexao);
+			listaMedicoes = jdbcMedicao.getMeasureId(code);
+		
+			conec.fecharConexao();
+			
+			String json = new Gson().toJson(listaMedicoes);
+			return this.buildResponse(json);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return this.buildErrorResponse(e.getMessage());
+		}				
+	}
+	@DELETE
+	@Path("/excluirMedEsp/{idMed}")
+	@Consumes("application/*")
+	public Response excluirMedEsp(@PathParam("idMed") int id) {
+		try {
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+			JDBCMedicaoDAO jdbcMedicao = new JDBCMedicaoDAO(conexao);
+			
+			boolean retorno = jdbcMedicao.deletarMedEsp(id);
+			
+			String msg = "";
+			if(retorno) {
+				msg="Medição excluída com sucesso!";
+			}else {
+				msg="Erro ao excluir Medição!";
+			}
+			
+			conec.fecharConexao();
+			
+			return this.buildResponse(msg);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return this.buildErrorResponse(e.getMessage());
+		}			
 	}
 }

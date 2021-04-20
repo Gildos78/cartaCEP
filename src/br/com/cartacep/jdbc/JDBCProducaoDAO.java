@@ -79,7 +79,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 				"inner join especificacoes on especificacoes.codeProd=producao.codeRefEsp "+
 				"inner join subgrupo on subgrupo.codeProd=producao.codeRefEsp ";
 		
-		comando += "ORDER BY producao.cliente ASC";		
+		//comando += "ORDER BY producao.cliente ASC";		
 		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
 		JsonObject producao = null;
 
@@ -103,6 +103,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 				String idMaq = rs.getString("maquina");
 				int subgrupo = rs.getInt("subgrupo");
 				int codeRefEsp = rs.getInt("codeRefEsp");
+				int contagemAtual  =rs.getInt("contagemAtual");
 
 				producao = new JsonObject();
 				producao.addProperty("id", id);
@@ -118,6 +119,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 				producao.addProperty("maquinaId", idMaq);
 				producao.addProperty("subgrupo", subgrupo);
 				producao.addProperty("codeRefEsp", codeRefEsp);
+				producao.addProperty("contagem", contagemAtual);
 
 				listaProducoes.add(producao);
 			}
@@ -127,117 +129,117 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		}
 		return listaProducoes;
 	}
-	public List<JsonObject> buscarData (String dataIni, String dataFin){
+//	public List<JsonObject> buscarData (String dataIni, String dataFin){
+//
+//		String comando = "SELECT *, maquina.nome as maquina, operacao.nome as operacao FROM producao "+
+//				"inner join maquina on producao.idmaquina = maquina.idmaquina "+
+//				"inner join operacao on producao.idOperacao = operacao.idOperacao ";
+//		if (dataIni != "" && dataFin != "") {
+//			comando += "WHERE producao.dataInicio >= '" + dataIni + "' AND producao.dataFinal <= '" + dataFin + "' ";
+//
+//		}
+//
+//		comando += "ORDER BY producao.cliente ASC";		
+//		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
+//		JsonObject producao = null;
+//
+//		try {
+//
+//			Statement stmt = conexao.createStatement();
+//			ResultSet rs = stmt.executeQuery(comando);
+//
+//			while(rs.next()) {
+//
+//				int id = rs.getInt("idProducao");
+//				String codigo = rs.getString("codigo");
+//				String nomeCliente = rs.getString("cliente");
+//				String dataI = rs.getString("dataInicio");
+//				String dataF = rs.getString("dataFinal");
+//				String descricao = rs.getString("descricao");
+//				float espMin = rs.getFloat("especMin");
+//				float espMax = rs.getFloat("especMax");
+//				int numAm = rs.getInt("numAmostras");
+//				int subgrupo = rs.getInt("subGrupo");
+//				String idOp = rs.getString("operacao");
+//				String idMaq = rs.getString("maquina");
+//
+//				producao = new JsonObject();
+//				producao.addProperty("id", id);
+//				producao.addProperty("codigo", codigo);
+//				producao.addProperty("cliente", nomeCliente);
+//				producao.addProperty("dataInicio", dataI);
+//				producao.addProperty("dataFinal", dataF);
+//				producao.addProperty("descricao", descricao);
+//				producao.addProperty("espMin", espMin);
+//				producao.addProperty("espMax", espMax);
+//				producao.addProperty("numAmostras", numAm);
+//				producao.addProperty("subgrupo", subgrupo);
+//				producao.addProperty("operacao", idOp);
+//				producao.addProperty("maquinaId", idMaq);
+//
+//
+//				listaProducoes.add(producao);
+//			}
+//
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return listaProducoes;
+//	}
 
-		String comando = "SELECT *, maquina.nome as maquina, operacao.nome as operacao FROM producao "+
-				"inner join maquina on producao.idmaquina = maquina.idmaquina "+
-				"inner join operacao on producao.idOperacao = operacao.idOperacao ";
-		if (dataIni != "" && dataFin != "") {
-			comando += "WHERE producao.dataInicio >= '" + dataIni + "' AND producao.dataFinal <= '" + dataFin + "' ";
-
-		}
-
-		comando += "ORDER BY producao.cliente ASC";		
-		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
-		JsonObject producao = null;
-
-		try {
-
-			Statement stmt = conexao.createStatement();
-			ResultSet rs = stmt.executeQuery(comando);
-
-			while(rs.next()) {
-
-				int id = rs.getInt("idProducao");
-				String codigo = rs.getString("codigo");
-				String nomeCliente = rs.getString("cliente");
-				String dataI = rs.getString("dataInicio");
-				String dataF = rs.getString("dataFinal");
-				String descricao = rs.getString("descricao");
-				float espMin = rs.getFloat("especMin");
-				float espMax = rs.getFloat("especMax");
-				int numAm = rs.getInt("numAmostras");
-				int subgrupo = rs.getInt("subGrupo");
-				String idOp = rs.getString("operacao");
-				String idMaq = rs.getString("maquina");
-
-				producao = new JsonObject();
-				producao.addProperty("id", id);
-				producao.addProperty("codigo", codigo);
-				producao.addProperty("cliente", nomeCliente);
-				producao.addProperty("dataInicio", dataI);
-				producao.addProperty("dataFinal", dataF);
-				producao.addProperty("descricao", descricao);
-				producao.addProperty("espMin", espMin);
-				producao.addProperty("espMax", espMax);
-				producao.addProperty("numAmostras", numAm);
-				producao.addProperty("subgrupo", subgrupo);
-				producao.addProperty("operacao", idOp);
-				producao.addProperty("maquinaId", idMaq);
-
-
-				listaProducoes.add(producao);
-			}
-
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return listaProducoes;
-	}
-
-	public List<JsonObject> buscarDes (String cliente){
-		String comando = "SELECT *, maquina.nome as maquina, operacao.nome as operacao FROM producao "+
-				"inner join maquina on producao.idmaquina = maquina.idmaquina "+
-				"inner join operacao on producao.idOperacao = operacao.idOperacao ";
-		if (cliente != "") {
-			comando += "WHERE producao.cliente LIKE '%" + cliente + "%' OR producao.codigo LIKE '%" + cliente + "%' ";
-		}
-		comando += "ORDER BY producao.cliente ASC";		
-		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
-		JsonObject producao = null;
-		try {
-
-			Statement stmt = conexao.createStatement();
-			ResultSet rs = stmt.executeQuery(comando);
-
-			while(rs.next()) {
-
-				int id = rs.getInt("idProducao");
-				String codigo = rs.getString("codigo");
-				String nomeCliente = rs.getString("cliente");
-				String dataI = rs.getString("dataInicio");
-				String dataF = rs.getString("dataFinal");
-				String descricao = rs.getString("descricao");
-				float espMin = rs.getFloat("especMin");
-				float espMax = rs.getFloat("especMax");
-				int numAm = rs.getInt("numAmostras");
-				int subgrupo = rs.getInt("subGrupo");
-				String idOp = rs.getString("operacao");
-				String idMaq = rs.getString("maquina");
-
-				producao = new JsonObject();
-				producao.addProperty("id", id);
-				producao.addProperty("codigo", codigo);
-				producao.addProperty("cliente", nomeCliente);
-				producao.addProperty("dataInicio", dataI);
-				producao.addProperty("dataFinal", dataF);
-				producao.addProperty("descricao", descricao);
-				producao.addProperty("espMin", espMin);
-				producao.addProperty("espMax", espMax);
-				producao.addProperty("numAmostras", numAm);
-				producao.addProperty("subgrupo", subgrupo);
-				producao.addProperty("operacao", idOp);
-				producao.addProperty("maquinaId", idMaq);
-
-
-				listaProducoes.add(producao);
-			}
-
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return listaProducoes;
-	}
+//	public List<JsonObject> buscarDes (String cliente){
+//		String comando = "SELECT *, maquina.nome as maquina, operacao.nome as operacao FROM producao "+
+//				"inner join maquina on producao.idmaquina = maquina.idmaquina "+
+//				"inner join operacao on producao.idOperacao = operacao.idOperacao ";
+//		if (cliente != "") {
+//			comando += "WHERE producao.cliente LIKE '%" + cliente + "%' OR producao.codigo LIKE '%" + cliente + "%' ";
+//		}
+//		comando += "ORDER BY producao.cliente ASC";		
+//		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
+//		JsonObject producao = null;
+//		try {
+//
+//			Statement stmt = conexao.createStatement();
+//			ResultSet rs = stmt.executeQuery(comando);
+//
+//			while(rs.next()) {
+//
+//				int id = rs.getInt("idProducao");
+//				String codigo = rs.getString("codigo");
+//				String nomeCliente = rs.getString("cliente");
+//				String dataI = rs.getString("dataInicio");
+//				String dataF = rs.getString("dataFinal");
+//				String descricao = rs.getString("descricao");
+//				float espMin = rs.getFloat("especMin");
+//				float espMax = rs.getFloat("especMax");
+//				int numAm = rs.getInt("numAmostras");
+//				int subgrupo = rs.getInt("subGrupo");
+//				String idOp = rs.getString("operacao");
+//				String idMaq = rs.getString("maquina");
+//
+//				producao = new JsonObject();
+//				producao.addProperty("id", id);
+//				producao.addProperty("codigo", codigo);
+//				producao.addProperty("cliente", nomeCliente);
+//				producao.addProperty("dataInicio", dataI);
+//				producao.addProperty("dataFinal", dataF);
+//				producao.addProperty("descricao", descricao);
+//				producao.addProperty("espMin", espMin);
+//				producao.addProperty("espMax", espMax);
+//				producao.addProperty("numAmostras", numAm);
+//				producao.addProperty("subgrupo", subgrupo);
+//				producao.addProperty("operacao", idOp);
+//				producao.addProperty("maquinaId", idMaq);
+//
+//
+//				listaProducoes.add(producao);
+//			}
+//
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return listaProducoes;
+//	}
 	public boolean deletarSub(int code) {
 		String comando = "DELETE FROM subgrupo WHERE codeProd = ?";
 		PreparedStatement p;
@@ -490,31 +492,37 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		}
 		return producao;
 	}
-	public Producao limitMeasure(int  id) {
-		String comando = "select medicoes.*, count(especificacoes.idEspecificacoes) as total, producao.numAmostras, subgrupo.quantidade from medicoes "
+	public List<JsonObject> limitMeasure(int  id) {
+		String comando = "select medicoes.*, producao.numAmostras, subgrupo.quantidade from medicoes "
 				+ "inner join especificacoes on especificacoes.idEspecificacoes = medicoes.idEsp "
 				+ "inner join producao on producao.codeRefEsp = especificacoes.codeProd "
 				+ "inner join subgrupo on subgrupo.codeProd = especificacoes.codeProd "
-				+ "where medicoes.idEsp = ?";
-		Producao producao= new Producao();
+				+ "where medicoes.idEsp = "+id+" ";
+		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
+		JsonObject producao = null;
+		
 		try {
-			PreparedStatement p = this.conexao.prepareStatement(comando);
-			p.setInt(1, id);
-			ResultSet rs = p.executeQuery();
-			while (rs.next()) {
-				int numAmostras = rs.getInt("numAmostras");
-				int total = rs.getInt("total");
+
+			Statement stmt = conexao.createStatement();
+			ResultSet rs = stmt.executeQuery(comando);
+
+			while(rs.next()) {
+
+				int numAmostras = rs.getInt("numAmostras");				
 				int quantidade = rs.getInt("quantidade");
 				
-				producao.setNumAmostras(numAmostras);
-				producao.setTotalEsp(total);
-				producao.setSubgrupo(quantidade);
+				producao = new JsonObject();
+				producao.addProperty("numAmostras", numAmostras);
+				producao.addProperty("quantidade", quantidade);
+				
 
+				listaProducoes.add(producao);
 			}
+
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		return producao;
+		return listaProducoes;
 	}
 	public Producao getProdInd(int  code) {
 		
@@ -565,7 +573,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		return producao;
 	}
 	public Producao getTotalSamples(int  code) {
-		String comando = "select count(*) as total, producao.numAmostras as Amostras, producao.totalEsp as Especificacoes, producao.codeRefEsp as Code, subgrupo.quantidade as Subgrupo from subgrupo_medicoes "
+		String comando = "select count(*), producao.numAmostras as Amostras, producao.totalEsp as Especificacoes, producao.codeRefEsp as Code, subgrupo.quantidade as Subgrupo from subgrupo_medicoes "
 				+ "				inner join medicoes on medicoes.idMedicoes = subgrupo_medicoes.idMedicoes and medicoes.codeProd = ? "
 				+ "                inner join producao on producao.codeRefEsp = medicoes.codeProd "
 				+ "                inner join subgrupo on subgrupo.codeProd = medicoes.codeProd ";
@@ -576,7 +584,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 			p.setInt(1, code);
 			ResultSet rs = p.executeQuery();
 			while (rs.next()) {
-			int count = rs.getInt("total");
+			int count = rs.getInt("count(*)");
 			int Amostras = rs.getInt("Amostras");
 			int Especificacoes = rs.getInt("Especificacoes");
 			int Subgrupo = rs.getInt("Subgrupo");
@@ -591,6 +599,43 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 			e.printStackTrace();
 		}
 		return producao;
+	}
+	
+	public List<JsonObject> getTotalTeste (int code){
+
+		String comando = "select subgrupo_medicoes.valorMedicao, producao.numAmostras as Amostras, producao.totalEsp as Especificacoes, producao.codeRefEsp as Code, subgrupo.quantidade as Subgrupo from subgrupo_medicoes "
+				+ "inner join medicoes on medicoes.idMedicoes = subgrupo_medicoes.idMedicoes and medicoes.codeProd = "+code+" "
+				+ "inner join producao on producao.codeRefEsp = medicoes.codeProd "
+				+ "inner join subgrupo on subgrupo.codeProd = medicoes.codeProd ";
+			
+		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
+		JsonObject producao = null;
+		
+		try {
+
+			Statement stmt = conexao.createStatement();
+			ResultSet rs = stmt.executeQuery(comando);
+
+			while(rs.next()) {
+
+				int Amostras = rs.getInt("Amostras");
+				int Especificacoes = rs.getInt("Especificacoes");
+				int Subgrupo = rs.getInt("Subgrupo");
+				int Code =rs.getInt("Code");
+				producao = new JsonObject();
+				producao.addProperty("Amostras", Amostras);
+				producao.addProperty("Especificacoes", Especificacoes);
+				producao.addProperty("Subgrupo",Subgrupo);
+				producao.addProperty("Code",Code);
+				
+
+				listaProducoes.add(producao);
+			}
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listaProducoes;
 	}
 	
 	public Producao getTotalEsp(int  code) {

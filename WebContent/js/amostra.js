@@ -95,7 +95,6 @@ $(document).ready(function(){
 	CARTACEP.amostra.getProdInd();
 	CARTACEP.amostra.getSample = function(){
 		var code = sessionStorage.getItem('code');
-		console.log(code)
 		$.ajax({
 			type: "GET",
 			url: CARTACEP.PATH + "especificacao/getSample",
@@ -137,9 +136,14 @@ $(document).ready(function(){
 					"<div class='mt-2 mb-0 text-muted text-xs'>"+
 					" <span class='text-danger mr-2'><i class='fa fa-arrow-down'></i> "+listaDeAmostras[i].espMin+" - Limite Inferior</span>"+
 					" </div> </div>  "+
-					"   <div class='col-auto'>"    +               
-					"<img src='../imgs/"+listaDeAmostras[i].imagem+".png' alt='Avatar' class='avatarImage'>"+
-					" </div> </div></div> </a></td></div>";
+					"   <div class='col-auto'>";
+
+				if(listaDeAmostras[i].imagem==undefined){
+					tabela+="<i class='fas fa-box fa-2x text-info'></i>";
+				}else{
+					tabela+="<img src='../imgs/"+listaDeAmostras[i].imagem+".png' alt='Avatar' class='avatarImage'>";
+				}				
+				tabela+=	" </div> </div></div> </a></td></div>";
 
 			}
 			tabela +=//"</div>";
@@ -149,7 +153,7 @@ $(document).ready(function(){
 		}
 	}
 	CARTACEP.amostra.getSample()
-	
+
 	CARTACEP.amostra.limitMeasure = function(id){
 		$.ajax({
 			type: "GET",
@@ -157,18 +161,18 @@ $(document).ready(function(){
 			data: "id="+id,
 			success: function(limite){
 				var totalFilled = limite.subgrupo*limite.numAmostras
-			
+
 				if(totalFilled==limite.totalEsp){
 					Swal.fire({
-						  text: 'Atingiu o limite de medições.',
-						  icon: 'error',
-						  confirmButtonColor: '#3085d6',
-						  confirmButtonText: 'OK'
-						}).then((result) => {
-						  if (result.isConfirmed) {
-							  window.location.href = "amostras.html";
-						  }
-						})	
+						text: 'Atingiu o limite de medições.',
+						icon: 'error',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: 'OK'
+					}).then((result) => {
+						if (result.isConfirmed) {
+							window.location.href = "amostras.html";
+						}
+					})	
 				}else{
 					CARTACEP.amostra.getSub(id)
 				}
@@ -180,8 +184,8 @@ $(document).ready(function(){
 			}
 		})
 	}
-	
-	
+
+
 	CARTACEP.amostra.getSub = function(id){
 		document.getElementById("idEsp").value = id
 		CARTACEP.amostra.getCountEsp(id)
@@ -303,43 +307,74 @@ $(document).ready(function(){
 	}
 
 	geradorIdMedicao()
-	CARTACEP.amostra.limitMeasureReg = function(){
-		var id = document.getElementById("idEsp").value
-		
-		$.ajax({
-			type: "GET",
-			url: CARTACEP.PATH + "producao/limitMeasure",
-			data: "id="+id,
-			success: function(limite){
-				var limit = limite.subgrupo*limite.numAmostras
-			var totalMeasure = limite.totalEsp*limite.subgrupo		
-				
-				if(totalMeasure==limit&&!totalMeasure==0){
-					
-					Swal.fire({
-						  text: 'Atingiu o limite de medições.',
-						  icon: 'error',
-						  confirmButtonColor: '#3085d6',
-						  confirmButtonText: 'OK'
-						}).then((result) => {
-						  if (result.isConfirmed) {
-							  window.location.href = "amostras.html";
-						  }
-						})	
-				}else{
-					console.log(totalMeasure)
-					console.log(limit)
-					CARTACEP.amostra.cadastrarMedicao()
-				}
-			},
-			error: function(info){
-				var a="Erro ao consultar os cadastros de usuário: "+info.status+" - "+info.statusText;
-				var b = a.replace(/'/g, '');
-				console.log(b);
-			}
-		})
-	}
 
+	CARTACEP.amostra.limitMeasureReg = function(){
+		var boolItem = false;
+		if(document.getElementById("selOperador").value==""){
+			boolItem=true;
+		}
+		var subgrupo=document.getElementById("quantidadeSub").value
+		for(var i=0; i<subgrupo; i++){
+			console.log(document.getElementById('testeValue'+i+'').value)
+			if(document.getElementById('testeValue'+i+'').value==""){
+				boolItem=true;
+			}
+		}
+		if(boolItem==true){
+			
+				Swal.fire({
+					icon: 'error',
+					title: 'Atenção',
+					text: 'Cadastro incompleto.'
+				})	
+			}else{
+				var id = document.getElementById("idEsp").value
+				$.ajax({
+					type: "GET",
+					url: CARTACEP.PATH + "producao/limitMeasure",
+					data: "id="+id,
+					success: function(dados){
+						dados = JSON.parse(dados)
+						CARTACEP.amostra.getLimitList(dados)
+
+
+					},
+					error: function(info){
+						var a="Erro ao consultar os cadastros de usuário: "+info.status+" - "+info.statusText;
+						var b = a.replace(/'/g, '');
+						console.log(b);
+					}
+				})			
+			}
+		
+
+	}
+	CARTACEP.amostra.getLimitList = function(listaLimites){
+		var limit = 0
+		var subgroup = 0
+		for(var i=0;i<listaLimites.length;i++){
+			limit = listaLimites[i].quantidade*listaLimites[i].numAmostras
+			subgroup = listaLimites[i].quantidade
+		}
+		var totalMeasure = listaLimites.length*subgroup
+
+		if(totalMeasure==limit&&!totalMeasure==0){
+
+			Swal.fire({
+				text: 'Atingiu o limite de medições.',
+				icon: 'error',
+				confirmButtonColor: '#3085d6',
+				confirmButtonText: 'OK'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					window.location.href = "amostras.html";
+				}
+			})	
+		}else{
+
+			CARTACEP.amostra.cadastrarMedicao()
+		}
+	}
 	CARTACEP.amostra.cadastrarMedicao = function(){
 
 		var medicao = new Object()
@@ -349,6 +384,7 @@ $(document).ready(function(){
 		medicao.codeProd = sessionStorage.getItem('code')
 		medicao.idEsp = document.getElementById("idEsp").value
 		medicao.idMedicao  = document.getElementById("idMedicao").value 
+		console.log(medicao)
 		$.ajax({
 			type: "POST",
 			url: CARTACEP.PATH + "medicao/inserir",
@@ -384,6 +420,7 @@ $(document).ready(function(){
 				success:function(msg){
 					console.log(msg)
 					$("#frmItemsSub").trigger("reset");
+					console.log(document.getElementById("idEsp").value)
 					CARTACEP.amostra.getCountEsp(document.getElementById("idEsp").value)
 					CARTACEP.amostra.buscarMed(document.getElementById("idEsp").value)
 					dateDefinition()
@@ -420,8 +457,7 @@ $(document).ready(function(){
 		});
 	}
 	CARTACEP.amostra.exibirMed = function(listaDeMedicoes){
-
-		
+console.log(listaDeMedicoes)
 		if(listaDeMedicoes != undefined && listaDeMedicoes.length >0){
 
 			var tabela = "<table class='table align-items-center table-flush small'>"+
@@ -437,7 +473,7 @@ $(document).ready(function(){
 			"</thead>"+											
 			"<tbody>";
 			for(var i=0; i<listaDeMedicoes.length; i++){
-				
+
 				var sample = listaDeMedicoes[i].subgrupo*listaDeMedicoes[i].quantidade
 				document.getElementById("selOperador").value = listaDeMedicoes[i].idOperador
 
@@ -447,7 +483,7 @@ $(document).ready(function(){
 					"<td>"+(i+1)+"/"+sample+"</td>"+
 					"<td>"+listaDeMedicoes[i].operador+"</td>"+
 					"<td>"+listaDeMedicoes[i].valor+"</td>"+
-					"<td></td>"+
+					"<td>"+listaDeMedicoes[i].obs+"</td>"+
 					"<td><a onclick='CARTACEP.amostra.deleteMed("+listaDeMedicoes[i].idMed+")' class='btn btn-sm'> <i class='fas fa-trash'></i>"+														
 					"</a></td>"+
 					"</tr>";
@@ -463,13 +499,14 @@ $(document).ready(function(){
 		return tabela;
 	}
 	CARTACEP.amostra.deleteMed = function(idMed){
-		
+
 		$.ajax({
 			type:"DELETE",
 			url: CARTACEP.PATH +"medicao/excluirMed/"+idMed,
 			success: function(msg){
 				b = msg.replace(/['"]+/g, '');
 				console.log(b);
+				CARTACEP.amostra.deleteSub(idMed)
 				CARTACEP.amostra.buscarMed(document.getElementById("idEsp").value)
 			},
 			error: function(info){

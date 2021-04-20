@@ -157,10 +157,13 @@ $(document).ready(function(){
 					"<div class='mt-2 mb-0 text-muted text-xs'>"+
 					" <span class='text-danger mr-2'><i class='fa fa-arrow-down'></i> "+listaDeAmostras[i].espMin+" - Limite Inferior</span>"+
 					" </div> </div>  "+
-					"   <div class='col-auto'>"    +               
-					"<img src='../imgs/"+listaDeAmostras[i].imagem+".png' alt='Avatar' class='avatarImage'>"+
-					" </div> </div></div> </a></td></div>";
-
+					"   <div class='col-auto'>";
+				if(listaDeAmostras[i].imagem==undefined){
+					tabela+="<i class='fas fa-box fa-2x text-info'></i>";
+				}else{
+					tabela+="<img src='../imgs/"+listaDeAmostras[i].imagem+".png' alt='Avatar' class='avatarImage'>";
+				}				
+					tabela+=	" </div> </div></div> </a></td></div>";
 			}
 			tabela +=
 				"</tr>";
@@ -243,9 +246,10 @@ $(document).ready(function(){
 			success: function(dados){
 
 				dados = JSON.parse(dados);
+				$("#sizeBodyInfo").html(CARTACEP.amostra.infoObs(dados));
+				//CARTACEP.amostra.infoObs(dados)
 				CARTACEP.amostra.showReadingGraph(dados)
-				CARTACEP.amostra.exibirMediaX(dados)
-
+				CARTACEP.amostra.exibirMediaX(dados)				
 			},
 			error: function(info){
 				console.log("Erro ao consultar os cadastros de operação: "+info.status+" - "+info.statusText);
@@ -965,5 +969,30 @@ $(document).ready(function(){
 				},
 			}
 		});
+	}
+	CARTACEP.amostra.infoObs = function(listaDeAmostras){
+	
+		var obsBool = false
+		if(listaDeAmostras != undefined && listaDeAmostras.length >0){
+			var tabela = "<table>";
+			for(var i=0; i<listaDeAmostras.length; i++){
+				console.log(listaDeAmostras[i].obs)
+				if(listaDeAmostras[i].obs==""){
+					obsBool = true
+				}else{
+					obsBool = false
+					tabela += "<tr><td>Ref. ao valor "+listaDeAmostras[i].valor+": </td>" +
+							"<td>"+listaDeAmostras[i].obs+"</td></tr>"
+				}
+			}
+			if(obsBool == true||listaDeAmostras==undefined){
+				tabela += "<tr><td>Não há observações feitas</td></tr>"
+					
+			}
+		}
+		tabela +="</table>";
+
+		return tabela;
+		
 	}
 })

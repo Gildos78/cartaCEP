@@ -87,4 +87,31 @@ public class SubgrupoRest extends UtilRest{
 			return this.buildErrorResponse(e.getMessage());
 		}			
 	}
+	@DELETE
+	@Path("/excluirSubEsp/{idMed}")
+	@Consumes("application/*")
+	public Response excluirMedEsp(@PathParam("idMed") int id) {
+		try {
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+			JDBCSubgrupoDAO jdbcSubgrupo = new JDBCSubgrupoDAO(conexao);
+			
+			boolean retorno = jdbcSubgrupo.deletarSubEsp(id);
+			
+			String msg = "";
+			if(retorno) {
+				msg="Sub excluída com sucesso!";
+			}else {
+				msg="Erro ao excluir sub!";
+			}
+			
+			conec.fecharConexao();
+			
+			return this.buildResponse(msg);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return this.buildErrorResponse(e.getMessage());
+		}			
+	}
 }

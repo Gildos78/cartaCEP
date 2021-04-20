@@ -120,21 +120,8 @@ $(document).ready (function(){
 						  document.getElementById("cadGes").reset();
 						  CARTACEP.gestor.buscar();
 						var b = msg.replace(/['"]+/g, '');
-						Swal.fire({
-							  text: b,
-							  icon: 'success',
-							  confirmButtonColor: '#3085d6',
-							  confirmButtonText: 'OK'
-							}).then((result) => {
-							  if (result.isConfirmed) {
-								
-							  //window.location.href = "index.html";
-							  }
-							})
-					},
-					error:function(info){
-						Swal.fire(info);
-						}
+					Swal.fire(b);
+					}
 				});	
 	};
 	

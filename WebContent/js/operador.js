@@ -145,18 +145,8 @@ $(document).ready (function(){
 						  //$('#frmCadOp').trigger("reset")
 						document.getElementById("cadOp").reset();
 						var b = msg.replace(/['"]+/g, '');
-						Swal.fire({
-							  text: b,
-							  icon: 'success',
-							  confirmButtonColor: '#3085d6',
-							  confirmButtonText: 'OK'
-							}).then((result) => {
-							  if (result.isConfirmed) {
-								  CARTACEP.operador.buscar();
-							 // window.location.href = "index.html";
-							  }
-							})
-							
+						Swal.fire(b);
+						CARTACEP.operador.buscar()	
 					},
 					error:function(info){
 						Swal.fire(info);

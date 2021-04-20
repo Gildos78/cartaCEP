@@ -12,4 +12,5 @@ import br.com.cartacep.modelo.Subgrupo;
 public interface SubgrupoDAO {
 	public boolean inserir (Subgrupo subgrupo);
 	public boolean deletarSub(int id);
+	public boolean deletarSubEsp(int id);
 }

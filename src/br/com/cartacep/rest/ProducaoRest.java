@@ -35,96 +35,96 @@ import br.com.cartacep.modelo.Producao;
 
 @Path("producao")
 public class ProducaoRest extends UtilRest{
-	
+
 	// Caminho para a pasta onde queremos armazenar os arquivos
-		private static final String UPLOAD_FOLDER = "/CartaCEP/imgs/";
-		
-		
+	private static final String UPLOAD_FOLDER = "/CartaCEP/imgs/";
 
-		@Context
-		private UriInfo context;
 
-		@POST
-		@Path("/uploadVideo")
-		@Consumes({ MediaType.MULTIPART_FORM_DATA })
-		public Response uploadVideo(@FormDataParam("file") InputStream uploadedInputStream,
-				@FormDataParam("file") FormDataContentDisposition fileDetail, @FormDataParam("rename") String rename) {
 
-			// verifica se todos os parâmetros do formulário são fornecidos
-			if (uploadedInputStream == null || fileDetail == null)
-				return Response.status(400).entity("Dados do formulário inválidos").build();
+	@Context
+	private UriInfo context;
 
-			// cria pasta de destino, se ela não existir
-			try {
+	@POST
+	@Path("/uploadVideo")
+	@Consumes({ MediaType.MULTIPART_FORM_DATA })
+	public Response uploadVideo(@FormDataParam("file") InputStream uploadedInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileDetail, @FormDataParam("rename") String rename) {
 
-				createFolderIfNotExists(UPLOAD_FOLDER);
+		// verifica se todos os parâmetros do formulário são fornecidos
+		if (uploadedInputStream == null || fileDetail == null)
+			return Response.status(400).entity("Dados do formulário inválidos").build();
 
-			} catch (SecurityException se) {
+		// cria pasta de destino, se ela não existir
+		try {
 
-				return Response.status(500).entity("Não é possível criar pasta de destino no servidor").build();
-			}
+			createFolderIfNotExists(UPLOAD_FOLDER);
 
-			String fileName;
+		} catch (SecurityException se) {
 
-			// verifica se o arquivo foi renomeado
-			if (rename == null) {
-
-				fileName = fileDetail.getFileName();
-
-			} else {
-
-				fileName = rename;
-
-			}
-
-			String uploadedFileLocation = UPLOAD_FOLDER + fileName + ".jpeg";
-
-			try {
-
-				saveToFile(uploadedInputStream, uploadedFileLocation);
-
-			} catch (IOException e) {
-
-				return Response.status(500).entity("Não é possível salvar o arquivo").build();
-
-			}
-
-			return Response.status(200).entity("Arquivo salvo em: " + uploadedFileLocation).build();
+			return Response.status(500).entity("Não é possível criar pasta de destino no servidor").build();
 		}
 
-		// Método para salvar dados InputStream no local / arquivo de destino
-		private void saveToFile(InputStream inStream, String target) throws IOException {
+		String fileName;
 
-			OutputStream out = null;
+		// verifica se o arquivo foi renomeado
+		if (rename == null) {
 
-			int read = 0;
+			fileName = fileDetail.getFileName();
 
-			byte[] bytes = new byte[1024];
+		} else {
 
-			out = new FileOutputStream(new File(target));
+			fileName = rename;
 
-			while ((read = inStream.read(bytes)) != -1) {
-
-				out.write(bytes, 0, read);
-
-			}
-
-			out.flush();
-			out.close();
 		}
 
-		// Cria uma pasta no local desejado, se ainda não existir
-		private void createFolderIfNotExists(String dirName) throws SecurityException {
+		String uploadedFileLocation = UPLOAD_FOLDER + fileName + ".jpeg";
 
-			File theDir = new File(dirName);
+		try {
 
-			if (!theDir.exists()) {
+			saveToFile(uploadedInputStream, uploadedFileLocation);
 
-				theDir.mkdir();
+		} catch (IOException e) {
 
-			}
-		}	
-	
+			return Response.status(500).entity("Não é possível salvar o arquivo").build();
+
+		}
+
+		return Response.status(200).entity("Arquivo salvo em: " + uploadedFileLocation).build();
+	}
+
+	// Método para salvar dados InputStream no local / arquivo de destino
+	private void saveToFile(InputStream inStream, String target) throws IOException {
+
+		OutputStream out = null;
+
+		int read = 0;
+
+		byte[] bytes = new byte[1024];
+
+		out = new FileOutputStream(new File(target));
+
+		while ((read = inStream.read(bytes)) != -1) {
+
+			out.write(bytes, 0, read);
+
+		}
+
+		out.flush();
+		out.close();
+	}
+
+	// Cria uma pasta no local desejado, se ainda não existir
+	private void createFolderIfNotExists(String dirName) throws SecurityException {
+
+		File theDir = new File(dirName);
+
+		if (!theDir.exists()) {
+
+			theDir.mkdir();
+
+		}
+	}	
+
 	@POST
 	@Path("/inserir")
 	@Consumes("application/*")
@@ -133,20 +133,20 @@ public class ProducaoRest extends UtilRest{
 			Producao producao = new Gson().fromJson(producaoParam, Producao.class);
 			Conexao conec = new Conexao();
 			Connection conexao = conec.abrirConexao();
-			
+
 			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
 			boolean retorno  = jdbcProducao.inserir(producao);
 			String msg="";
-			
+
 			if(retorno) {
 				msg = "Produto cadastrado com sucesso!";
-				
+
 			}else {
 				msg = "Erro ao cadastrar produto.";
-				
+
 			}
 			conec.fecharConexao();
-			
+
 			return this.buildResponse(msg);
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -161,20 +161,20 @@ public class ProducaoRest extends UtilRest{
 			Producao producao = new Gson().fromJson(producaoParam, Producao.class);
 			Conexao conec = new Conexao();
 			Connection conexao = conec.abrirConexao();
-			
+
 			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
 			boolean retorno  = jdbcProducao.inserirSub(producao);
 			String msg="";
-			
+
 			if(retorno) {
 				msg = "Sub cadastrado com sucesso!";
-				
+
 			}else {
 				msg = "Erro ao cadastrar sub.";
-				
+
 			}
 			conec.fecharConexao();
-			
+
 			return this.buildResponse(msg);
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -188,59 +188,14 @@ public class ProducaoRest extends UtilRest{
 	public Response buscar(@QueryParam("valorBusca") String  cliente) {
 		try {
 			List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
-			
+
 			Conexao conec = new Conexao();
 			Connection conexao = conec.abrirConexao();
 			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
 			listaProducoes = jdbcProducao.buscar(cliente);
-		
-			conec.fecharConexao();
-			
-			String json = new Gson().toJson(listaProducoes);
-			return this.buildResponse(json);
-		}catch(Exception e) {
-			e.printStackTrace();
-			return this.buildErrorResponse(e.getMessage());
-		}				
-	}
-	@GET
-	@Path("/buscarDes")
-	@Consumes("application/*")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response buscarDes(@QueryParam("valorBusca") String  cliente) {
-		try {
-			List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
-			Conexao conec = new Conexao();
-			Connection conexao = conec.abrirConexao();
-			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
-			listaProducoes = jdbcProducao.buscarDes(cliente);
-		
-			conec.fecharConexao();
-			
-			String json = new Gson().toJson(listaProducoes);
-			return this.buildResponse(json);
-		}catch(Exception e) {
-			e.printStackTrace();
-			return this.buildErrorResponse(e.getMessage());
-		}				
-	}
 
-	@GET
-	@Path("/buscarData")
-	@Consumes("application/*")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response buscarData(@QueryParam("valorDataIni") String  dataIni,
-						   @QueryParam("valorDataFin") String  dataFin) {
-		try {
-			List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
-			
-			Conexao conec = new Conexao();
-			Connection conexao = conec.abrirConexao();
-			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
-			listaProducoes = jdbcProducao.buscarData(dataIni, dataFin);
-		
 			conec.fecharConexao();
-			
+
 			String json = new Gson().toJson(listaProducoes);
 			return this.buildResponse(json);
 		}catch(Exception e) {
@@ -248,6 +203,51 @@ public class ProducaoRest extends UtilRest{
 			return this.buildErrorResponse(e.getMessage());
 		}				
 	}
+	//	@GET
+	//	@Path("/buscarDes")
+	//	@Consumes("application/*")
+	//	@Produces(MediaType.APPLICATION_JSON)
+	//	public Response buscarDes(@QueryParam("valorBusca") String  cliente) {
+	//		try {
+	//			List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
+	//			Conexao conec = new Conexao();
+	//			Connection conexao = conec.abrirConexao();
+	//			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
+	//			listaProducoes = jdbcProducao.buscarDes(cliente);
+	//		
+	//			conec.fecharConexao();
+	//			
+	//			String json = new Gson().toJson(listaProducoes);
+	//			return this.buildResponse(json);
+	//		}catch(Exception e) {
+	//			e.printStackTrace();
+	//			return this.buildErrorResponse(e.getMessage());
+	//		}				
+	//	}
+
+	//	@GET
+	//	@Path("/buscarData")
+	//	@Consumes("application/*")
+	//	@Produces(MediaType.APPLICATION_JSON)
+	//	public Response buscarData(@QueryParam("valorDataIni") String  dataIni,
+	//						   @QueryParam("valorDataFin") String  dataFin) {
+	//		try {
+	//			List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
+	//			
+	//			Conexao conec = new Conexao();
+	//			Connection conexao = conec.abrirConexao();
+	//			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
+	//			listaProducoes = jdbcProducao.buscarData(dataIni, dataFin);
+	//		
+	//			conec.fecharConexao();
+	//			
+	//			String json = new Gson().toJson(listaProducoes);
+	//			return this.buildResponse(json);
+	//		}catch(Exception e) {
+	//			e.printStackTrace();
+	//			return this.buildErrorResponse(e.getMessage());
+	//		}				
+	//	}
 	@DELETE
 	@Path("/excluir/{id}")
 	@Consumes("application/*")
@@ -256,20 +256,20 @@ public class ProducaoRest extends UtilRest{
 			Conexao conec = new Conexao();
 			Connection conexao = conec.abrirConexao();
 			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
-			
+
 			boolean retorno = jdbcProducao.deletar(code);
-			
+
 			String msg = "";
 			if(retorno) {
 				msg="Produção excluída com sucesso!";
 			}else {
 				msg="Erro ao excluir produção!";
 			}
-			
+
 			conec.fecharConexao();
-			
+
 			return this.buildResponse(msg);
-			
+
 		}catch(Exception e) {
 			e.printStackTrace();
 			return this.buildErrorResponse(e.getMessage());
@@ -283,20 +283,20 @@ public class ProducaoRest extends UtilRest{
 			Conexao conec = new Conexao();
 			Connection conexao = conec.abrirConexao();
 			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
-			
+
 			boolean retorno = jdbcProducao.deletarEspTotal(code);
-			
+
 			String msg = "";
 			if(retorno) {
 				msg="Produção excluída com sucesso!";
 			}else {
 				msg="Erro ao excluir produção!";
 			}
-			
+
 			conec.fecharConexao();
-			
+
 			return this.buildResponse(msg);
-			
+
 		}catch(Exception e) {
 			e.printStackTrace();
 			return this.buildErrorResponse(e.getMessage());
@@ -310,20 +310,20 @@ public class ProducaoRest extends UtilRest{
 			Conexao conec = new Conexao();
 			Connection conexao = conec.abrirConexao();
 			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
-			
+
 			boolean retorno = jdbcProducao.deletarSub(code);
-			
+
 			String msg = "";
 			if(retorno) {
 				msg="Produção excluída com sucesso!";
 			}else {
 				msg="Erro ao excluir produção!";
 			}
-			
+
 			conec.fecharConexao();
-			
+
 			return this.buildResponse(msg);
-			
+
 		}catch(Exception e) {
 			e.printStackTrace();
 			return this.buildErrorResponse(e.getMessage());
@@ -403,9 +403,9 @@ public class ProducaoRest extends UtilRest{
 			Connection conexao = conec.abrirConexao();
 			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
 			listaProducoes = jdbcProducao.getDetailedList(id);
-		
+
 			conec.fecharConexao();
-			
+
 			String json = new Gson().toJson(listaProducoes);
 			return this.buildResponse(json);
 		}catch(Exception e) {
@@ -420,14 +420,14 @@ public class ProducaoRest extends UtilRest{
 	public Response buscarProducao(@QueryParam("valorBusca") String  cliente) {
 		try {
 			List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
-			
+
 			Conexao conec = new Conexao();
 			Connection conexao = conec.abrirConexao();
 			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
 			listaProducoes = jdbcProducao.buscarProducao(cliente);
-		
+
 			conec.fecharConexao();
-			
+
 			String json = new Gson().toJson(listaProducoes);
 			return this.buildResponse(json);
 		}catch(Exception e) {
@@ -501,6 +501,28 @@ public class ProducaoRest extends UtilRest{
 			return this.buildErrorResponse(e.getMessage());
 		}
 	}
+
+	@GET
+	@Path("/getTotalTeste")
+	@Consumes("application/*")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getTotalTeste(@QueryParam("code") int  code) {
+		try {
+			List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
+			listaProducoes = jdbcProducao.getTotalTeste(code);
+
+			conec.fecharConexao();
+
+			String json = new Gson().toJson(listaProducoes);
+			return this.buildResponse(json);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return this.buildErrorResponse(e.getMessage());
+		}				
+	}
 	@GET
 	@Path("/getTotalEsp")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -531,7 +553,7 @@ public class ProducaoRest extends UtilRest{
 			Producao producao = new Gson().fromJson(producaoParam, Producao.class);
 			Conexao conec = new Conexao();
 			Connection conexao = conec.abrirConexao();
-			
+
 			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
 			boolean retorno = jdbcProducao.changeStatusFull(producao);
 
@@ -555,15 +577,16 @@ public class ProducaoRest extends UtilRest{
 	public Response limitMeasure(@QueryParam("id")int id) {
 
 		try {
-			Producao producao = new Producao();
+			List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
 			Conexao conec = new Conexao();
 			Connection conexao = conec.abrirConexao();
 			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
-
-			producao = jdbcProducao.limitMeasure(id);
+			listaProducoes = jdbcProducao.limitMeasure(id);
 
 			conec.fecharConexao();
-			return this.buildResponse(producao);
+
+			String json = new Gson().toJson(listaProducoes);
+			return this.buildResponse(json);
 
 		}catch(Exception e) {
 			e.printStackTrace();

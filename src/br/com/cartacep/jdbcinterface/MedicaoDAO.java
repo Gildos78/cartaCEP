@@ -14,4 +14,6 @@ public interface MedicaoDAO {
 	public List<JsonObject> buscarMed(int id);
 	public boolean deletarMed(int id);
 	public List<JsonObject> getSamplesComplete(int id);
+	public List<JsonObject> getMeasureId(int code);
+	public boolean deletarMedEsp(int id);
 }

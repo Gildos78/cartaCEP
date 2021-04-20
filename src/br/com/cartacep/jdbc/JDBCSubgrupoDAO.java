@@ -47,7 +47,22 @@ public class JDBCSubgrupoDAO implements SubgrupoDAO{
 		return true;
 	}
 	public boolean deletarSub(int id) {
+		System.out.println(id);
 		String comando = "DELETE FROM subgrupo_medicoes WHERE idMedicoes = ?";
+		PreparedStatement p;
+		try {
+			p=this.conexao.prepareStatement(comando);
+			p.setInt(1, id);
+			p.execute();
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	public boolean deletarSubEsp(int id) {
+		System.out.println(id);
+		String comando = "DELETE FROM subgrupo_medicoes WHERE idEspecificacao = ?";
 		PreparedStatement p;
 		try {
 			p=this.conexao.prepareStatement(comando);

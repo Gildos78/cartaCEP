@@ -226,8 +226,17 @@ $(document).ready(function(){
 			url: CARTACEP.PATH + "producao/getTotalEsp",
 			data: "code="+code,
 			success: function(data){
+				console.log(data.totalEsp)
+				if(data.totalEsp==0){
+					Swal.fire({
+						icon: 'error',
+						title: 'Atenção',
+						text: 'Cadastro incompleto.'
+					})	
+				}else{
+					CARTACEP.producao.cadastrarOrdem(data)
 
-				CARTACEP.producao.cadastrarOrdem(data)
+				}
 			},
 			error: function(info){
 				var a="Erro ao consultar os cadastros de producao: "+info.status+" - "+info.statusText;
@@ -240,32 +249,32 @@ $(document).ready(function(){
 
 
 	CARTACEP.producao.adicionar = function(selectFileName){
-		
-			var especificacao = new Object();
-			especificacao.codeProd = document.frmEspecificacoes.codeProd.value;
-			especificacao.descricao =document.frmEspecificacoes.descricaoEsp.value
-			especificacao.espMin = document.frmEspecificacoes.espMin.value
-			especificacao.espMax = document.frmEspecificacoes.espMax.value
-			especificacao.imagemNome = selectFileName
 
-			$.ajax({
-				type: "POST",
-				url: CARTACEP.PATH + "especificacao/inserir",
-				data:JSON.stringify(especificacao),
-				success:function(msg){
-					$("#frmEsp").trigger("reset");
-//					var b = msg.replace(/['"]+/g, '');
-//					Swal.fire(b);
-					console.log(msg)
-					CARTACEP.producao.buscarEsp();
-				},
-				error:function(info){
-					var erro = "Erro ao cadastrar uma nova maquina: "+ info.status + " - "+ info.statusText;
-					var b = erro.replace(/['"]+/g, '');
-					Swal.fire(b);	
-				}
-			});	
-		
+		var especificacao = new Object();
+		especificacao.codeProd = document.frmEspecificacoes.codeProd.value;
+		especificacao.descricao =document.frmEspecificacoes.descricaoEsp.value
+		especificacao.espMin = document.frmEspecificacoes.espMin.value
+		especificacao.espMax = document.frmEspecificacoes.espMax.value
+		especificacao.imagemNome = selectFileName
+
+		$.ajax({
+			type: "POST",
+			url: CARTACEP.PATH + "especificacao/inserir",
+			data:JSON.stringify(especificacao),
+			success:function(msg){
+				$("#frmEsp").trigger("reset");
+//				var b = msg.replace(/['"]+/g, '');
+//				Swal.fire(b);
+				console.log(msg)
+				CARTACEP.producao.buscarEsp();
+			},
+			error:function(info){
+				var erro = "Erro ao cadastrar uma nova maquina: "+ info.status + " - "+ info.statusText;
+				var b = erro.replace(/['"]+/g, '');
+				Swal.fire(b);	
+			}
+		});	
+
 	}
 	CARTACEP.producao.buscarEsp = function(){
 		var valorBusca = document.frmEspecificacoes.codeProd.value;
@@ -276,7 +285,6 @@ $(document).ready(function(){
 			success: function(dados){
 
 				dados = JSON.parse(dados);
-
 
 				$("#listaEspecificacoes").html(CARTACEP.producao.exibirEsp(dados));
 
@@ -397,7 +405,6 @@ $(document).ready(function(){
 			producao.maquinaId = document.frmOrdemProd.maquinaId.value;
 			producao.codeRefEsp =  document.frmEspecificacoes.codeProd.value;
 			producao.totalEsp = data.totalEsp
-			console.log(producao)
 			$.ajax({
 				type: "POST",
 				url: CARTACEP.PATH + "producao/inserir",
@@ -461,7 +468,6 @@ $(document).ready(function(){
 				}
 			});
 		CARTACEP.producao.exibir = function(listaDeProducoes){
-			console.log(listaDeProducoes)
 			var tabela = 
 				"<table class='table align-items-center table-flush table-hover'>"+
 				"<thead class='thead-light'>"+
@@ -500,7 +506,7 @@ $(document).ready(function(){
 						"<td>"+listaDeProducoes[i].maquinaId+"</td>"+
 						"<td>"+listaDeProducoes[i].operacao+"</td>"+
 
-						"<td><a onclick='CARTACEP.producao.deleteProducao("+listaDeProducoes[i].codeRefEsp+")' class='btn btn-danger btn-sm'> <i class='fas fa-trash' id='loginBtn'></i></a></td>"+
+						"<td><a onclick='CARTACEP.producao.getMeasureId("+listaDeProducoes[i].codeRefEsp+")' class='btn btn-danger btn-sm'> <i class='fas fa-trash' id='loginBtn'></i></a></td>"+
 						"</tr>";
 
 
@@ -517,7 +523,34 @@ $(document).ready(function(){
 		}
 	}
 	CARTACEP.producao.buscar();
+	CARTACEP.producao.getMeasureId = function(code){
+		var idMed = 0
+		$.ajax({
+			type: "GET",
+			url: CARTACEP.PATH + "medicao/getMeasureId",
+			data: "code="+code,
+			success: function(dados){
+				dados = JSON.parse(dados);
+				console.log(dados)
+				for(var i=0; i<dados.length; i++){
+					idMed=dados[i].idEsp
+				}
+				
+				if(idMed==""){
+					CARTACEP.producao.deleteProducao(code)
+				}else{
+					CARTACEP.amostra.deleteMed(idMed)
+					CARTACEP.producao.deleteProducao(code)
+				}
+			},
+			error: function(info){
+				var a="Erro ao consultar os cadastros de producao: "+info.status+" - "+info.statusText;
+				var b = a.replace(/'/g, '');
+				Swal.fire(b);
+			}
+		});
 
+	}
 	CARTACEP.producao.deleteProducao = function(code){
 		CARTACEP.producao.deleteEspTotal(code)
 		CARTACEP.producao.deleteSub(code)
@@ -585,72 +618,86 @@ $(document).ready(function(){
 	//Função para permitir renomear o arquivo
 	CARTACEP.amostra.uploadRename = function() {
 
-		//Verifica se algum arquivo foi selecionado
-		var selectFileRename = $('#video').val();
+		var fieldFoto = document.getElementById("video").value
+		if(fieldFoto==""){
+			console.log("Vazio")
+			var selectFileName = null
+			CARTACEP.producao.adicionar(selectFileName)
+		}
+		else{
 
-		if (selectFileRename == "") {
+			//Verifica se algum arquivo foi selecionado
+			var selectFileRename = $('#video').val();
 
-		//	$("#alertaErro").html("Você não selecionou um arquivo!");
-			
-			//$("#modalErro").modal('show');
+			if (selectFileRename == "") {
 
-		} else {
+				//	$("#alertaErro").html("Você não selecionou um arquivo!");
 
-//			//Cria o objeto para enviar o video e o nome do arquivo
-			//newUploadRename = new FormData();
-//
-//			//Adiciona o arquivo ao objeto
-			//newUploadRename.append('file', $('#video')[0].files[0]);
-//
-//			//Captura o nome do arquivo
-			//var fileName = $('#video')[0].files[0].name;
-//
-//			//Adiciona o nome atual ao input para o usuario editar
-			//document.getElementById("renameUpload").value = fileName;
+				//$("#modalErro").modal('show');
 
-			//Exibe a modal para o usuario colocar o novo nome
-//			$("#modalRename").modal('show');
-//alert("show")
-			//Ativa o focus no input para renomear
-//			$('#modalRename').on('shown.bs.modal', function() {
+			} else {
+
+//				//Cria o objeto para enviar o video e o nome do arquivo
+				//newUploadRename = new FormData();
+
+//				//Adiciona o arquivo ao objeto
+				//newUploadRename.append('file', $('#video')[0].files[0]);
+
+//				//Captura o nome do arquivo
+				//var fileName = $('#video')[0].files[0].name;
+
+//				//Adiciona o nome atual ao input para o usuario editar
+				//document.getElementById("renameUpload").value = fileName;
+
+				//Exibe a modal para o usuario colocar o novo nome
+//				$("#modalRename").modal('show');
+//				alert("show")
+				//Ativa o focus no input para renomear
+//				$('#modalRename').on('shown.bs.modal', function() {
 				$('#renameUpload').focus();
-//			})
+//				})
+			}
 		}
 	};
 
 	//Captura o novo nome e adiciona no objeto e chama função para enviar ao back end
 	$("#loginBtn").click(function() {
-		
-		//Cria o objeto para enviar o video e o nome do arquivo
-		newUploadRename = new FormData();
+		var fieldFoto = document.getElementById("video").value
+		if(fieldFoto==""){
+			console.log("Vazio")
+		}
+		else{
+			//Cria o objeto para enviar o video e o nome do arquivo
+			newUploadRename = new FormData();
 
-		//Adiciona o arquivo ao objeto
-		newUploadRename.append('file', $('#video')[0].files[0]);
+			//Adiciona o arquivo ao objeto
+			newUploadRename.append('file', $('#video')[0].files[0]);
 
-		//Captura o nome do arquivo
-		var fileName = $('#video')[0].files[0].name;
+			//Captura o nome do arquivo
+			var fileName = $('#video')[0].files[0].name;
 
-		//Adiciona o nome atual ao input para o usuario editar
-		document.getElementById("renameUpload").value = fileName;
+			//Adiciona o nome atual ao input para o usuario editar
+			document.getElementById("renameUpload").value = fileName;
 
-		//Salva o novo nome em uma variavel
-		
-		var random = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 15);
-		var newFileName = random
-		console.log(random)
-		//Verifica se o usuário digitou um nome
-		if (newFileName == "") {
+			//Salva o novo nome em uma variavel
 
-			//$("#alertaErro").html("Nome inválido!");
-			//$("#modalErro").modal('show');
+			var random = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 15);
+			var newFileName = random
+			console.log(random)
+			//Verifica se o usuário digitou um nome
+			if (newFileName == "") {
 
-		} else {
+				//$("#alertaErro").html("Nome inválido!");
+				//$("#modalErro").modal('show');
 
-			//Adiciona o novo nome ao objeto
-			newUploadRename.append('rename', newFileName);
+			} else {
 
-			//Chama a função para enviar os dados para o banco
-			CARTACEP.amostra.upload(newUploadRename, newFileName);
+				//Adiciona o novo nome ao objeto
+				newUploadRename.append('rename', newFileName);
+
+				//Chama a função para enviar os dados para o banco
+				CARTACEP.amostra.upload(newUploadRename, newFileName);
+			}
 		}
 	});
 
@@ -658,9 +705,9 @@ $(document).ready(function(){
 
 	//Limpa o input quando a modal de rename é fechada
 //	$('#modalRename').on('hidden.bs.modal', function() {
-//
-//		document.getElementById("renomear").reset();
-//
+
+//	document.getElementById("renomear").reset();
+
 //	});
 
 	//****************************************************************************************
@@ -710,10 +757,10 @@ $(document).ready(function(){
 					contentType: false,
 					processData: false,
 					success: function(sucesso) {
-	
+
 						CARTACEP.producao.adicionar(selectFileName)
-					//	$("#alertaSucesso").html(sucesso);
-					//	$("#modalSucesso").modal('show');
+						//	$("#alertaSucesso").html(sucesso);
+						//	$("#modalSucesso").modal('show');
 
 						//Limpa o form após o upload
 						//document.getElementById("addProducao").reset();
@@ -725,13 +772,13 @@ $(document).ready(function(){
 						//Limpa o form após o upload
 						//document.getElementById("addProducao").reset();
 
-					//	$("#alertaErro").html(Object.values(error));
-					//	$("#modalErro").modal('show');
+						//	$("#alertaErro").html(Object.values(error));
+						//	$("#modalErro").modal('show');
 
 					},
 				});
 			}
-			
+
 		}
 	}
 
@@ -739,10 +786,39 @@ $(document).ready(function(){
 
 	//Limpa o form se a modal for fechada antes de fazer upload
 //	$('#modalUploadVideo').on('hidden.bs.modal', function() {
-//
-//		document.getElementById("addProducao").reset();
-//
+
+//	document.getElementById("addProducao").reset();
+
 //	});
 
 	//****************************************************************************************
+
+	CARTACEP.amostra.deleteMed = function(idMed){
+
+		$.ajax({
+			type:"DELETE",
+			url: CARTACEP.PATH +"medicao/excluirMedEsp/"+idMed,
+			success: function(msg){
+				b = msg.replace(/['"]+/g, '');
+				console.log(b);
+				CARTACEP.amostra.deleteSub(idMed)
+			},
+			error: function(info){
+				console.log("Erro ao excluir operação: " + info.status + " - " + info.statusText);
+			}
+		});
+	}
+	CARTACEP.amostra.deleteSub = function(idMed){
+		$.ajax({
+			type:"DELETE",
+			url: CARTACEP.PATH +"subgrupo/excluirSubEsp/"+idMed,
+			success: function(msg){
+				b = msg.replace(/['"]+/g, '');
+				console.log(b);
+			},
+			error: function(info){
+				console.log("Erro ao excluir operação: " + info.status + " - " + info.statusText);
+			}
+		});
+	}
 })
