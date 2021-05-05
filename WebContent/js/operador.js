@@ -80,7 +80,12 @@ $(document).ready (function(){
 			var expRegMat = new RegExp("^[0-9]{6}$");
 
 		if (!expRegMat.test(mat)){
-			Swal.fire("Preencha o campo Matricula corretamente.");
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Preencha o campo Matricula corretamente com 6 números.'
+			})
+			
 			document.frmCadOp.exampleInputMatricula.focus();
 			return false;
 		}	
@@ -244,6 +249,21 @@ $(document).ready (function(){
 		var operador = new Object();
 		operador.id = document.frmEditaOperador.idOperador.value;
 		operador.nome = document.frmEditaOperador.operador.value;
+		
+		var mat = document.frmEditaOperador.matricula.value;
+		var expRegMat = new RegExp("^[0-9]{6}$");
+
+	if (!expRegMat.test(mat)){
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Preencha o campo Matricula corretamente com 6 números.'
+		})
+		
+		document.frmEditaOperador.matricula.focus();
+		return false;
+	}	
+	
 		operador.matricula = document.frmEditaOperador.matricula.value;
 		operador.telefone = document.frmEditaOperador.telefone.value;
 		$.ajax({
