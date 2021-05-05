@@ -215,5 +215,29 @@ public class OperadorRest extends UtilRest{
 			return this.buildErrorResponse(e.getMessage());
 		}
 	}
+	@PUT
+	@Path("/alterarSenhaOp")
+	@Consumes("application/*")
+	public Response alterarSenhaOp(String operadorParam) {
+		try {
+			Operador operador = new Gson().fromJson(operadorParam, Operador.class);
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+			JDBCOperadorDAO jdbcOperador = new JDBCOperadorDAO(conexao);
 
+			boolean retorno = jdbcOperador.alterarSenhaOp(operador);
+
+			String msg="";
+			if (retorno) {
+				msg = "Senha alterada com sucesso!";
+			}else {
+				msg = "Erro ao alterar senha";
+			}
+			conec.fecharConexao();
+			return this.buildResponse(msg);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return this.buildErrorResponse(e.getMessage());
+		}
+	}
 }

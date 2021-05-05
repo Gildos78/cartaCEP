@@ -8,7 +8,7 @@ public class Conexao {
 
 	public Connection abrirConexao() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			conexao = java.sql.DriverManager.getConnection("jdbc:mysql://localhost/cartacep?"
 					+"user=root&password=root&useTimezone=true&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false");
 		}catch(Exception e) {

@@ -18,4 +18,5 @@ public interface OperadorDAO {
 	public boolean deletar(int id);
 	public List<Operador> buscarSelO();
 	public List<Operador> buscarSelOperador();
+	public boolean alterarSenhaOp(Operador operador);
 }

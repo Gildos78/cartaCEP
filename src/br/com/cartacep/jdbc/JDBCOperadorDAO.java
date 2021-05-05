@@ -261,5 +261,29 @@ public class JDBCOperadorDAO implements OperadorDAO{
 			}
 			return listaOperadores;
 		}
-	
+		public boolean alterarSenhaOp(Operador operador) {		
+			String comando = "UPDATE operador "
+					+ "SET senha=?"
+					+ " WHERE idOperador=?";
+			PreparedStatement p;
+			String salt="DGE$5SGr@3VsHYUMas2323E4d57vfBfFSTRU@!DSH(*%FDSdfg13sgfsg";
+			String senha = operador.getSenha();
+			String senhaSalt = senha+salt;
+			String senhaSha1ComSal = DigestUtils.shaHex(senhaSalt);
+			try {
+				
+				
+				
+				p = this.conexao.prepareStatement(comando);
+				p.setString(1,senhaSha1ComSal);
+				p.setInt(2,operador.getId());
+
+				p.executeUpdate();
+
+			}catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
+			return true;
+		}
 }

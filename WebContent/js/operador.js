@@ -201,7 +201,7 @@ $(document).ready (function(){
                        "<td><a  data-toggle='modal' data-target='#exampleModal'  onclick=\"CARTACEP.operador.exibirEdicao('"+listaDeOperadores[i].id+"')\" class='btn btn-sm'>"+
                          "<i class='fas fa-edit'></i>" +
                        "</a></td>"+ 
-						"<td><a  data-toggle='modal' data-target='#modalPassword'  onclick=\"CARTACEP.usuario.exibEdition('"+listaDeOperadores[i].id+"')\" class='btn btn-sm'>"+
+						"<td><a  data-toggle='modal' data-target='#modalPassword'  onclick=\"CARTACEP.operador.exibEdition('"+listaDeOperadores[i].id+"')\" class='btn btn-sm'>"+
                          "<i class='fas fa-key'></i>" +
                        "</a></td>"+ 
                         "<td><a onclick=\"CARTACEP.operador.excluir('"+listaDeOperadores[i].id+"')\" class='btn btn-sm'>"+
@@ -263,11 +263,15 @@ $(document).ready (function(){
 			}
 		});
 	};
+	CARTACEP.operador.exibEdition= function(id){
+		document.frmEditaSenha.idOperador.value = id
+	}
 	CARTACEP.operador.alterarSenha = function(){
+		console.log(document.frmEditaSenha.idOperador.value)
 		var operador = new Object();
-		operador.id = document.frmEditaOperador.idOperador.value;
-		var senha = document.frmEditaOperador.senhaOp.value;
-		var senhaRep = document.frmEditaOperador.repeteSenhaOp.value;
+		operador.id = document.frmEditaSenha.idOperador.value;
+		var senha = document.frmEditaSenha.senhaOp.value;
+		var senhaRep = document.frmEditaSenha.repeteSenhaOp.value;
 		var expRegSenha = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/);
 		var expRegSenhaRep = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/);
 
@@ -294,16 +298,18 @@ $(document).ready (function(){
 			if(senha==senhaRep){
 				var pass = senha;
 				var emBase64 = btoa(pass);
-				usuario.senha = emBase64;
+				operador.senha = emBase64;
+				console.log(operador)
 				$.ajax({
 					type:"PUT",
 					url: CARTACEP.PATH + "operador/alterarSenhaOp",
 					data:JSON.stringify(operador),
 					success: function(msg){
-
+						
 						var b = msg.replace(/['"]+/g, '');
 						Swal.fire(b);
-						CARTACEP.operador.buscar();
+						//CARTACEP.operador.buscar();
+						jQuery.noConflict();
 						$("#modalPassword").modal('hide');
 					},
 					error: function(info){
