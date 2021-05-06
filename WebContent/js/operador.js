@@ -1,34 +1,37 @@
-	/* Máscaras ER */
-	function mascara(o,f){
-	    v_obj=o
-	    v_fun=f
-	    setTimeout("execmascara()",1)
+/* Máscaras ER */
+function mascara(o,f){
+	v_obj=o
+	v_fun=f
+	setTimeout("execmascara()",1)
+}
+function execmascara(){
+	v_obj.value=v_fun(v_obj.value)
+}
+function mtel(v){
+	v=v.replace(/\D/g,"");             //Remove tudo o que não é dígito
+	v=v.replace(/^(\d{2})(\d)/g,"($1) $2"); //Coloca parênteses em volta dos dois primeiros dígitos
+	v=v.replace(/(\d)(\d{4})$/,"$1-$2");    //Coloca hífen entre o quarto e o quinto dígitos
+	return v;
+}
+function id( el ){
+	return document.getElementById( el );
+}
+window.onload = function(){
+	id('exampleInputFone').onkeyup = function(){
+		mascara( this, mtel );
 	}
-	function execmascara(){
-	    v_obj.value=v_fun(v_obj.value)
+	id('telefone').onkeyup = function(){
+		mascara( this, mtel );
 	}
-	function mtel(v){
-	    v=v.replace(/\D/g,"");             //Remove tudo o que não é dígito
-	    v=v.replace(/^(\d{2})(\d)/g,"($1) $2"); //Coloca parênteses em volta dos dois primeiros dígitos
-	    v=v.replace(/(\d)(\d{4})$/,"$1-$2");    //Coloca hífen entre o quarto e o quinto dígitos
-	    return v;
-	}
-	function id( el ){
-		return document.getElementById( el );
-	}
-	window.onload = function(){
-		id('exampleInputFone').onkeyup = function(){
-			mascara( this, mtel );
-		}
-	}
+}
 CARTACEP = new Object();
 CARTACEP.usuario = new Object();
 CARTACEP.operador = new Object();
 $(document).ready (function(){
 
 
-	
-	
+
+
 	CARTACEP.PATH = "/CartaCEP/rest/";
 	CARTACEP.usuario.getProfile = function(){
 		var email = sessionStorage.getItem('email');
@@ -55,29 +58,29 @@ $(document).ready (function(){
 		})
 	}
 	CARTACEP.usuario.getProfile();
-	
-	
+
+
 	CARTACEP.operador.verifyMatricula = function(){
 		var matricula = true
 		var checkMatricula = true;
 		var valorBusca = $("#exampleInputMatricula").val();
 		var nome =  document.frmCadOp.exampleInputNome.value;
 		var expRegNome = new RegExp(/[A-zÀ-ü]{3,}([ ]{1}[A-zÀ-ü]{2,})|([A-zÀ-ü]{3,})+$/);
-			if (!expRegNome.test(nome)){
-				Swal.fire('Preencha o campo Nome corretamente.');
-				document.frmCadOp.exampleInputNome.focus();
-				return false;
-			}
-			var sen = document.frmCadOp.exampleInputPassword.value;
-			var expRegSen = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/);
-			
-			if (!expRegSen.test(sen)){
-				Swal.fire("Preencha o campo Senha com o mínimo de 6 caracteres com números e letras..");
-				document.frmCadOp.exampleInputPassword.focus();
-				return false;
-			}	
-			var mat = document.frmCadOp.exampleInputMatricula.value;
-			var expRegMat = new RegExp("^[0-9]{6}$");
+		if (!expRegNome.test(nome)){
+			Swal.fire('Preencha o campo Nome corretamente.');
+			document.frmCadOp.exampleInputNome.focus();
+			return false;
+		}
+		var sen = document.frmCadOp.exampleInputPassword.value;
+		var expRegSen = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/);
+
+		if (!expRegSen.test(sen)){
+			Swal.fire("Preencha o campo Senha com o mínimo de 6 caracteres com números e letras..");
+			document.frmCadOp.exampleInputPassword.focus();
+			return false;
+		}	
+		var mat = document.frmCadOp.exampleInputMatricula.value;
+		var expRegMat = new RegExp("^[0-9]{6}$");
 
 		if (!expRegMat.test(mat)){
 			Swal.fire({
@@ -85,13 +88,13 @@ $(document).ready (function(){
 				title: 'Oops...',
 				text: 'Preencha o campo Matricula corretamente com 6 números.'
 			})
-			
+
 			document.frmCadOp.exampleInputMatricula.focus();
 			return false;
 		}	
-		
-		
-			
+
+
+
 		if( document.frmCadOp.exampleInputPasswordRepeat.value!==sen){
 			Swal.fire({
 				icon: 'error',
@@ -107,7 +110,7 @@ $(document).ready (function(){
 				success: function(listaDeMatriculas){
 					listaDeMatriculas = JSON.parse(listaDeMatriculas);
 					for(var i=0; i<listaDeMatriculas.length; i++){
-						
+
 						if(listaDeMatriculas[i].matricula!=valorBusca){
 						}else{								
 							checkMatricula = false;
@@ -131,7 +134,7 @@ $(document).ready (function(){
 			});
 		}	
 	}	
-	
+
 	CARTACEP.operador.cadastrar = function(){
 
 		var passCad = document.frmCadOp.exampleInputPassword.value;
@@ -141,24 +144,24 @@ $(document).ready (function(){
 		operador.senha = emBase64Cad;
 		operador.matricula = document.frmCadOp.exampleInputMatricula.value;
 		operador.telefone = document.frmCadOp.exampleInputFone.value;
-				
-				$.ajax({
-					type: "POST",
-					url: CARTACEP.PATH + "operador/inserir",
-					data:JSON.stringify(operador),
-					success:function(msg){
-						  //$('#frmCadOp').trigger("reset")
-						document.getElementById("cadOp").reset();
-						var b = msg.replace(/['"]+/g, '');
-						Swal.fire(b);
-						CARTACEP.operador.buscar()	
-					},
-					error:function(info){
-						Swal.fire(info);
-						}
-				});	
+
+		$.ajax({
+			type: "POST",
+			url: CARTACEP.PATH + "operador/inserir",
+			data:JSON.stringify(operador),
+			success:function(msg){
+				//$('#frmCadOp').trigger("reset")
+				document.getElementById("cadOp").reset();
+				var b = msg.replace(/['"]+/g, '');
+				Swal.fire(b);
+				CARTACEP.operador.buscar()	
+			},
+			error:function(info){
+				Swal.fire(info);
+			}
+		});	
 	};
-	
+
 	CARTACEP.operador.buscar = function(){
 		var valorBusca = "";
 		$.ajax({
@@ -181,16 +184,16 @@ $(document).ready (function(){
 		CARTACEP.operador.exibir = function(listaDeOperadores){
 			var tabela = 
 				"<table class='table align-items-center table-flush'>"+
-                    "<thead class='thead-light'>"+
-                      "<tr>"+
-                       "<th>Nome</th>"+ 
-                       "<th>Matrícula</th>" +
-					   "<th>Telefone</th>" +
-                       "<th>Editar</th>"+
- 					   "<th>Senha</th>"+
-                       "<th>Excluir</th>"+                         
-                      "</tr>"+
-                    "</thead>";
+				"<thead class='thead-light'>"+
+				"<tr>"+
+				"<th>Nome</th>"+ 
+				"<th>Matrícula</th>" +
+				"<th>Telefone</th>" +
+				"<th>Editar</th>"+
+				"<th>Senha</th>"+
+				"<th>Excluir</th>"+                         
+				"</tr>"+
+				"</thead>";
 
 			if(listaDeOperadores != undefined && listaDeOperadores.length >0){
 
@@ -199,21 +202,21 @@ $(document).ready (function(){
 
 					tabela+=
 						"<tbody>"+
-						   "<tr>"+
-                        "<td>"+listaDeOperadores[i].nome+"</td>"+
-                        "<td>"+listaDeOperadores[i].matricula+"</td>"+
+						"<tr>"+
+						"<td>"+listaDeOperadores[i].nome+"</td>"+
+						"<td>"+listaDeOperadores[i].matricula+"</td>"+
 						"<td>"+listaDeOperadores[i].telefone+"</td>"+
-                       "<td><a  data-toggle='modal' data-target='#exampleModal'  onclick=\"CARTACEP.operador.exibirEdicao('"+listaDeOperadores[i].id+"')\" class='btn btn-sm'>"+
-                         "<i class='fas fa-edit'></i>" +
-                       "</a></td>"+ 
+						"<td><a  data-toggle='modal' data-target='#exampleModal'  onclick=\"CARTACEP.operador.exibirEdicao('"+listaDeOperadores[i].id+"')\" class='btn btn-sm'>"+
+						"<i class='fas fa-edit'></i>" +
+						"</a></td>"+ 
 						"<td><a  data-toggle='modal' data-target='#modalPassword'  onclick=\"CARTACEP.operador.exibEdition('"+listaDeOperadores[i].id+"')\" class='btn btn-sm'>"+
-                         "<i class='fas fa-key'></i>" +
-                       "</a></td>"+ 
-                        "<td><a onclick=\"CARTACEP.operador.excluir('"+listaDeOperadores[i].id+"')\" class='btn btn-sm'>"+
-                         "<i class='fas fa-trash'></i>"+ 
-                       "</a></td>" +
-                       "</tr>"+
-                       "</tbody>";
+						"<i class='fas fa-key'></i>" +
+						"</a></td>"+ 
+						"<td><a onclick=\"CARTACEP.operador.excluir('"+listaDeOperadores[i].id+"')\" class='btn btn-sm'>"+
+						"<i class='fas fa-trash'></i>"+ 
+						"</a></td>" +
+						"</tr>"+
+						"</tbody>";
 
 				}
 
@@ -233,10 +236,10 @@ $(document).ready (function(){
 			data: "id="+id,
 			success: function(operador){
 				console.log(operador)
-					document.frmEditaOperador.idOperador.value = operador.id;			
-					document.frmEditaOperador.operador.value = operador.nome;
-					document.frmEditaOperador.matricula.value = operador.matricula;
-					document.frmEditaOperador.telefone.value = operador.telefone;
+				document.frmEditaOperador.idOperador.value = operador.id;			
+				document.frmEditaOperador.operador.value = operador.nome;
+				document.frmEditaOperador.matricula.value = operador.matricula;
+				document.frmEditaOperador.telefone.value = operador.telefone;
 			},
 			error: function(info){
 				Swal.fire("Erro ao buscar cadastro para edição: "+info.status+" - "+info.statusText);
@@ -244,26 +247,33 @@ $(document).ready (function(){
 
 		});
 	}
-	
+
 	CARTACEP.operador.editar = function(){		
 		var operador = new Object();
 		operador.id = document.frmEditaOperador.idOperador.value;
 		operador.nome = document.frmEditaOperador.operador.value;
+
+		var nome =  document.frmEditaOperador.nome.value;
+		var expRegNome = new RegExp(/[A-zÀ-ü]{3,}([ ]{1}[A-zÀ-ü]{2,})|([A-zÀ-ü]{3,})+$/);
+		if (!expRegNome.test(nome)){
+			Swal.fire('Preencha o campo Nome corretamente.');
+			document.frmCadOp.exampleInputNome.focus();
+			return false;
+		}
 		
 		var mat = document.frmEditaOperador.matricula.value;
 		var expRegMat = new RegExp("^[0-9]{6}$");
+		if (!expRegMat.test(mat)){
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Preencha o campo Matricula corretamente com 6 números.'
+			})
 
-	if (!expRegMat.test(mat)){
-		Swal.fire({
-			icon: 'error',
-			title: 'Oops...',
-			text: 'Preencha o campo Matricula corretamente com 6 números.'
-		})
-		
-		document.frmEditaOperador.matricula.focus();
-		return false;
-	}	
-	
+			document.frmEditaOperador.matricula.focus();
+			return false;
+		}	
+
 		operador.matricula = document.frmEditaOperador.matricula.value;
 		operador.telefone = document.frmEditaOperador.telefone.value;
 		$.ajax({
@@ -325,7 +335,7 @@ $(document).ready (function(){
 					url: CARTACEP.PATH + "operador/alterarSenhaOp",
 					data:JSON.stringify(operador),
 					success: function(msg){
-						
+
 						var b = msg.replace(/['"]+/g, '');
 						Swal.fire(b);
 						//CARTACEP.operador.buscar();
@@ -364,5 +374,4 @@ $(document).ready (function(){
 	};
 
 })
-	
-	
+
