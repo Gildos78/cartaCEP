@@ -58,9 +58,11 @@ $(document).ready(function(){
 				success: function(dados){
 					dados = JSON.parse(dados);
 					if(dados.length==0){
+						console.log(dados)
 						CARTACEP.leitura.buscarProducao()
 					}else{
 						//Passa os dados para a função getProductSamples
+						console.log(dados)
 						CARTACEP.leitura.getProductSamples(dados)
 					}
 					
@@ -141,7 +143,6 @@ $(document).ready(function(){
 	
 	//Função que atualiza a tabela produção nas colunas contagemAtual e boolStatus, onde o codigo seja = a code
 	CARTACEP.leitura.changeStatusFull = function (contAtual, boolFull, code){
-	//	console.log(contAtual+"/"+boolFull+"/"+code)
 
 		var producao= new Object()
 		producao.statusFull = boolFull
@@ -152,12 +153,10 @@ $(document).ready(function(){
 			url: CARTACEP.PATH + "producao/changeStatusFull",
 			data:JSON.stringify(producao),
 			success: function(msg){
-				console.log(msg);
 				CARTACEP.leitura.buscarProducao()
 
 			},
 			error: function(info){
-				console.log("Erro ao editar cadastro: "+ info.status+" - "+info.statusText);
 			}
 		})
 	}
@@ -199,14 +198,25 @@ $(document).ready(function(){
 		
 
 		if(listaDeProducoes != undefined && listaDeProducoes.length >0){
+			
+			for(var i=0; i<listaDeProducoes.length; i++){
+				if(listaDeProducoes[i].statusFull==false){
+			emptyList += 1
+		}
+			}
+			
+			
+			
 			for(var i=0; i<listaDeProducoes.length; i++){
 			
-				if(listaDeProducoes[i].statusFull==true){
-					emptyList += 1
-					
-				}
+//				if(listaDeProducoes[i].statusFull==true){
+//					emptyList = true
+//					
+//				}
 				
 				if(listaDeProducoes[i].statusFull==false){
+					emptyList=false
+					
 					var colorBox = "success"
 			
 					var totalOverall =  (listaDeProducoes[i].numAmostras*listaDeProducoes[i].subgrupo)*listaDeProducoes[i].totalEsp
@@ -231,13 +241,14 @@ $(document).ready(function(){
 						"<td>"+listaDeProducoes[i].operacao+"</td>"+
 						"</tr>";
 	
-				}
+				}//acaba o if statusFull==false
 			}
 
 		}else if (listaDeProducoes == ""){
 
 			tabela += "<tr><td colspan='11'>Nenhum registro encontrado</td></tr>";
 		}
+		console.log(emptyList)
 		if(emptyList==listaDeProducoes.length&&!emptyList==0){
 			
 			tabela += "<tr><td colspan='11'>Todas as medições estão completas</td></tr>";

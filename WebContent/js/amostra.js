@@ -50,6 +50,8 @@ $(document).ready(function(){
 			url: CARTACEP.PATH + "producao/getProdInd",
 			data: "code="+code,
 			success: function(producao){
+				console.log("amostra")
+				console.log(producao)
 				$("#listaOrdemP").html(CARTACEP.amostra.exibir(producao));
 			},
 			error: function(info){
