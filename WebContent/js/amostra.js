@@ -31,7 +31,7 @@ $(document).ready(function(){
 			}
 		})
 	}
-	CARTACEP.usuario.getProfile();
+	window.setTimeout('CARTACEP.usuario.getProfile()', 300);
 	CARTACEP.amostra.formatDate = function(input) {
 		var datePart = input.match(/\d+/g),
 		ano = datePart[0].substring(0), //0 = 4 digitos e 2 = 2 digitos

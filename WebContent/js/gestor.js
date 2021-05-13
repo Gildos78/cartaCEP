@@ -30,7 +30,7 @@ $(document).ready (function(){
 			}
 		})
 	}
-	CARTACEP.usuario.getProfile();
+	window.setTimeout('CARTACEP.usuario.getProfile()', 300);
 	
 	CARTACEP.gestor.verifyEmail = function(){
 		var email = true

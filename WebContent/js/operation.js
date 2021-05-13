@@ -53,7 +53,7 @@ $(document).ready (function(){
 			}
 		})
 	}
-	CARTACEP.usuario.getProfile();
+	window.setTimeout('CARTACEP.usuario.getProfile()', 300);
 	CARTACEP.cadOperacao.buscar = function(){
 		var valorBusca = "";
 		$.ajax({

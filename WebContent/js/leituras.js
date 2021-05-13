@@ -33,7 +33,7 @@ $(document).ready(function(){
 			}
 		})
 	}
-	CARTACEP.usuario.getProfile();
+	window.setTimeout('CARTACEP.usuario.getProfile()', 300);
 	//Formatação das datas
 	CARTACEP.leitura.formatDate = function(input) {
 		var datePart = input.match(/\d+/g),
@@ -58,12 +58,11 @@ $(document).ready(function(){
 				success: function(dados){
 					dados = JSON.parse(dados);
 					if(dados.length==0){
-						console.log(dados)
 						CARTACEP.leitura.buscarProducao()
 					}else{
 						//Passa os dados para a função getProductSamples
-						console.log(dados)
 						CARTACEP.leitura.getProductSamples(dados)
+						
 					}
 					
 					
@@ -76,12 +75,13 @@ $(document).ready(function(){
 			});
 	}
 	
-	CARTACEP.leitura.buscar()
+	window.setTimeout('CARTACEP.leitura.buscar()', 500);
+
 //Faz uma nova busca 
 	CARTACEP.leitura.getProductSamples = function(listaDeProducoes){
-
 		for(var i=0;i<listaDeProducoes.length;i++){
 			var code = listaDeProducoes[i].codeRefEsp
+			console.log("Code"+code)
 			//Busca pelo code em cada loop pois para cada code, tem os dados necessários para estabelecer se atingiu o limite
 			$.ajax({
 				type: "GET",
@@ -89,7 +89,7 @@ $(document).ready(function(){
 				data: "code="+code,
 				success: function(dados){
 					dados = JSON.parse(dados);
-				
+				//console.log(dados)
 					//Passa os dados coletados, assim como a listaDeProducoes capturado antes no CARTACEP.leitura.buscar e code.
 					//Os coletados passam a ser listaAmostrasProd para poder estabelecer um var boolean,
 					//sendo falso se a contagem for 0 ou dentro do limite, e true se for igual ao limite;
@@ -260,7 +260,7 @@ $(document).ready(function(){
 	}
 
 
-	CARTACEP.leitura.buscar();
+	window.setTimeout('CARTACEP.leitura.buscar()', 500);
 	CARTACEP.leitura.keepIdProd = function(code){
 		var idProd = code
 		sessionStorage.setItem('code', idProd);

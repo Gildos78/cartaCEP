@@ -32,7 +32,7 @@ $(document).ready(function(){
 			}
 		})
 	}
-	CARTACEP.usuario.getProfile();
+	window.setTimeout('CARTACEP.usuario.getProfile()', 300);
 
 	CARTACEP.producao.formatDate = function(input) {
 		var datePart = input.match(/\d+/g),
