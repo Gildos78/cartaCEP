@@ -203,51 +203,7 @@ public class ProducaoRest extends UtilRest{
 			return this.buildErrorResponse(e.getMessage());
 		}				
 	}
-	//	@GET
-	//	@Path("/buscarDes")
-	//	@Consumes("application/*")
-	//	@Produces(MediaType.APPLICATION_JSON)
-	//	public Response buscarDes(@QueryParam("valorBusca") String  cliente) {
-	//		try {
-	//			List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
-	//			Conexao conec = new Conexao();
-	//			Connection conexao = conec.abrirConexao();
-	//			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
-	//			listaProducoes = jdbcProducao.buscarDes(cliente);
-	//		
-	//			conec.fecharConexao();
-	//			
-	//			String json = new Gson().toJson(listaProducoes);
-	//			return this.buildResponse(json);
-	//		}catch(Exception e) {
-	//			e.printStackTrace();
-	//			return this.buildErrorResponse(e.getMessage());
-	//		}				
-	//	}
-
-	//	@GET
-	//	@Path("/buscarData")
-	//	@Consumes("application/*")
-	//	@Produces(MediaType.APPLICATION_JSON)
-	//	public Response buscarData(@QueryParam("valorDataIni") String  dataIni,
-	//						   @QueryParam("valorDataFin") String  dataFin) {
-	//		try {
-	//			List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
-	//			
-	//			Conexao conec = new Conexao();
-	//			Connection conexao = conec.abrirConexao();
-	//			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
-	//			listaProducoes = jdbcProducao.buscarData(dataIni, dataFin);
-	//		
-	//			conec.fecharConexao();
-	//			
-	//			String json = new Gson().toJson(listaProducoes);
-	//			return this.buildResponse(json);
-	//		}catch(Exception e) {
-	//			e.printStackTrace();
-	//			return this.buildErrorResponse(e.getMessage());
-	//		}				
-	//	}
+	
 	@DELETE
 	@Path("/excluir/{id}")
 	@Consumes("application/*")
@@ -556,6 +512,31 @@ public class ProducaoRest extends UtilRest{
 
 			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
 			boolean retorno = jdbcProducao.changeStatusFull(producao);
+
+			String msg="";
+			if (retorno) {
+				msg = "Cadastro alterado com sucesso!";
+			}else {
+				msg = "Erro ao alterar cadastro";
+			}
+			conec.fecharConexao();
+			return this.buildResponse(msg);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return this.buildErrorResponse(e.getMessage());
+		}
+	}
+	@PUT
+	@Path("/addCount")
+	@Consumes("application/*")
+	public Response addCount(String producaoParam) {
+		try {
+			Producao producao = new Gson().fromJson(producaoParam, Producao.class);
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+
+			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
+			boolean retorno = jdbcProducao.addCount(producao);
 
 			String msg="";
 			if (retorno) {

@@ -129,117 +129,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		}
 		return listaProducoes;
 	}
-//	public List<JsonObject> buscarData (String dataIni, String dataFin){
-//
-//		String comando = "SELECT *, maquina.nome as maquina, operacao.nome as operacao FROM producao "+
-//				"inner join maquina on producao.idmaquina = maquina.idmaquina "+
-//				"inner join operacao on producao.idOperacao = operacao.idOperacao ";
-//		if (dataIni != "" && dataFin != "") {
-//			comando += "WHERE producao.dataInicio >= '" + dataIni + "' AND producao.dataFinal <= '" + dataFin + "' ";
-//
-//		}
-//
-//		comando += "ORDER BY producao.cliente ASC";		
-//		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
-//		JsonObject producao = null;
-//
-//		try {
-//
-//			Statement stmt = conexao.createStatement();
-//			ResultSet rs = stmt.executeQuery(comando);
-//
-//			while(rs.next()) {
-//
-//				int id = rs.getInt("idProducao");
-//				String codigo = rs.getString("codigo");
-//				String nomeCliente = rs.getString("cliente");
-//				String dataI = rs.getString("dataInicio");
-//				String dataF = rs.getString("dataFinal");
-//				String descricao = rs.getString("descricao");
-//				float espMin = rs.getFloat("especMin");
-//				float espMax = rs.getFloat("especMax");
-//				int numAm = rs.getInt("numAmostras");
-//				int subgrupo = rs.getInt("subGrupo");
-//				String idOp = rs.getString("operacao");
-//				String idMaq = rs.getString("maquina");
-//
-//				producao = new JsonObject();
-//				producao.addProperty("id", id);
-//				producao.addProperty("codigo", codigo);
-//				producao.addProperty("cliente", nomeCliente);
-//				producao.addProperty("dataInicio", dataI);
-//				producao.addProperty("dataFinal", dataF);
-//				producao.addProperty("descricao", descricao);
-//				producao.addProperty("espMin", espMin);
-//				producao.addProperty("espMax", espMax);
-//				producao.addProperty("numAmostras", numAm);
-//				producao.addProperty("subgrupo", subgrupo);
-//				producao.addProperty("operacao", idOp);
-//				producao.addProperty("maquinaId", idMaq);
-//
-//
-//				listaProducoes.add(producao);
-//			}
-//
-//		}catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return listaProducoes;
-//	}
 
-//	public List<JsonObject> buscarDes (String cliente){
-//		String comando = "SELECT *, maquina.nome as maquina, operacao.nome as operacao FROM producao "+
-//				"inner join maquina on producao.idmaquina = maquina.idmaquina "+
-//				"inner join operacao on producao.idOperacao = operacao.idOperacao ";
-//		if (cliente != "") {
-//			comando += "WHERE producao.cliente LIKE '%" + cliente + "%' OR producao.codigo LIKE '%" + cliente + "%' ";
-//		}
-//		comando += "ORDER BY producao.cliente ASC";		
-//		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
-//		JsonObject producao = null;
-//		try {
-//
-//			Statement stmt = conexao.createStatement();
-//			ResultSet rs = stmt.executeQuery(comando);
-//
-//			while(rs.next()) {
-//
-//				int id = rs.getInt("idProducao");
-//				String codigo = rs.getString("codigo");
-//				String nomeCliente = rs.getString("cliente");
-//				String dataI = rs.getString("dataInicio");
-//				String dataF = rs.getString("dataFinal");
-//				String descricao = rs.getString("descricao");
-//				float espMin = rs.getFloat("especMin");
-//				float espMax = rs.getFloat("especMax");
-//				int numAm = rs.getInt("numAmostras");
-//				int subgrupo = rs.getInt("subGrupo");
-//				String idOp = rs.getString("operacao");
-//				String idMaq = rs.getString("maquina");
-//
-//				producao = new JsonObject();
-//				producao.addProperty("id", id);
-//				producao.addProperty("codigo", codigo);
-//				producao.addProperty("cliente", nomeCliente);
-//				producao.addProperty("dataInicio", dataI);
-//				producao.addProperty("dataFinal", dataF);
-//				producao.addProperty("descricao", descricao);
-//				producao.addProperty("espMin", espMin);
-//				producao.addProperty("espMax", espMax);
-//				producao.addProperty("numAmostras", numAm);
-//				producao.addProperty("subgrupo", subgrupo);
-//				producao.addProperty("operacao", idOp);
-//				producao.addProperty("maquinaId", idMaq);
-//
-//
-//				listaProducoes.add(producao);
-//			}
-//
-//		}catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return listaProducoes;
-//	}
 	public boolean deletarSub(int code) {
 		String comando = "DELETE FROM subgrupo WHERE codeProd = ?";
 		PreparedStatement p;
@@ -667,7 +557,23 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 			p.setInt(2, producao.getContagemAtual());
 			p.setInt(3, producao.getCodeRefEsp());
 			p.executeUpdate();
-System.out.println(producao.getContagemAtual());
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean addCount(Producao producao) {		
+		String comando = "UPDATE producao "
+				+ "SET contagemAtual=? "
+				+ " WHERE codeRefEsp=?";
+		PreparedStatement p;
+		try {
+			p = this.conexao.prepareStatement(comando);			
+			p.setInt(1, producao.getContagemAtual());
+			p.setInt(2, producao.getCodeRefEsp());
+			p.executeUpdate();
 		}catch (SQLException e) {
 			e.printStackTrace();
 			return false;

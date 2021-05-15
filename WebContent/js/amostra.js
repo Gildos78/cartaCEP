@@ -118,7 +118,6 @@ $(document).ready(function(){
 	CARTACEP.amostra.exibirAmostras = function(listaDeAmostras){
 
 		if(listaDeAmostras != undefined && listaDeAmostras.length >0){
-
 			var tabela = "<tr >";
 			for(var i=0; i<listaDeAmostras.length; i++){
 
@@ -197,7 +196,7 @@ $(document).ready(function(){
 			type: "GET",
 			url: CARTACEP.PATH + "producao/getSubNumber",
 			data: "code="+code,
-			success: function(subgrupo){
+			success: function(subgrupo, code){
 				document.getElementById("idSub").value = subgrupo.idSub
 				$("#itemSample").html(CARTACEP.amostra.itensSub(subgrupo));
 			},
@@ -210,17 +209,24 @@ $(document).ready(function(){
 	}
 
 	CARTACEP.amostra.itensSub = function(subgrupo){
+	
 		document.getElementById("quantidadeSub").value = subgrupo.subgrupo
 		var tabela=""
 			for(var i=0; i<subgrupo.subgrupo; i++){
+				
+				
 				tabela +="<div class='form-group'>"+
 				"<label for='exampleInputEmail1'>Valor - Item "+(i+1)+"</label>" +
 				"<input  type='number' class='form-control form-control-sm' id='testeValue"+i+"' name='testeValue' onkeyup='CARTACEP.amostra.buttonEnter()' aria-describedby='emailHelp' placeholder='Valor Item "+(i+1)+"'>"+												
 				"</div>";
+				q=i+1
 			}
+		
+		
 		return tabela;
 	}
 
+	
 	CARTACEP.amostra.getCountEsp = function(id){
 
 		$.ajax({
@@ -459,7 +465,8 @@ $(document).ready(function(){
 		});
 	}
 	CARTACEP.amostra.exibirMed = function(listaDeMedicoes){
-console.log(listaDeMedicoes)
+		var code = sessionStorage.getItem('code');
+		var q=0
 		if(listaDeMedicoes != undefined && listaDeMedicoes.length >0){
 
 			var tabela = "<table class='table align-items-center table-flush small'>"+
@@ -475,7 +482,7 @@ console.log(listaDeMedicoes)
 			"</thead>"+											
 			"<tbody>";
 			for(var i=0; i<listaDeMedicoes.length; i++){
-
+				q=i+1
 				var sample = listaDeMedicoes[i].subgrupo*listaDeMedicoes[i].quantidade
 				document.getElementById("selOperador").value = listaDeMedicoes[i].idOperador
 
@@ -497,7 +504,18 @@ console.log(listaDeMedicoes)
 		}
 		tabela +="</tbody>"+
 		"</table>";
-
+		var producao= new Object()
+		producao.codeRefEsp = code
+		producao.contagemAtual = q
+		$.ajax({
+			type:"PUT",
+			url: CARTACEP.PATH + "producao/addCount",
+			data:JSON.stringify(producao),
+			success: function(msg){
+			},
+			error: function(info){
+			}
+		})
 		return tabela;
 	}
 	CARTACEP.amostra.deleteMed = function(idMed){

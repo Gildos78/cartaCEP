@@ -75,7 +75,12 @@ $(document).ready(function(){
 			});
 	}
 	
-	window.setTimeout('CARTACEP.leitura.buscar()', 500);
+	window.setTimeout('CARTACEP.leitura.buscar()', 200);
+	
+	
+	
+	
+	
 
 //Faz uma nova busca 
 	CARTACEP.leitura.getProductSamples = function(listaDeProducoes){
@@ -89,7 +94,7 @@ $(document).ready(function(){
 				data: "code="+code,
 				success: function(dados){
 					dados = JSON.parse(dados);
-				//console.log(dados)
+				console.log("getTotalTeste"+dados[i].Amostras)
 					//Passa os dados coletados, assim como a listaDeProducoes capturado antes no CARTACEP.leitura.buscar e code.
 					//Os coletados passam a ser listaAmostrasProd para poder estabelecer um var boolean,
 					//sendo falso se a contagem for 0 ou dentro do limite, e true se for igual ao limite;
@@ -260,7 +265,7 @@ $(document).ready(function(){
 	}
 
 
-	window.setTimeout('CARTACEP.leitura.buscar()', 500);
+	window.setTimeout('CARTACEP.leitura.buscar()', 200);
 	CARTACEP.leitura.keepIdProd = function(code){
 		var idProd = code
 		sessionStorage.setItem('code', idProd);

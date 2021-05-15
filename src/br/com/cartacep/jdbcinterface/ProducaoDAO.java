@@ -10,10 +10,7 @@ public interface ProducaoDAO {
 	public boolean inserir (Producao producao);
 	public boolean inserirSub (Producao producao);
 	public List<JsonObject> buscar(String cliente);
-//	public List<JsonObject> buscarDes(String cliente);
-//	public List<JsonObject> buscarData (String dataIni, String dataFin);
-//	public boolean deletarSub(int code);
-//	public boolean deletarEspTotal(int code);
+
 	public boolean deletar(int code);
 	public Producao buscarCodigo(int id);
 	public Producao buscarAm(int id);
@@ -25,5 +22,6 @@ public interface ProducaoDAO {
 	public Producao getTotalSamples(int code);
 	public Producao getTotalEsp(int code);
 	public boolean changeStatusFull(Producao producao);
+	public boolean addCount(Producao producao);
 	public List<JsonObject> getTotalTeste(int code);
 }
