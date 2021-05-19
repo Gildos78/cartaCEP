@@ -50,8 +50,6 @@ $(document).ready(function(){
 			url: CARTACEP.PATH + "producao/getProdInd",
 			data: "code="+code,
 			success: function(producao){
-				console.log("amostra")
-				console.log(producao)
 				$("#listaOrdemP").html(CARTACEP.amostra.exibir(producao));
 			},
 			error: function(info){
@@ -209,24 +207,24 @@ $(document).ready(function(){
 	}
 
 	CARTACEP.amostra.itensSub = function(subgrupo){
-	
+
 		document.getElementById("quantidadeSub").value = subgrupo.subgrupo
 		var tabela=""
 			for(var i=0; i<subgrupo.subgrupo; i++){
-				
-				
+
+
 				tabela +="<div class='form-group'>"+
 				"<label for='exampleInputEmail1'>Valor - Item "+(i+1)+"</label>" +
 				"<input  type='number' class='form-control form-control-sm' id='testeValue"+i+"' name='testeValue' onkeyup='CARTACEP.amostra.buttonEnter()' aria-describedby='emailHelp' placeholder='Valor Item "+(i+1)+"'>"+												
 				"</div>";
 				q=i+1
 			}
-		
-		
+
+
 		return tabela;
 	}
 
-	
+
 	CARTACEP.amostra.getCountEsp = function(id){
 
 		$.ajax({
@@ -323,38 +321,37 @@ $(document).ready(function(){
 		}
 		var subgrupo=document.getElementById("quantidadeSub").value
 		for(var i=0; i<subgrupo; i++){
-			console.log(document.getElementById('testeValue'+i+'').value)
 			if(document.getElementById('testeValue'+i+'').value==""){
 				boolItem=true;
 			}
 		}
 		if(boolItem==true){
-			
-				Swal.fire({
-					icon: 'error',
-					title: 'Atenção',
-					text: 'Cadastro incompleto.'
-				})	
-			}else{
-				var id = document.getElementById("idEsp").value
-				$.ajax({
-					type: "GET",
-					url: CARTACEP.PATH + "producao/limitMeasure",
-					data: "id="+id,
-					success: function(dados){
-						dados = JSON.parse(dados)
-						CARTACEP.amostra.getLimitList(dados)
+
+			Swal.fire({
+				icon: 'error',
+				title: 'Atenção',
+				text: 'Cadastro incompleto.'
+			})	
+		}else{
+			var id = document.getElementById("idEsp").value
+			$.ajax({
+				type: "GET",
+				url: CARTACEP.PATH + "producao/limitMeasure",
+				data: "id="+id,
+				success: function(dados){
+					dados = JSON.parse(dados)
+					CARTACEP.amostra.getLimitList(dados)
 
 
-					},
-					error: function(info){
-						var a="Erro ao consultar os cadastros de usuário: "+info.status+" - "+info.statusText;
-						var b = a.replace(/'/g, '');
-						console.log(b);
-					}
-				})			
-			}
-		
+				},
+				error: function(info){
+					var a="Erro ao consultar os cadastros de usuário: "+info.status+" - "+info.statusText;
+					var b = a.replace(/'/g, '');
+					console.log(b);
+				}
+			})			
+		}
+
 
 	}
 	CARTACEP.amostra.getLimitList = function(listaLimites){
@@ -392,19 +389,16 @@ $(document).ready(function(){
 		medicao.codeProd = sessionStorage.getItem('code')
 		medicao.idEsp = document.getElementById("idEsp").value
 		medicao.idMedicao  = document.getElementById("idMedicao").value 
-		console.log(medicao)
 		$.ajax({
 			type: "POST",
 			url: CARTACEP.PATH + "medicao/inserir",
 			data:JSON.stringify(medicao),
 			success:function(msg){
 				CARTACEP.amostra.cadastrarItem()
-				console.log(msg)
 				geradorIdMedicao()
 				$("#frmItemsSub").trigger("reset");
 			},
 			error:function(info){
-				console.log(info);
 			}
 		});	
 
@@ -426,15 +420,12 @@ $(document).ready(function(){
 				url: CARTACEP.PATH + "subgrupo/inserir",
 				data:JSON.stringify(sub),
 				success:function(msg){
-					console.log(msg)
 					$("#frmItemsSub").trigger("reset");
-					console.log(document.getElementById("idEsp").value)
 					CARTACEP.amostra.getCountEsp(document.getElementById("idEsp").value)
 					CARTACEP.amostra.buscarMed(document.getElementById("idEsp").value)
 					dateDefinition()
 				},
 				error:function(info){
-					console.log(info);
 				}
 			});	
 		}
@@ -465,8 +456,9 @@ $(document).ready(function(){
 		});
 	}
 	CARTACEP.amostra.exibirMed = function(listaDeMedicoes){
-		var code = sessionStorage.getItem('code');
+		var sample = 0
 		var q=0
+		var codMed = 0
 		if(listaDeMedicoes != undefined && listaDeMedicoes.length >0){
 
 			var tabela = "<table class='table align-items-center table-flush small'>"+
@@ -482,8 +474,9 @@ $(document).ready(function(){
 			"</thead>"+											
 			"<tbody>";
 			for(var i=0; i<listaDeMedicoes.length; i++){
+				codMed = listaDeMedicoes[i].idEsp
 				q=i+1
-				var sample = listaDeMedicoes[i].subgrupo*listaDeMedicoes[i].quantidade
+				sample = listaDeMedicoes[i].subgrupo*listaDeMedicoes[i].quantidade
 				document.getElementById("selOperador").value = listaDeMedicoes[i].idOperador
 
 				tabela+=
@@ -504,20 +497,39 @@ $(document).ready(function(){
 		}
 		tabela +="</tbody>"+
 		"</table>";
-		var producao= new Object()
-		producao.codeRefEsp = code
-		producao.contagemAtual = q
+
+
+
+		console.log(sample)
+		var medicao= new Object()
+		if(sample==q){
+		medicao.full = true
+		}else{
+		medicao.full = false	
+		}
+		medicao.idEsp = codMed
+		medicao.countMed = q
 		$.ajax({
 			type:"PUT",
-			url: CARTACEP.PATH + "producao/addCount",
-			data:JSON.stringify(producao),
+			url: CARTACEP.PATH + "medicao/addCount",
+			data:JSON.stringify(medicao),
 			success: function(msg){
+				CARTACEP.amostra.swapToFull(codMed)
+				console.log(msg)
 			},
 			error: function(info){
+				console.log(info)
 			}
 		})
 		return tabela;
 	}
+
+	CARTACEP.amostra.swapToFull = function(codMed){
+		var code = sessionStorage.getItem('code');
+console.log(codMed)
+	}
+
+
 	CARTACEP.amostra.deleteMed = function(idMed){
 
 		$.ajax({

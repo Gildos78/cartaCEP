@@ -20,7 +20,9 @@ import com.google.gson.JsonObject;
 
 import br.com.cartacep.bd.Conexao;
 import br.com.cartacep.jdbc.JDBCMedicaoDAO;
+import br.com.cartacep.jdbc.JDBCProducaoDAO;
 import br.com.cartacep.modelo.Medicao;
+import br.com.cartacep.modelo.Producao;
 
 
 @Path("medicao")
@@ -193,5 +195,30 @@ public class MedicaoRest extends UtilRest{
 			e.printStackTrace();
 			return this.buildErrorResponse(e.getMessage());
 		}			
+	}
+	@PUT
+	@Path("/addCount")
+	@Consumes("application/*")
+	public Response addCount(String medicaoParam) {
+		try {
+			Medicao medicao = new Gson().fromJson(medicaoParam, Medicao.class);
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+
+			JDBCMedicaoDAO jdbcMedicao = new JDBCMedicaoDAO(conexao);
+			boolean retorno  = jdbcMedicao.addCount(medicao);
+
+			String msg="";
+			if (retorno) {
+				msg = "Cadastro alterado com sucesso!";
+			}else {
+				msg = "Erro ao alterar cadastro";
+			}
+			conec.fecharConexao();
+			return this.buildResponse(msg);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return this.buildErrorResponse(e.getMessage());
+		}
 	}
 }

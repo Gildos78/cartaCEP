@@ -13,6 +13,7 @@ public class Medicao implements Serializable{
 	private int codeProd;
 	private int idOperador;
 	private int idEsp;
+	private boolean full;
 	private int countMed;
 	
 	public int getIdMedicao() {
@@ -56,6 +57,12 @@ public class Medicao implements Serializable{
 	}
 	public void setCountMed(int countMed) {
 		this.countMed = countMed;
+	}
+	public boolean getFull() {
+		return full;
+	}
+	public void setFull(boolean full) {
+		this.full = full;
 	}
 	
 }

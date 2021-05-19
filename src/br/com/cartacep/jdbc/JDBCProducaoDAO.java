@@ -564,20 +564,4 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		return true;
 	}
 	
-	public boolean addCount(Producao producao) {		
-		String comando = "UPDATE producao "
-				+ "SET contagemAtual=? "
-				+ " WHERE codeRefEsp=?";
-		PreparedStatement p;
-		try {
-			p = this.conexao.prepareStatement(comando);			
-			p.setInt(1, producao.getContagemAtual());
-			p.setInt(2, producao.getCodeRefEsp());
-			p.executeUpdate();
-		}catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 }

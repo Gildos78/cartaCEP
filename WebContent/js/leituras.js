@@ -86,7 +86,6 @@ $(document).ready(function(){
 	CARTACEP.leitura.getProductSamples = function(listaDeProducoes){
 		for(var i=0;i<listaDeProducoes.length;i++){
 			var code = listaDeProducoes[i].codeRefEsp
-			console.log("Code"+code)
 			//Busca pelo code em cada loop pois para cada code, tem os dados necessários para estabelecer se atingiu o limite
 			$.ajax({
 				type: "GET",
@@ -94,7 +93,6 @@ $(document).ready(function(){
 				data: "code="+code,
 				success: function(dados){
 					dados = JSON.parse(dados);
-				console.log("getTotalTeste"+dados[i].Amostras)
 					//Passa os dados coletados, assim como a listaDeProducoes capturado antes no CARTACEP.leitura.buscar e code.
 					//Os coletados passam a ser listaAmostrasProd para poder estabelecer um var boolean,
 					//sendo falso se a contagem for 0 ou dentro do limite, e true se for igual ao limite;
@@ -253,7 +251,6 @@ $(document).ready(function(){
 
 			tabela += "<tr><td colspan='11'>Nenhum registro encontrado</td></tr>";
 		}
-		console.log(emptyList)
 		if(emptyList==listaDeProducoes.length&&!emptyList==0){
 			
 			tabela += "<tr><td colspan='11'>Todas as medições estão completas</td></tr>";

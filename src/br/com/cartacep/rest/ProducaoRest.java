@@ -526,31 +526,7 @@ public class ProducaoRest extends UtilRest{
 			return this.buildErrorResponse(e.getMessage());
 		}
 	}
-	@PUT
-	@Path("/addCount")
-	@Consumes("application/*")
-	public Response addCount(String producaoParam) {
-		try {
-			Producao producao = new Gson().fromJson(producaoParam, Producao.class);
-			Conexao conec = new Conexao();
-			Connection conexao = conec.abrirConexao();
-
-			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
-			boolean retorno = jdbcProducao.addCount(producao);
-
-			String msg="";
-			if (retorno) {
-				msg = "Cadastro alterado com sucesso!";
-			}else {
-				msg = "Erro ao alterar cadastro";
-			}
-			conec.fecharConexao();
-			return this.buildResponse(msg);
-		}catch(Exception e) {
-			e.printStackTrace();
-			return this.buildErrorResponse(e.getMessage());
-		}
-	}
+	
 	@GET
 	@Path("/limitMeasure")
 	@Produces(MediaType.APPLICATION_JSON)

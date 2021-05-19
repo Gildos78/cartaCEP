@@ -25,8 +25,8 @@ public class JDBCMedicaoDAO implements MedicaoDAO{
 	
 	public boolean inserir (Medicao medicao) {
 		String comando = "INSERT INTO medicoes "
-				+ "(idMedicoes, dataHora, obs, codeProd, idOperador, idEsp) "
-				+ "VALUES (?,?,?,?,?,?)";
+				+ "(idMedicoes, dataHora, obs, codeProd, idOperador, totalMed, idEsp) "
+				+ "VALUES (?,?,?,?,?,?,?)";
 		PreparedStatement p;
 
 		try {
@@ -38,7 +38,8 @@ public class JDBCMedicaoDAO implements MedicaoDAO{
 			p.setString(3, medicao.getObs());
 			p.setInt(4, medicao.getCodeProd());
 			p.setInt(5, medicao.getIdOperador());
-			p.setInt(6, medicao.getIdEsp());
+			p.setInt(6, 0);
+			p.setInt(7, medicao.getIdEsp());
 			p.execute();
 
 		}catch (SQLException e) {
@@ -215,5 +216,22 @@ public class JDBCMedicaoDAO implements MedicaoDAO{
 			e.printStackTrace();
 		}
 		return listaMedicoes;
+	}
+	public boolean addCount(Medicao medicao) {		
+		String comando = "UPDATE medicoes "
+				+ "SET totalMed=?, Full=? "
+				+ " WHERE idEsp=?";
+		PreparedStatement p;
+		try {
+			p = this.conexao.prepareStatement(comando);			
+			p.setInt(1, medicao.getCountMed());
+			p.setBoolean(2, medicao.getFull());
+			p.setInt(3, medicao.getIdEsp());
+			p.executeUpdate();
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 }

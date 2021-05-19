@@ -22,6 +22,5 @@ public interface ProducaoDAO {
 	public Producao getTotalSamples(int code);
 	public Producao getTotalEsp(int code);
 	public boolean changeStatusFull(Producao producao);
-	public boolean addCount(Producao producao);
 	public List<JsonObject> getTotalTeste(int code);
 }
