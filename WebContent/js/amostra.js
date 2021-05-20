@@ -160,7 +160,6 @@ $(document).ready(function(){
 			data: "id="+id,
 			success: function(limite){
 				var totalFilled = limite.subgrupo*limite.numAmostras
-
 				if(totalFilled==limite.totalEsp){
 					Swal.fire({
 						text: 'Atingiu o limite de medições.',
@@ -429,12 +428,12 @@ $(document).ready(function(){
 				}
 			});	
 		}
-
 	}
 	CARTACEP.amostra.buttonEnter = function(){
 		if (event.keyCode === 13) {
 			event.preventDefault();
 			document.getElementById("loginBtn").click();
+			window.setTimeout('CARTACEP.amostra.lookUpCount()', 300);
 		}
 	}
 	CARTACEP.amostra.buscarMed = function(id){
@@ -445,7 +444,8 @@ $(document).ready(function(){
 			success: function(dados){
 
 				dados = JSON.parse(dados);
-
+				 
+				
 				$("#listaMedCad").html(CARTACEP.amostra.exibirMed(dados));
 
 
@@ -493,7 +493,7 @@ $(document).ready(function(){
 			}
 		}else if (listaDeMedicoes == ""){
 			tabela += "<tr><td colspan='6'>Nenhum registro encontrado</td></tr>";
-
+			
 		}
 		tabela +="</tbody>"+
 		"</table>";
@@ -509,13 +509,13 @@ $(document).ready(function(){
 		}
 		medicao.idEsp = codMed
 		medicao.countMed = q
+		medicao.totalGer = sample
 		$.ajax({
 			type:"PUT",
 			url: CARTACEP.PATH + "medicao/addCount",
 			data:JSON.stringify(medicao),
 			success: function(msg){
-				CARTACEP.amostra.swapToFull(codMed)
-				console.log(msg)
+ 				console.log(msg)
 			},
 			error: function(info){
 				console.log(info)
@@ -524,9 +524,22 @@ $(document).ready(function(){
 		return tabela;
 	}
 
-	CARTACEP.amostra.swapToFull = function(codMed){
+	CARTACEP.amostra.lookUpCount = function(){
 		var code = sessionStorage.getItem('code');
-console.log(codMed)
+		$.ajax({
+			type: "GET",
+			url: CARTACEP.PATH + "medicao/lookUpCount",
+			data: "code="+code,
+			success: function(dados){
+
+				dados = JSON.parse(dados);
+				 console.log(dados)
+
+			},
+			error: function(info){
+				console.log("Erro ao consultar os cadastros de operação: "+info.status+" - "+info.statusText);
+			}
+		});
 	}
 
 

@@ -219,19 +219,56 @@ public class JDBCMedicaoDAO implements MedicaoDAO{
 	}
 	public boolean addCount(Medicao medicao) {		
 		String comando = "UPDATE medicoes "
-				+ "SET totalMed=?, Full=? "
+				+ "SET totalMed=?, Full=?, totalGer=? "
 				+ " WHERE idEsp=?";
 		PreparedStatement p;
 		try {
 			p = this.conexao.prepareStatement(comando);			
 			p.setInt(1, medicao.getCountMed());
 			p.setBoolean(2, medicao.getFull());
-			p.setInt(3, medicao.getIdEsp());
+			p.setInt(3, medicao.getTotalGer());
+			p.setInt(4, medicao.getIdEsp());
 			p.executeUpdate();
 		}catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
 		return true;
+	}
+	
+	public List<JsonObject> lookUpCount (int code){
+		String comando = "select * from medicoes where codeProd = "+code+" ";
+				
+		
+		List<JsonObject> listaMedicoes = new ArrayList<JsonObject>();
+		JsonObject medicao = null;
+
+		try {
+
+			Statement stmt = conexao.createStatement();
+			ResultSet rs = stmt.executeQuery(comando);
+
+			while(rs.next()) {
+
+				int idM = rs.getInt("idMedicoes");
+				int totalMed = rs.getInt("totalMed");
+				int idEsp = rs.getInt("idEsp");
+				int codeProd = rs.getInt("codeProd");
+				boolean full = rs.getBoolean("Full");
+				
+				medicao = new JsonObject();
+				medicao.addProperty("idMed", idM);
+				medicao.addProperty("totalMed", totalMed);
+				medicao.addProperty("idEsp", idEsp);
+				medicao.addProperty("codeProd", codeProd);
+				medicao.addProperty("full", full);
+				
+				listaMedicoes.add(medicao);
+			}
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listaMedicoes;
 	}
 }

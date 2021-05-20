@@ -45,7 +45,7 @@ public class Servlet1 extends HttpServlet {
 	
 	
 	try {
-		Class.forName("com.mysql.jdbc.Driver").newInstance();
+		Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 		Conexao conec = new Conexao();
 		Connection con = conec.abrirConexao();
 		Statement stmt = con.createStatement();

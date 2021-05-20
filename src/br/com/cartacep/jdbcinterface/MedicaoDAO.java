@@ -18,4 +18,5 @@ public interface MedicaoDAO {
 	public List<JsonObject> getMeasureId(int code);
 	public boolean deletarMedEsp(int id);
 	public boolean addCount(Medicao medicao);
+	public List<JsonObject> lookUpCount(int code);
 }

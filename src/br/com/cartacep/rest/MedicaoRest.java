@@ -221,4 +221,27 @@ public class MedicaoRest extends UtilRest{
 			return this.buildErrorResponse(e.getMessage());
 		}
 	}
+	
+	@GET
+	@Path("/lookUpCount")
+	@Consumes("application/*")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response lookUpCount(@QueryParam("code") int  code) {
+		try {
+			List<JsonObject> listaMedicoes = new ArrayList<JsonObject>();
+			
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+			JDBCMedicaoDAO jdbcMedicao = new JDBCMedicaoDAO(conexao);
+			listaMedicoes = jdbcMedicao.lookUpCount(code);
+		
+			conec.fecharConexao();
+			
+			String json = new Gson().toJson(listaMedicoes);
+			return this.buildResponse(json);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return this.buildErrorResponse(e.getMessage());
+		}				
+	}
 }
