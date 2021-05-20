@@ -542,6 +542,7 @@ $(document).ready(function(){
 		});
 	}
 
+	
 
 	CARTACEP.amostra.deleteMed = function(idMed){
 
