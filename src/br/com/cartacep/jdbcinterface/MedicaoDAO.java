@@ -6,8 +6,7 @@ import com.google.gson.JsonObject;
 
 import br.com.cartacep.modelo.Medicao;
 import br.com.cartacep.modelo.Producao;
-
-
+import br.com.cartacep.modelo.Usuario;
 
 public interface MedicaoDAO {
 	public boolean inserir (Medicao medicao);
@@ -18,5 +17,5 @@ public interface MedicaoDAO {
 	public List<JsonObject> getMeasureId(int code);
 	public boolean deletarMedEsp(int id);
 	public boolean addCount(Medicao medicao);
-	public List<JsonObject> lookUpCount(int code);
+	public Medicao lookUpCountSub(int code);
 }

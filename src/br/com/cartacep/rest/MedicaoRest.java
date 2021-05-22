@@ -21,8 +21,10 @@ import com.google.gson.JsonObject;
 import br.com.cartacep.bd.Conexao;
 import br.com.cartacep.jdbc.JDBCMedicaoDAO;
 import br.com.cartacep.jdbc.JDBCProducaoDAO;
+import br.com.cartacep.jdbc.JDBCUsuarioDAO;
 import br.com.cartacep.modelo.Medicao;
 import br.com.cartacep.modelo.Producao;
+import br.com.cartacep.modelo.Usuario;
 
 
 @Path("medicao")
@@ -243,5 +245,28 @@ public class MedicaoRest extends UtilRest{
 			e.printStackTrace();
 			return this.buildErrorResponse(e.getMessage());
 		}				
+	}
+	
+	@GET
+	@Path("/lookUpCountSub")
+	@Produces(MediaType.APPLICATION_JSON)
+
+	public Response lookUpCountSub(@QueryParam("code")int code) {
+
+		try {
+			Medicao medicao= new Medicao();
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+			JDBCMedicaoDAO jdbcMedicao = new JDBCMedicaoDAO(conexao);
+
+			medicao = jdbcMedicao.lookUpCountSub(code);
+
+			conec.fecharConexao();
+			return this.buildResponse(medicao);
+
+		}catch(Exception e) {
+			e.printStackTrace();
+			return this.buildErrorResponse(e.getMessage());
+		}
 	}
 }

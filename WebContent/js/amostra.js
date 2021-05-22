@@ -498,29 +498,44 @@ $(document).ready(function(){
 		tabela +="</tbody>"+
 		"</table>";
 
-
-
-		console.log(sample)
-		var medicao= new Object()
-		if(sample==q){
-		medicao.full = true
-		}else{
-		medicao.full = false	
-		}
-		medicao.idEsp = codMed
-		medicao.countMed = q
-		medicao.totalGer = sample
+		var code = sessionStorage.getItem('code');
+		
 		$.ajax({
-			type:"PUT",
-			url: CARTACEP.PATH + "medicao/addCount",
-			data:JSON.stringify(medicao),
-			success: function(msg){
- 				console.log(msg)
+			type: "GET",
+			url: CARTACEP.PATH + "medicao/lookUpCountSub",
+			data: "code="+code,
+			success: function(sub){
+
+				var medicao= new Object()
+				if(sample==q){
+				medicao.full = true
+				}else{
+				medicao.full = false	
+				}
+				medicao.idEsp = codMed
+				medicao.countMed = q
+				medicao.totalGer = sample
+				medicao.totalSub = sub.idEsp
+				$.ajax({
+					type:"PUT",
+					url: CARTACEP.PATH + "medicao/addCount",
+					data:JSON.stringify(medicao),
+					success: function(msg){
+		 				console.log(msg)
+					},
+					error: function(info){
+						console.log(info)
+					}
+				})
+
 			},
 			error: function(info){
-				console.log(info)
+				console.log("Erro ao consultar os cadastros de operação: "+info.status+" - "+info.statusText);
 			}
-		})
+		});
+		
+
+		
 		return tabela;
 	}
 
@@ -533,7 +548,7 @@ $(document).ready(function(){
 			success: function(dados){
 
 				dados = JSON.parse(dados);
-				 console.log(dados)
+				 CARTACEP.amostra.getTotalMed(dados)
 
 			},
 			error: function(info){
@@ -542,6 +557,11 @@ $(document).ready(function(){
 		});
 	}
 
+	CARTACEP.amostra.getTotalMed = function(lookUpCount){
+		
+		 console.log(lookUpCount[0].totalMed)
+
+	}
 	
 
 	CARTACEP.amostra.deleteMed = function(idMed){

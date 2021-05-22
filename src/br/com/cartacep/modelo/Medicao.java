@@ -16,6 +16,7 @@ public class Medicao implements Serializable{
 	private boolean full;
 	private int countMed;
 	private int totalGer;
+	private int totalSub;
 	
 	public int getIdMedicao() {
 		return idMedicao;
@@ -70,6 +71,12 @@ public class Medicao implements Serializable{
 	}
 	public void setTotalGer(int totalGer) {
 		this.totalGer = totalGer;
+	}
+	public int getTotalSub() {
+		return totalSub;
+	}
+	public void setTotalSub(int totalSub) {
+		this.totalSub = totalSub;
 	}
 	
 }

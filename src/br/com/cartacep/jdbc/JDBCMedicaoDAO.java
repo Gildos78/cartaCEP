@@ -219,15 +219,17 @@ public class JDBCMedicaoDAO implements MedicaoDAO{
 	}
 	public boolean addCount(Medicao medicao) {		
 		String comando = "UPDATE medicoes "
-				+ "SET totalMed=?, Full=?, totalGer=? "
+				+ "SET totalMed=?, Full=?, totalGer=?, totalSub=? "
 				+ " WHERE idEsp=?";
 		PreparedStatement p;
 		try {
+			
 			p = this.conexao.prepareStatement(comando);			
 			p.setInt(1, medicao.getCountMed());
 			p.setBoolean(2, medicao.getFull());
 			p.setInt(3, medicao.getTotalGer());
-			p.setInt(4, medicao.getIdEsp());
+			p.setInt(4, medicao.getTotalSub());
+			p.setInt(5, medicao.getIdEsp());
 			p.executeUpdate();
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -237,7 +239,7 @@ public class JDBCMedicaoDAO implements MedicaoDAO{
 	}
 	
 	public List<JsonObject> lookUpCount (int code){
-		String comando = "select * from medicoes where codeProd = "+code+" ";
+		String comando = "select * from medicoes where idEsp = "+123+" ";
 				
 		
 		List<JsonObject> listaMedicoes = new ArrayList<JsonObject>();
@@ -270,5 +272,25 @@ public class JDBCMedicaoDAO implements MedicaoDAO{
 			e.printStackTrace();
 		}
 		return listaMedicoes;
+	}
+	public Medicao lookUpCountSub (int code){
+		
+		String comando = "select count(*) as quantidade from especificacoes where codeProd = ?";
+		Medicao medicao = new Medicao();
+		try {
+			PreparedStatement p = this.conexao.prepareStatement(comando);
+			p.setInt(1, code);
+			ResultSet rs = p.executeQuery();
+			while (rs.next()) {
+
+				int countMedicoes = rs.getInt("quantidade");
+				medicao.setIdEsp(countMedicoes);
+
+
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return medicao;
 	}
 }

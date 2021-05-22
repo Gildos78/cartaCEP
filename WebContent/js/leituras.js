@@ -57,6 +57,7 @@ $(document).ready(function(){
 				data: "valorBusca="+valorBusca,
 				success: function(dados){
 					dados = JSON.parse(dados);
+
 					if(dados.length==0){
 						CARTACEP.leitura.buscarProducao()
 					}else{
@@ -92,6 +93,8 @@ $(document).ready(function(){
 				url: CARTACEP.PATH + "producao/getTotalTeste",
 				data: "code="+code,
 				success: function(dados){
+					
+					console.log("getTotalTeste"+dados)
 					dados = JSON.parse(dados);
 					//Passa os dados coletados, assim como a listaDeProducoes capturado antes no CARTACEP.leitura.buscar e code.
 					//Os coletados passam a ser listaAmostrasProd para poder estabelecer um var boolean,
