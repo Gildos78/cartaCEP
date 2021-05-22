@@ -558,7 +558,7 @@ $(document).ready(function(){
 	}
 
 	CARTACEP.amostra.getTotalMed = function(lookUpCount){
-		
+		//select count(*) from medicoes where codeProd *(vezes) subgrupo
 		 console.log(lookUpCount[0].totalMed)
 
 	}
