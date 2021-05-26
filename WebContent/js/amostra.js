@@ -523,6 +523,7 @@ $(document).ready(function(){
 					data:JSON.stringify(medicao),
 					success: function(msg){
 		 				console.log(msg)
+		 				CARTACEP.amostra.lookUpCount()
 					},
 					error: function(info){
 						console.log(info)
