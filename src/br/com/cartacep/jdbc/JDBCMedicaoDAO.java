@@ -239,7 +239,9 @@ public class JDBCMedicaoDAO implements MedicaoDAO{
 	}
 	
 	public List<JsonObject> lookUpCount (int code){
-		String comando = "select * from medicoes where idEsp = "+123+" ";
+		String comando = "SELECT count(*) as totalSoFar, totalGer, totalSub, totalMed, subgrupo.quantidade as quantity from medicoes\r\n" + 
+				"inner join subgrupo on subgrupo.codeProd = medicoes.codeProd\r\n" + 
+				"where medicoes.codeProd = "+code+" ";
 				
 		
 		List<JsonObject> listaMedicoes = new ArrayList<JsonObject>();
@@ -252,18 +254,19 @@ public class JDBCMedicaoDAO implements MedicaoDAO{
 
 			while(rs.next()) {
 
-				int idM = rs.getInt("idMedicoes");
+				int totalSoFar = rs.getInt("totalSoFar");
 				int totalMed = rs.getInt("totalMed");
-				int idEsp = rs.getInt("idEsp");
-				int codeProd = rs.getInt("codeProd");
-				boolean full = rs.getBoolean("Full");
+				int totalGer = rs.getInt("totalGer");
+				int quantity = rs.getInt("quantity");
+				int totalMC = rs.getInt("totalSub");
+				
 				
 				medicao = new JsonObject();
-				medicao.addProperty("idMed", idM);
+				medicao.addProperty("totalSoFar", totalSoFar);
 				medicao.addProperty("totalMed", totalMed);
-				medicao.addProperty("idEsp", idEsp);
-				medicao.addProperty("codeProd", codeProd);
-				medicao.addProperty("full", full);
+				medicao.addProperty("totalGer", totalGer);
+				medicao.addProperty("quantity", quantity);
+				medicao.addProperty("totalMC", totalMC);
 				
 				listaMedicoes.add(medicao);
 			}

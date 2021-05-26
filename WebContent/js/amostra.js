@@ -396,6 +396,7 @@ $(document).ready(function(){
 				CARTACEP.amostra.cadastrarItem()
 				geradorIdMedicao()
 				$("#frmItemsSub").trigger("reset");
+				CARTACEP.amostra.lookUpCount()
 			},
 			error:function(info){
 			}
@@ -433,7 +434,7 @@ $(document).ready(function(){
 		if (event.keyCode === 13) {
 			event.preventDefault();
 			document.getElementById("loginBtn").click();
-			window.setTimeout('CARTACEP.amostra.lookUpCount()', 300);
+			window.setTimeout('CARTACEP.amostra.lookUpCount()', 600);
 		}
 	}
 	CARTACEP.amostra.buscarMed = function(id){
@@ -547,7 +548,7 @@ $(document).ready(function(){
 			data: "code="+code,
 			success: function(dados){
 
-				dados = JSON.parse(dados);
+				dados = JSON.parse(dados);			
 				 CARTACEP.amostra.getTotalMed(dados)
 
 			},
@@ -557,10 +558,33 @@ $(document).ready(function(){
 		});
 	}
 
-	CARTACEP.amostra.getTotalMed = function(lookUpCount){
+	CARTACEP.amostra.getTotalMed = function(totalTotal){
+		var code = sessionStorage.getItem('code');
+		console.log(code)
 		//select count(*) from medicoes where codeProd *(vezes) subgrupo
-		 console.log(lookUpCount[0].totalMed)
-
+		for(var i=0; i<totalTotal.length; i++){
+			var totalOverall = totalTotal[i].totalMC * totalTotal[i].totalGer;
+			var totalSoFar = totalTotal[i].totalSoFar * totalTotal[i].quantity;
+			var producao= new Object()
+			producao.codeRefEsp = code
+			producao.contagemAtual = totalSoFar
+console.log(totalOverall+"/"+totalSoFar)
+			if(totalSoFar == totalOverall && totalSoFar!=0){
+				producao.statusFull = true
+			}else{
+				producao.statusFull = false
+			}
+			$.ajax({
+				type:"PUT",
+				url: CARTACEP.PATH + "producao/changeStatusFull",
+				data:JSON.stringify(producao),
+				success: function(msg){
+console.log(msg)
+				},
+				error: function(info){
+				}
+			})
+		}
 	}
 	
 
@@ -587,6 +611,7 @@ $(document).ready(function(){
 			success: function(msg){
 				b = msg.replace(/['"]+/g, '');
 				console.log(b);
+				CARTACEP.amostra.lookUpCount();
 			},
 			error: function(info){
 				console.log("Erro ao excluir operação: " + info.status + " - " + info.statusText);

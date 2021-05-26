@@ -17,6 +17,8 @@ public class Medicao implements Serializable{
 	private int countMed;
 	private int totalGer;
 	private int totalSub;
+	private int totalMed;
+	private int quantity;
 	
 	public int getIdMedicao() {
 		return idMedicao;
@@ -77,6 +79,19 @@ public class Medicao implements Serializable{
 	}
 	public void setTotalSub(int totalSub) {
 		this.totalSub = totalSub;
+	}
+	
+	public int getTotalMed() {
+		return totalMed;
+	}
+	public void setTotalMed(int totalMed) {
+		this.totalMed = totalMed;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 	
 }

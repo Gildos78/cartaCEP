@@ -247,6 +247,29 @@ public class MedicaoRest extends UtilRest{
 		}				
 	}
 	
+//	@GET
+//	@Path("/lookUpCount")
+//	@Produces(MediaType.APPLICATION_JSON)
+//
+//	public Response lookUpCount(@QueryParam("code") int  code) {
+//
+//		try {
+//			Medicao medicao= new Medicao();
+//			Conexao conec = new Conexao();
+//			Connection conexao = conec.abrirConexao();
+//			JDBCMedicaoDAO jdbcMedicao = new JDBCMedicaoDAO(conexao);
+//
+//			medicao = jdbcMedicao.lookUpCount(code);
+//
+//			conec.fecharConexao();
+//			return this.buildResponse(medicao);
+//
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//			return this.buildErrorResponse(e.getMessage());
+//		}
+//	}
+	
 	@GET
 	@Path("/lookUpCountSub")
 	@Produces(MediaType.APPLICATION_JSON)
