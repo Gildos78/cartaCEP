@@ -1,0 +1,207 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+-- -----------------------------------------------------
+-- Schema cartacep
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema cartacep
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `cartacep` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+USE `cartacep` ;
+
+-- -----------------------------------------------------
+-- Table `cartacep`.`especificacoes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cartacep`.`especificacoes` (
+  `idEspecificacoes` INT(11) NOT NULL AUTO_INCREMENT,
+  `descricao` VARCHAR(45) NULL DEFAULT NULL,
+  `espMinimo` FLOAT NULL DEFAULT NULL,
+  `espMaximo` FLOAT NULL DEFAULT NULL,
+  `imagemNome` VARCHAR(45) NULL DEFAULT NULL,
+  `codeProd` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`idEspecificacoes`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 123
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `cartacep`.`gestor`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cartacep`.`gestor` (
+  `idGestor` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL DEFAULT NULL,
+  `email` VARCHAR(45) NULL DEFAULT NULL,
+  `senha` VARCHAR(45) NULL DEFAULT NULL,
+  `imagemNome` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idGestor`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 16
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `cartacep`.`maquina`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cartacep`.`maquina` (
+  `idmaquina` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idmaquina`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `cartacep`.`medicoes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cartacep`.`medicoes` (
+  `idMedicoes` INT(11) NOT NULL,
+  `dataHora` DATETIME NULL DEFAULT NULL,
+  `obs` VARCHAR(45) NULL DEFAULT NULL,
+  `codeProd` INT(11) NULL DEFAULT NULL,
+  `idOperador` INT(11) NOT NULL,
+  `totalMed` INT(11) NOT NULL,
+  `Full` BOOLEAN,
+  `totalGer` INT(11),
+  `totalSub` INT(11),
+  `idEsp` INT(11) NOT NULL,
+  PRIMARY KEY (`idMedicoes`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `cartacep`.`operacao`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cartacep`.`operacao` (
+  `idOperacao` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idOperacao`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 7
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `cartacep`.`operador`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cartacep`.`operador` (
+  `idOperador` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL DEFAULT NULL,
+  `matricula` VARCHAR(45) NULL DEFAULT NULL,
+  `senha` VARCHAR(45) NULL DEFAULT NULL,
+  `telefone` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idOperador`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 20
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `cartacep`.`operadormaquina`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cartacep`.`operadormaquina` (
+  `idOperador` INT(11) NOT NULL,
+  `idmaquina` INT(11) NOT NULL,
+  PRIMARY KEY (`idOperador`, `idmaquina`),
+  INDEX `fk_operadorMaquina_maquina1_idx` (`idmaquina` ASC) ,
+  CONSTRAINT `fk_operadorMaquina_Operador`
+    FOREIGN KEY (`idOperador`)
+    REFERENCES `mydb`.`operador` (`idOperador`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_operadorMaquina_maquina1`
+    FOREIGN KEY (`idmaquina`)
+    REFERENCES `mydb`.`maquina` (`idmaquina`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `cartacep`.`producao`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cartacep`.`producao` (
+  `idProducao` INT(11) NOT NULL AUTO_INCREMENT,
+  `codigo` VARCHAR(45) NULL DEFAULT NULL,
+  `cliente` VARCHAR(45) NULL DEFAULT NULL,
+  `dataInicio` DATETIME NULL DEFAULT NULL,
+  `dataFinal` DATETIME NULL DEFAULT NULL,
+  `descricao` VARCHAR(45) NULL DEFAULT NULL,
+  `numAmostras` INT(11) NULL DEFAULT NULL,
+  `codeRefEsp` INT(11) NULL DEFAULT NULL,
+  `idOperacao` INT(11) NULL DEFAULT NULL,
+  `idmaquina` INT(11) NULL DEFAULT NULL,
+  `totalEsp` INT(11) NULL DEFAULT NULL,
+  `statusFull` TINYINT(4) NULL DEFAULT NULL,
+  `contagemAtual` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`idProducao`),
+  INDEX `fk_Producao_Operacao1_idx` (`idOperacao` ASC) ,
+  INDEX `fk_Producao_maquina1_idx` (`idmaquina` ASC) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 9
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `cartacep`.`subgrupo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cartacep`.`subgrupo` (
+  `idSubgrupo` INT(11) NOT NULL AUTO_INCREMENT,
+  `quantidade` INT(11) NULL DEFAULT NULL,
+  `codeProd` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`idSubgrupo`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 9
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `cartacep`.`subgrupo_medicoes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cartacep`.`subgrupo_medicoes` (
+  `idEspecificacao` INT(11) NOT NULL,
+  `idSubgrupo` INT(11) NOT NULL,
+  `valorMedicao` FLOAT NULL DEFAULT NULL,
+  `idMedicoes` INT(11) NULL DEFAULT NULL,
+  INDEX `fk_subgrupo_medicoes_producao1_idx` (`idEspecificacao` ASC) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+USE `cartacep` ;
+
+-- -----------------------------------------------------
+-- procedure aumBaseQuan
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `cartacep`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `aumBaseQuan`(varAumento float, id int)
+BEGIN
+update produto set preco = (preco+(preco*varAumento)) where idproduto=id;
+select sum(vp.quantidade), p.idproduto, p.preco from vendas_has_produto AS vp, produto as p
+where p.idproduto=id and vp.idproduto=p.idproduto;
+END$$
+
+DELIMITER ;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+  
