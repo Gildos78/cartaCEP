@@ -361,6 +361,18 @@ $(document).ready(function(){
 			}
 		});
 	}
+	CARTACEP.producao.buttonEnterProd = function(){
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("loginBtn").click();
+		}
+	}
+	CARTACEP.producao.buttonEnter = function(){
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("loginBtnEnd").click();
+		}
+	}
 	CARTACEP.producao.excluirEsp = function(id){
 		$.ajax({
 			type:"DELETE",

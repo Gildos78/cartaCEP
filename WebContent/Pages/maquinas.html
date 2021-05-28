@@ -106,16 +106,16 @@
                       <h6 class="m-0 font-weight-bold text-primary">Cadastrar Máquina</h6>
                     </div>
                     <div class="card-body">
-                      <form name="frmAddCadOperacao" id="addCadOperacao"
+                      <form name="frmAddCadOperacao" id="addCadMaquina"
 										class="frmInserir">
                         <div class="form-group">
                           <label for="exampleInputEmail1">Nome</label>
                           <input type="email" class="form-control" id="maquina" aria-describedby="emailHelp"
-                            placeholder="Nome da Máquina">
+                            placeholder="Nome da Máquina" onkeyup='CARTACEP.cadMaquina.buttonEnter()'>
                         </div>
                         
   
-                        <a type="button"  class="btn btn-primary" id="loginBtn" onclick="CARTACEP.cadMaquina.cadastrar()">Cadastrar</a>
+                        <a type="button"  class="btn btn-primary" id="loginBtnEnd" onclick="CARTACEP.cadMaquina.cadastrar()">Cadastrar</a>
                       </form>
                     </div>
                 </div>
