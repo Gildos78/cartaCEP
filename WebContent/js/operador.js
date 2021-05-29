@@ -68,17 +68,9 @@ $(document).ready (function(){
 		var expRegNome = new RegExp(/[A-zÀ-ü]{3,}([ ]{1}[A-zÀ-ü]{2,})|([A-zÀ-ü]{3,})+$/);
 		if (!expRegNome.test(nome)){
 			Swal.fire('Preencha o campo Nome corretamente.');
-			document.frmCadOp.exampleInputNome.focus();
+			window.setTimeout('document.frmCadOp.exampleInputNome.focus()', 1500);
 			return false;
 		}
-		var sen = document.frmCadOp.exampleInputPassword.value;
-		var expRegSen = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/);
-
-		if (!expRegSen.test(sen)){
-			Swal.fire("Preencha o campo Senha com o mínimo de 6 caracteres com números e letras..");
-			document.frmCadOp.exampleInputPassword.focus();
-			return false;
-		}	
 		var mat = document.frmCadOp.exampleInputMatricula.value;
 		var expRegMat = new RegExp("^[0-9]{6}$");
 
@@ -88,13 +80,18 @@ $(document).ready (function(){
 				title: 'Oops...',
 				text: 'Preencha o campo Matricula corretamente com 6 números.'
 			})
-
-			document.frmCadOp.exampleInputMatricula.focus();
+			window.setTimeout('document.frmCadOp.exampleInputMatricula.focus()', 2000);
 			return false;
 		}	
+		var sen = document.frmCadOp.exampleInputPassword.value;
+		var expRegSen = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/);
 
-
-
+		if (!expRegSen.test(sen)){
+			Swal.fire("Preencha o campo Senha com o mínimo de 6 caracteres com números e letras..");
+			window.setTimeout('document.frmCadOp.exampleInputPassword.focus()', 2000);
+			return false;
+		}	
+		
 		if( document.frmCadOp.exampleInputPasswordRepeat.value!==sen){
 			Swal.fire({
 				icon: 'error',
@@ -229,6 +226,15 @@ $(document).ready (function(){
 		}
 	}
 	CARTACEP.operador.buscar();
+	
+	CARTACEP.operador.buttonEnter = function(){
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("cadOpBtn").click();
+		}
+	}
+	
+	
 	CARTACEP.operador.exibirEdicao = function(id){
 		$.ajax({
 			type:"GET",

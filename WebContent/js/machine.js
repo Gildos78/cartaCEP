@@ -113,6 +113,7 @@ $(document).ready (function(){
 		}
 	}
 	CARTACEP.cadMaquina.buscar();
+	
 	CARTACEP.cadMaquina.buttonEnter = function(){
 		if (event.keyCode === 13) {
 			event.preventDefault();

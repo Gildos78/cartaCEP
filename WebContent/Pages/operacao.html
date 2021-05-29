@@ -120,13 +120,15 @@
 									<form name="frmAddCadOperacao" id="addCadOperacao"
 										class="frmInserir">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Nome</label> <input
-												type="text" class="form-control" id="exampleInputEmail1"
-												aria-describedby="emailHelp" placeholder="Nome da Operação">
+											<label for="exampleInputEmail1">Nome</label> 
+											<input
+												type="email" class="form-control" id="exampleInputEmail1"
+												aria-describedby="emailHelp" placeholder="Nome da Operação" 
+												 onkeyup='CARTACEP.cadOperacao.buttonEnter()'>
 										</div>
 
 
-										<a type="button" class="btn btn-primary" id="loginBtn"
+										<a type="button" class="btn btn-primary" id="loginBtnEnd"
 											onclick="CARTACEP.cadOperacao.cadastrar()">Cadastrar</a>
 									</form>
 								</div>

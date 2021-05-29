@@ -5,9 +5,15 @@ CARTACEP.cadOperacao = new Object();
 $(document).ready (function(){
 
 	CARTACEP.PATH = "/CartaCEP/rest/";
+	
+	CARTACEP.cadOperacao.buttonEnter = function(){
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("loginBtnEnd").click();
+		}
+	}
+	
 	CARTACEP.cadOperacao.cadastrar = function(){
-
-
 		var cadOperacao = new Object();
 		cadOperacao.nome = document.frmAddCadOperacao.exampleInputEmail1.value;
 
@@ -115,6 +121,9 @@ $(document).ready (function(){
 		}
 	}
 	CARTACEP.cadOperacao.buscar();
+	
+	
+	
 	CARTACEP.cadOperacao.exibirEdicao = function(id){
 		$.ajax({
 			type:"GET",

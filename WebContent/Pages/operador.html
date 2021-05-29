@@ -165,12 +165,12 @@
                         <div class="form-group">
                           <label for="exampleInputNome">Nome</label>
                           <input type="text" class="form-control" id="exampleInputNome" aria-describedby="emailHelp"
-                            placeholder="Nome do Operador">
+                            placeholder="Nome do Operador" onkeyup='CARTACEP.operador.buttonEnter()'>
                         </div>
                         <div class="form-group">
                           <label for="exampleInputMatricula">Matrícula</label>
                           <input type="text" class="form-control" id="exampleInputMatricula" aria-describedby="emailHelp"
-                            placeholder="Matrícula">
+                            placeholder="Matrícula" onkeyup='CARTACEP.operador.buttonEnter()'>
                         </div>
                         <div class="form-group">
                           <label for="exampleInputFone">Telefone</label>
@@ -179,11 +179,11 @@
                         </div>
                         <div class="form-group">
                           <label for="exampleInputPassword">Senha</label>
-                          <input type="password" class="form-control" id="exampleInputPassword" placeholder="Mínimo de 6 dígitos">
+                          <input type="password" class="form-control" id="exampleInputPassword" placeholder="Mínimo de 6 dígitos" onkeyup='CARTACEP.operador.buttonEnter()'>
                         </div>
                         <div class="form-group">
                           <label for="exampleInputPasswordRepeat">Repetir Senha</label>
-                          <input type="password" class="form-control" id="exampleInputPasswordRepeat" placeholder="Mínimo de 6 dígitos">
+                          <input type="password" class="form-control" id="exampleInputPasswordRepeat" placeholder="Mínimo de 6 dígitos" onkeyup='CARTACEP.operador.buttonEnter()'>
                         </div>
                         <div class="form-group">
                           <a type="button" class="btn btn-primary btn-block" onclick="CARTACEP.operador.verifyMatricula()" id="cadOpBtn">Cadastrar</a>
