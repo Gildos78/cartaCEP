@@ -6,6 +6,7 @@ $(document).ready (function(){
 	CARTACEP.PATH = "/CartaCEP/rest/";
 	
 	CARTACEP.usuario.verifyEmail = function(){
+		event.preventDefault();
 		var email = true
 		var checkEmail = true;
 		var valorBusca = $("#exampleInputEmail").val();
@@ -13,7 +14,7 @@ $(document).ready (function(){
 		var expRegNome = new RegExp(/[A-zÀ-ü]{3,}([ ]{1}[A-zÀ-ü]{2,})|([A-zÀ-ü]{3,})+$/);
 			if (!expRegNome.test(nome)){
 				Swal.fire('Preencha o campo Nome corretamente.')
-				document.frmSignIn.exampleInputFirstName.focus();
+				//document.frmSignIn.exampleInputFirstName.focus();
 				return false;
 			}
 			var sen = document.frmSignIn.exampleInputPassword.value;
@@ -21,7 +22,7 @@ $(document).ready (function(){
 			
 			if (!expRegMat.test(sen)){
 				Swal.fire("Preencha o campo Senha com o mínimo de 6 caracteres com números e letras..");
-				document.frmSignIn.exampleInputPassword.focus();
+				//document.frmSignIn.exampleInputPassword.focus();
 				return false;
 			}	
 			if(!  document.frmSignIn.exampleInputEmail.value==""){
