@@ -35,7 +35,6 @@ $(document).ready (function(){
 						  return false;
 						}
 				}
-			console.log(document.frmSignIn.exampleInputPasswordRepeat.value)
 		if( document.frmSignIn.exampleInputPasswordRepeat.value!==sen){
 			Swal.fire({
 				icon: 'error',
