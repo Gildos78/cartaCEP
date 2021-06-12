@@ -563,5 +563,62 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		}
 		return true;
 	}
-	
+	public List<JsonObject> getListProduction (String date30DaysPrior){
+
+		String comando = "SELECT *, maquina.nome as maquina, operacao.nome as operacao, especificacoes.espMinimo as especMin,  especificacoes.espMaximo as especMax, subgrupo.quantidade as subgrupo FROM producao "+
+				"inner join maquina on producao.idmaquina = maquina.idmaquina "+
+				"inner join operacao on producao.idOperacao = operacao.idOperacao "+
+				"inner join especificacoes on especificacoes.codeProd=producao.codeRefEsp "+
+				"inner join subgrupo on subgrupo.codeProd=producao.codeRefEsp ";
+		
+		//comando += "ORDER BY producao.cliente ASC";		
+		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
+		JsonObject producao = null;
+
+		try {
+
+			Statement stmt = conexao.createStatement();
+			ResultSet rs = stmt.executeQuery(comando);
+
+			while(rs.next()) {
+
+				int id = rs.getInt("idProducao");
+				String codigo = rs.getString("codigo");
+				String nomeCliente = rs.getString("cliente");
+				String dataI = rs.getString("dataInicio");
+				String dataF = rs.getString("dataFinal");
+				String descricao = rs.getString("descricao");
+				float espMin = rs.getFloat("especMin");
+				float espMax = rs.getFloat("especMax");
+				int numAm = rs.getInt("numAmostras");
+				String idOp = rs.getString("operacao");
+				String idMaq = rs.getString("maquina");
+				int subgrupo = rs.getInt("subgrupo");
+				int codeRefEsp = rs.getInt("codeRefEsp");
+				int contagemAtual  =rs.getInt("contagemAtual");
+
+				producao = new JsonObject();
+				producao.addProperty("id", id);
+				producao.addProperty("codigo", codigo);
+				producao.addProperty("cliente", nomeCliente);
+				producao.addProperty("dataInicio", dataI);
+				producao.addProperty("dataFinal", dataF);
+				producao.addProperty("descricao", descricao);
+				producao.addProperty("espMin", espMin);
+				producao.addProperty("espMax", espMax);
+				producao.addProperty("numAmostras", numAm);
+				producao.addProperty("operacao", idOp);
+				producao.addProperty("maquinaId", idMaq);
+				producao.addProperty("subgrupo", subgrupo);
+				producao.addProperty("codeRefEsp", codeRefEsp);
+				producao.addProperty("contagem", contagemAtual);
+
+				listaProducoes.add(producao);
+			}
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listaProducoes;
+	}
 }

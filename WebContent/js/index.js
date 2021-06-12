@@ -29,9 +29,39 @@ $(document).ready (function(){
 	window.setTimeout('CARTACEP.usuario.getProfile()', 300);
 	
 	CARTACEP.usuario.getMonthlyDate = function(){
+		var day
+		var month
 		var date = new Date(new Date().setDate(new Date().getDate() - 30));
-	
-		alert(date.getDay()+'/'+date.getMonth()+"/"+date.getYear())
+		if(date.getDate()>1&&date.getDate()<9){
+			alert(date.getDate())
+			day = "0"+date.getDate()
+		}else{
+			day = date.getDate()
+		}
+		if(date.getMonth()>1&&date.getMonth()<9){
+			
+			month = "0"+date.getMonth()
+		}else{
+			month = date.getMonth()
+		}
+		var date30DaysPrior = date.getFullYear()+"-"+month+"-"+day
+		alert(date30DaysPrior)
+		$.ajax({
+			type: "GET",
+			url: CARTACEP.PATH + "producao/getListProduction",
+			data: "date="+date30DaysPrior,
+			success: function(usuario){
+
+			},
+			error: function(info){
+				var a="Erro ao consultar os cadastros de usuário: "+info.status+" - "+info.statusText;
+				var b = a.replace(/'/g, '');
+				Swal.fire(b);
+			}
+		})
+		
+		
+		
 	};
 	
 	CARTACEP.usuario.getMonthlyDate()

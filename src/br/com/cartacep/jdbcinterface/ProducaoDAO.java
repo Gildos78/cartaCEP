@@ -23,4 +23,5 @@ public interface ProducaoDAO {
 	public Producao getTotalEsp(int code);
 	public boolean changeStatusFull(Producao producao);
 	public List<JsonObject> getTotalTeste(int code);
+	public List<JsonObject> getListProduction(String date30DaysPrior);
 }
