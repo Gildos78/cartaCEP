@@ -89,6 +89,7 @@ $(document).ready(function(){
 			});
 	}
 	CARTACEP.leitura.exibir = function(listaDeProducoes){
+		console.log(listaDeProducoes)
 		var listCount = 0;
 		var tabela = 
 			"<table class='table align-items-center table-flush table-hover'>"+

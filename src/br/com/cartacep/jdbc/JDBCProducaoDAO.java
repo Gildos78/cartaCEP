@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.google.gson.JsonObject;
@@ -564,12 +565,23 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		return true;
 	}
 	public List<JsonObject> getListProduction (String date30DaysPrior){
-
-		String comando = "SELECT *, maquina.nome as maquina, operacao.nome as operacao, especificacoes.espMinimo as especMin,  especificacoes.espMaximo as especMax, subgrupo.quantidade as subgrupo FROM producao "+
-				"inner join maquina on producao.idmaquina = maquina.idmaquina "+
-				"inner join operacao on producao.idOperacao = operacao.idOperacao "+
-				"inner join especificacoes on especificacoes.codeProd=producao.codeRefEsp "+
-				"inner join subgrupo on subgrupo.codeProd=producao.codeRefEsp ";
+		/*Pega a data de hoje*/
+		Calendar dataAtual = Calendar.getInstance();
+		int month = (dataAtual .get(Calendar.MONTH));	
+		int day = dataAtual .get(Calendar.DAY_OF_MONTH);	
+		String mes = Integer.toString(dataAtual .get(Calendar.MONTH));
+		if(month>1 && month<9) {
+			 mes = "0"+(Integer.toString(dataAtual .get(Calendar.MONTH)+1));
+		}
+		String diaDoMes = Integer.toString(dataAtual .get(Calendar.DAY_OF_MONTH));
+		if(day>1 && day<9) {
+			diaDoMes = "0"+(Integer.toString(dataAtual .get(Calendar.DAY_OF_MONTH)));
+		}	
+		String ano = Integer.toString(dataAtual .get(Calendar.YEAR));			
+		String today = ano+"-"+mes+"-"+diaDoMes;
+		/**/
+		String comando = "select producao.* from producao " + 
+				"where date(dataInicio) BETWEEN  '"+date30DaysPrior+"' and '"+today+"' ";
 		
 		//comando += "ORDER BY producao.cliente ASC";		
 		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
@@ -587,14 +599,8 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 				String nomeCliente = rs.getString("cliente");
 				String dataI = rs.getString("dataInicio");
 				String dataF = rs.getString("dataFinal");
-				String descricao = rs.getString("descricao");
-				float espMin = rs.getFloat("especMin");
-				float espMax = rs.getFloat("especMax");
-				int numAm = rs.getInt("numAmostras");
-				String idOp = rs.getString("operacao");
-				String idMaq = rs.getString("maquina");
-				int subgrupo = rs.getInt("subgrupo");
 				int codeRefEsp = rs.getInt("codeRefEsp");
+				Boolean status = rs.getBoolean("statusFull");
 				int contagemAtual  =rs.getInt("contagemAtual");
 
 				producao = new JsonObject();
@@ -603,14 +609,8 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 				producao.addProperty("cliente", nomeCliente);
 				producao.addProperty("dataInicio", dataI);
 				producao.addProperty("dataFinal", dataF);
-				producao.addProperty("descricao", descricao);
-				producao.addProperty("espMin", espMin);
-				producao.addProperty("espMax", espMax);
-				producao.addProperty("numAmostras", numAm);
-				producao.addProperty("operacao", idOp);
-				producao.addProperty("maquinaId", idMaq);
-				producao.addProperty("subgrupo", subgrupo);
 				producao.addProperty("codeRefEsp", codeRefEsp);
+				producao.addProperty("status", status);
 				producao.addProperty("contagem", contagemAtual);
 
 				listaProducoes.add(producao);

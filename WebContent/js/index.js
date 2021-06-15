@@ -40,18 +40,18 @@ $(document).ready (function(){
 		}
 		if(date.getMonth()>1&&date.getMonth()<9){
 			
-			month = "0"+date.getMonth()
+			month = "0"+(date.getMonth()+1)
 		}else{
-			month = date.getMonth()
+			month = date.getMonth()+1
 		}
 		var date30DaysPrior = date.getFullYear()+"-"+month+"-"+day
-		alert(date30DaysPrior)
 		$.ajax({
 			type: "GET",
 			url: CARTACEP.PATH + "producao/getListProduction",
 			data: "date="+date30DaysPrior,
-			success: function(usuario){
-
+			success: function(data){
+				data = JSON.parse(data)
+				CARTACEP.usuario.getData(data)
 			},
 			error: function(info){
 				var a="Erro ao consultar os cadastros de usuário: "+info.status+" - "+info.statusText;
@@ -65,8 +65,54 @@ $(document).ready (function(){
 	};
 	
 	CARTACEP.usuario.getMonthlyDate()
-	CARTACEP.usuario.getData = function(){
+	CARTACEP.usuario.getData = function(listaDeProducoes){
+		var trueCount = 0
+		var incomplete = 0
+		var unstarted = 0
+		var arrayCount = []
+		for(var i=0;i<listaDeProducoes.length;i++){
+			if(listaDeProducoes[i].status==true){
+				trueCount+=1
+			}
+			if(listaDeProducoes[i].contagem>0&&listaDeProducoes[i].status==false){
+				incomplete+=1
+			}
+			if(listaDeProducoes[i].contagem==0&&listaDeProducoes[i].status==false){
+				unstarted+=1
+			}
+		}
+		arrayCount.push(trueCount)
+		arrayCount.push(incomplete)
+		arrayCount.push(unstarted)
+		console.log(arrayCount)
 		
+		 var MeSeContext = document.getElementById("MeSeStatusCanvas").getContext("2d");
+	    var MeSeData = {
+	        labels: [
+	            "ME",
+	            "SE"
+	        ],
+	        datasets: [
+	            {
+	                label: "Test",
+	                data: [100, 75],
+	                backgroundColor: ["#669911", "#119966" ],
+	                hoverBackgroundColor: ["#66A2EB", "#FCCE56"]
+	            }]
+	    };
+
+	var MeSeChart = new Chart(MeSeContext, {
+	    type: 'horizontalBar',
+	    data: MeSeData,
+	    options: {
+	        scales: {
+	            yAxes: [{
+	                stacked: true
+	            }]
+	        }
+
+	    }
+	});
 	};
 	
 });
