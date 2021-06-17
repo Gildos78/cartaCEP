@@ -84,35 +84,21 @@ $(document).ready (function(){
 		arrayCount.push(trueCount)
 		arrayCount.push(incomplete)
 		arrayCount.push(unstarted)
-		console.log(arrayCount)
+		var totalProd = arrayCount[0]+arrayCount[1]+arrayCount[2]
+		var percInc =(arrayCount[1]*100)/ totalProd
+		var percCom =(arrayCount[0]*100)/ totalProd
+		var percEmpty =(arrayCount[2]*100)/ totalProd
 		
-		 var MeSeContext = document.getElementById("MeSeStatusCanvas").getContext("2d");
-	    var MeSeData = {
-	        labels: [
-	            "ME",
-	            "SE"
-	        ],
-	        datasets: [
-	            {
-	                label: "Test",
-	                data: [100, 75],
-	                backgroundColor: ["#669911", "#119966" ],
-	                hoverBackgroundColor: ["#66A2EB", "#FCCE56"]
-	            }]
-	    };
+		/*Mostra dos dados coletados*/
+		$('#totalInc').html("<b>"+arrayCount[1]+" of "+totalProd+" Produções</b>");
+		$('#progIncom').html("<div class='progress-bar bg-warning' role='progressbar'	style='width: "+percInc+"%'  aria-valuenow='"+arrayCount[1]+"' aria-valuemin='0'aria-valuemax='"+totalProd+"'></div>");
+		$('#totalCom').html("<b>"+arrayCount[0]+" of "+totalProd+" Produções</b>");
+		$('#progCom').html("<div class='progress-bar bg-success' role='progressbar'	style='width: "+percCom+"%'  aria-valuenow='"+arrayCount[0]+"' aria-valuemin='0'aria-valuemax='"+totalProd+"'></div>");
+		$('#totalEmpty').html("<b>"+arrayCount[2]+" of "+totalProd+" Produções</b>");
+		$('#progEmpty').html("<div class='progress-bar bg-danger' role='progressbar'	style='width: "+percEmpty+"%'  aria-valuenow='50' aria-valuemin='0'aria-valuemax='"+totalProd+"'></div>");
 
-	var MeSeChart = new Chart(MeSeContext, {
-	    type: 'horizontalBar',
-	    data: MeSeData,
-	    options: {
-	        scales: {
-	            yAxes: [{
-	                stacked: true
-	            }]
-	        }
+		
+		
 
-	    }
-	});
-	};
-	
+	};	
 });

@@ -163,52 +163,41 @@
 							<div class="card mb-4">
 								<div
 									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">Amostras mensais</h6>									
+									<h6 class="m-0 font-weight-bold text-primary">Produções do último mês</h6>									
 								</div>
 								<div class="card-body">
 									<div class="mb-3">
 										<div class="small text-gray-500">
 											Amostras Insuficientes
-											<div class="small float-right">
-												<b>100 of 200 Produções</b>
+											<div class="small float-right" id="totalInc">
+												
 											</div>
 										</div>
-										<div class="progress" style="height: 12px;">
-											<div class="progress-bar bg-warning" role="progressbar"
-												style="width: 50%" aria-valuenow="100" aria-valuemin="0"
-												aria-valuemax="200"></div>
+										<div class="progress" style="height: 12px;" id="progIncom">
+											
 										</div>
 									</div>
 									<div class="mb-3">
 										<div class="small text-gray-500">
 											Completas
-											<div class="small float-right">
-												<b>50 of 200 Items</b>
+											<div class="small float-right" id="totalCom">
 											</div>
 										</div>
-										<div class="progress" style="height: 12px;">
-											<div class="progress-bar bg-success" role="progressbar"
-												style="width: 25%" aria-valuenow="50" aria-valuemin="0"
-												aria-valuemax="200"></div>
+										<div class="progress" style="height: 12px;" id="progCom">
 										</div>
 										
 									</div>
 									<div class="mb-3">
 										<div class="small text-gray-500">
 											Sem Amostras
-											<div class="small float-right">
+											<div class="small float-right"  id="totalEmpty">
 												<b>50 of 200 Items</b>
 											</div>
 										</div>
-										<div class="progress" style="height: 12px;">
-											<div class="progress-bar bg-danger" role="progressbar"
-												style="width: 25%" aria-valuenow="50" aria-valuemin="0"
-												aria-valuemax="200"></div>
+										<div class="progress" style="height: 12px;" id="progEmpty">
 										</div>
 									</div>
-										<div id="MeSeStatusCanvas" style="height: 300px; width: 100%;"></div>
 								</div>
-
 							</div>
 						</div>
 
@@ -246,6 +235,7 @@
 		<script src="../js/ruang-admin.min.js"></script>
 		<script src="../vendor/chart.js/Chart.min.js"></script>
 		<script src="../js/demo/chart-area-demo.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
 </body>
 
 </html>
