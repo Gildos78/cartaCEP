@@ -79,7 +79,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 				"inner join operacao on producao.idOperacao = operacao.idOperacao "+
 				"inner join especificacoes on especificacoes.codeProd=producao.codeRefEsp "+
 				"inner join subgrupo on subgrupo.codeProd=producao.codeRefEsp ";
-		
+
 		//comando += "ORDER BY producao.cliente ASC";		
 		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
 		JsonObject producao = null;
@@ -309,11 +309,11 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 				"inner join maquina on producao.idmaquina = maquina.idmaquina "+
 				"inner join operacao on producao.idOperacao = operacao.idOperacao "+
 				"inner join subgrupo on subgrupo.codeProd=producao.codeRefEsp ";
-		
+
 		comando += "ORDER BY producao.cliente ASC";		
 		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
 		JsonObject producao = null;
-		
+
 		try {
 
 			Statement stmt = conexao.createStatement();
@@ -372,7 +372,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 				int id = rs.getInt("idSubgrupo");
 				int codigo = rs.getInt("codeProd");
 				int quantidade = rs.getInt("quantidade");
-				
+
 				producao.setIdSub(id);
 				producao.setCodeRefEsp(codigo);
 				producao.setSubgrupo(quantidade);
@@ -391,7 +391,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 				+ "where medicoes.idEsp = "+id+" ";
 		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
 		JsonObject producao = null;
-		
+
 		try {
 
 			Statement stmt = conexao.createStatement();
@@ -401,11 +401,11 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 
 				int numAmostras = rs.getInt("numAmostras");				
 				int quantidade = rs.getInt("quantidade");
-				
+
 				producao = new JsonObject();
 				producao.addProperty("numAmostras", numAmostras);
 				producao.addProperty("quantidade", quantidade);
-				
+
 
 				listaProducoes.add(producao);
 			}
@@ -416,18 +416,18 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		return listaProducoes;
 	}
 	public Producao getProdInd(int  code) {
-		
-		
+
+
 		String comando = "SELECT *, maquina.nome as maquina, operacao.nome as operacao, subgrupo.quantidade as subgrupo FROM producao "+
 				"inner join maquina on producao.idmaquina = maquina.idmaquina "+
 				"inner join operacao on producao.idOperacao = operacao.idOperacao "+
 				"inner join subgrupo on subgrupo.codeProd=producao.codeRefEsp "+
 				"WHERE codeRefEsp = ?";
-		
+
 		Producao producao= new Producao();
 		try {
 			getTotalSamples(code);
-			
+
 			PreparedStatement p = this.conexao.prepareStatement(comando);
 			p.setInt(1, code);
 			ResultSet rs = p.executeQuery();
@@ -460,7 +460,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return producao;
 	}
 	public Producao getTotalSamples(int  code) {
@@ -471,37 +471,37 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		Producao producao= new Producao();
 		try {
 			PreparedStatement p = this.conexao.prepareStatement(comando);
-			
+
 			p.setInt(1, code);
 			ResultSet rs = p.executeQuery();
 			while (rs.next()) {
-			int count = rs.getInt("count(*)");
-			int Amostras = rs.getInt("Amostras");
-			int Especificacoes = rs.getInt("Especificacoes");
-			int Subgrupo = rs.getInt("Subgrupo");
-			int codigo = rs.getInt("Code");
-			producao.setTotalAmostras(count);
-			producao.setNumAmostras(Amostras);
-			producao.setTotalEsp(Especificacoes);
-			producao.setSubgrupo(Subgrupo);
-			producao.setCodeRefEsp(codigo);
+				int count = rs.getInt("count(*)");
+				int Amostras = rs.getInt("Amostras");
+				int Especificacoes = rs.getInt("Especificacoes");
+				int Subgrupo = rs.getInt("Subgrupo");
+				int codigo = rs.getInt("Code");
+				producao.setTotalAmostras(count);
+				producao.setNumAmostras(Amostras);
+				producao.setTotalEsp(Especificacoes);
+				producao.setSubgrupo(Subgrupo);
+				producao.setCodeRefEsp(codigo);
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return producao;
 	}
-	
+
 	public List<JsonObject> getTotalTeste (int code){
 
 		String comando = "select subgrupo_medicoes.valorMedicao, producao.numAmostras as Amostras, producao.totalEsp as Especificacoes, producao.codeRefEsp as Code, subgrupo.quantidade as Subgrupo from subgrupo_medicoes "
 				+ "inner join medicoes on medicoes.idMedicoes = subgrupo_medicoes.idMedicoes and medicoes.codeProd = "+code+" "
 				+ "inner join producao on producao.codeRefEsp = medicoes.codeProd "
 				+ "inner join subgrupo on subgrupo.codeProd = medicoes.codeProd ";
-			
+
 		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
 		JsonObject producao = null;
-		
+
 		try {
 
 			Statement stmt = conexao.createStatement();
@@ -518,7 +518,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 				producao.addProperty("Especificacoes", Especificacoes);
 				producao.addProperty("Subgrupo",Subgrupo);
 				producao.addProperty("Code",Code);
-				
+
 
 				listaProducoes.add(producao);
 			}
@@ -528,7 +528,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		}
 		return listaProducoes;
 	}
-	
+
 	public Producao getTotalEsp(int  code) {
 		String comando = "select count(*) as total from especificacoes "
 				+ " where especificacoes.codeProd   = ? ";
@@ -538,8 +538,8 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 			p.setInt(1, code);
 			ResultSet rs = p.executeQuery();
 			while (rs.next()) {
-			int count = rs.getInt("total");
-			producao.setTotalEsp(count);
+				int count = rs.getInt("total");
+				producao.setTotalEsp(count);
 
 			}
 		}catch (Exception e) {
@@ -571,7 +571,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		int day = dataAtual .get(Calendar.DAY_OF_MONTH);	
 		String mes = Integer.toString(dataAtual .get(Calendar.MONTH));
 		if(month>1 && month<9) {
-			 mes = "0"+(Integer.toString(dataAtual .get(Calendar.MONTH)+1));
+			mes = "0"+(Integer.toString(dataAtual .get(Calendar.MONTH)+1));
 		}
 		String diaDoMes = Integer.toString(dataAtual .get(Calendar.DAY_OF_MONTH));
 		if(day>1 && day<9) {
@@ -582,7 +582,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		/**/
 		String comando = "select producao.* from producao " + 
 				"where date(dataInicio) BETWEEN  '"+date30DaysPrior+"' and '"+today+"' ";
-		
+
 		//comando += "ORDER BY producao.cliente ASC";		
 		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
 		JsonObject producao = null;
@@ -619,6 +619,53 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		return listaProducoes;
+	}
+	public List<JsonObject> getProductionCountYear (String monthYear){
+		int i = 0;
+		String data = "";
+		
+		Calendar dataAtual = Calendar.getInstance();
+		int year = (dataAtual .get(Calendar.YEAR));	
+		while(i!=12) {
+			int a = i+1;
+//			if(i>0&&i<10) {
+//				data = year+"-"+"0"+a;
+//			}else {
+//				data = year+"-"+a;
+//			}
+			data = year+"-"+a;
+		}
+		System.out.println("data"+data);
+//		if(i<12) {
+			//int year = (dataAtual .get(Calendar.YEAR));	
+		String comando = "select count(*) as total from producao where date(dataInicio) like '"+monthYear+"%';";
+
+		//comando += "ORDER BY producao.cliente ASC";		
+		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
+		JsonObject producao = null;
+
+		try {
+			
+				Statement stmt = conexao.createStatement();
+				ResultSet rs = stmt.executeQuery(comando);
+
+				while(rs.next()) {
+
+					int total = rs.getInt("total");
+
+					producao = new JsonObject();
+					producao.addProperty("total", total);
+
+					listaProducoes.add(producao);
+				}
+
+			
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return listaProducoes;
 	}
 }

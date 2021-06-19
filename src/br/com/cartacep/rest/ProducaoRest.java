@@ -572,4 +572,26 @@ public class ProducaoRest extends UtilRest{
 			return this.buildErrorResponse(e.getMessage());
 		}				
 	}
+	@GET
+	@Path("/getProductionCountYear")
+	@Consumes("application/*")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getProductionCountYear(@QueryParam("date") String  monthYear) {
+		try {
+			List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
+
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
+			listaProducoes = jdbcProducao.getProductionCountYear(monthYear);
+
+			conec.fecharConexao();
+
+			String json = new Gson().toJson(listaProducoes);
+			return this.buildResponse(json);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return this.buildErrorResponse(e.getMessage());
+		}				
+	}
 }
