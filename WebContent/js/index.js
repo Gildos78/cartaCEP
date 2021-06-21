@@ -103,29 +103,93 @@ $(document).ready (function(){
 		var dadosMes
 		/**** Grafico *****/
 
-			var monthYear = new Date().getFullYear()
+		var monthYear = new Date().getFullYear()
 
-			$.ajax({
-				type: "GET",
-				url: CARTACEP.PATH + "producao/getProductionCountYear",
-				data: "date="+monthYear,
-				success: function(data){
-					data = JSON.parse(data)
-					
-					CARTACEP.usuario.monthlyChart()
-					console.log(data)
-				},
-				error: function(info){
-					var a="Erro ao consultar os cadastros de usuário: "+info.status+" - "+info.statusText;
-					var b = a.replace(/'/g, '');
-					Swal.fire(b);
-				}
-			})		
-		
+		$.ajax({
+			type: "GET",
+			url: CARTACEP.PATH + "producao/getProductionCountYear",
+			data: "date="+monthYear,
+			success: function(data){
+				data = JSON.parse(data)
+
+				CARTACEP.usuario.monthlyChart(data)
+				console.log(data)
+			},
+			error: function(info){
+				var a="Erro ao consultar os cadastros de usuário: "+info.status+" - "+info.statusText;
+				var b = a.replace(/'/g, '');
+				Swal.fire(b);
+			}
+		})		
+
 	};	
-	CARTACEP.usuario.monthlyChart = function(){
-var dataa = [1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0]
-		
+	CARTACEP.usuario.monthlyChart = function(fullYearList){
+		var countJan = 0;
+		var countFev = 0;
+		var countMar = 0;
+		var countAbr = 0;
+		var countMai = 0;
+		var countJun = 0;
+		var countJul = 0;
+		var countAgo = 0;
+		var countSet = 0;
+		var countOut = 0;
+		var countNov = 0;
+		var countDez = 0;
+
+		var fullYear = [];
+
+		for(var i=0;i<fullYearList.length;i++){
+			if(fullYearList[i].dataInicio.match(/.*-01-.*/)&&fullYearList[i].status==true){
+				countJan+=1
+			}
+			if(fullYearList[i].dataInicio.match(/.*-02-.*/)&&fullYearList[i].status==true){
+				countFev+=1
+			}
+			if(fullYearList[i].dataInicio.match(/.*-03-.*/)&&fullYearList[i].status==true){
+				countMar+=1
+			}
+			if(fullYearList[i].dataInicio.match(/.*-04-.*/)&&fullYearList[i].status==true){
+				countAbr+=1
+			}
+			if(fullYearList[i].dataInicio.match(/.*-05-.*/)&&fullYearList[i].status==true){
+				countMai+=1
+			}
+			if(fullYearList[i].dataInicio.match(/.*-06-.*/)&&fullYearList[i].status==true){
+				countJun+=1
+			}
+			if(fullYearList[i].dataInicio.match(/.*-07-.*/)&&fullYearList[i].status==true){
+				countJul+=1
+			}
+			if(fullYearList[i].dataInicio.match(/.*-08-.*/)&&fullYearList[i].status==true){
+				countAgo+=1
+			}
+			if(fullYearList[i].dataInicio.match(/.*-09-.*/)&&fullYearList[i].status==true){
+				countSet+=1
+			}
+			if(fullYearList[i].dataInicio.match(/.*-10-.*/)&&fullYearList[i].status==true){
+				countOut+=1
+			}
+			if(fullYearList[i].dataInicio.match(/.*-11-.*/)&&fullYearList[i].status==true){
+				countNov+=1
+			}
+			if(fullYearList[i].dataInicio.match(/.*-12-.*/)&&fullYearList[i].status==true){
+				countDez+=1
+			}
+		}
+		fullYear.push(countJan)
+		fullYear.push(countFev)
+		fullYear.push(countMar)
+		fullYear.push(countAbr)
+		fullYear.push(countMai)
+		fullYear.push(countJun)
+		fullYear.push(countJul)
+		fullYear.push(countAgo)
+		fullYear.push(countSet)
+		fullYear.push(countOut)
+		fullYear.push(countNov)
+		fullYear.push(countDez)
+
 		var ctx = document.getElementById("myAreaChart");
 		var myLineChart = new Chart(ctx, {
 			type: 'line',
@@ -144,7 +208,7 @@ var dataa = [1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0]
 					pointHoverBorderColor: "rgba(78, 115, 223, 1)",
 					pointHitRadius: 10,
 					pointBorderWidth: 2,
-					data: [1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0],
+					data: fullYear,
 				}],
 			},
 			options: {
@@ -172,7 +236,7 @@ var dataa = [1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0]
 					}],
 					yAxes: [{
 						ticks: {
-							maxTicksLimit: 5,
+							maxTicksLimit: 2,
 							padding: 10,
 							// Include a dollar sign in the ticks
 							callback: function(value, index, values) {
