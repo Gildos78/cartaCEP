@@ -102,16 +102,8 @@ $(document).ready (function(){
 		var arraymonthYear = []
 		var dadosMes
 		/**** Grafico *****/
-//		for (var i=0;i<12; i++){
-			var a = i+1
-			if(a>=1&&a<=9){
-				a="0"+a
-			}
-			if(i>=10){
-				a=i+1
-			}
-			var dateSearch = new Date().getFullYear()
-			var monthYear = dateSearch+"-"+a
+
+			var monthYear = new Date().getFullYear()
 
 			$.ajax({
 				type: "GET",
@@ -119,19 +111,20 @@ $(document).ready (function(){
 				data: "date="+monthYear,
 				success: function(data){
 					data = JSON.parse(data)
-					dadosMes = data[0].total
-					arraymonthYear.push(dadosMes)
-					console.log(arraymonthYear)
+					
+					CARTACEP.usuario.monthlyChart()
+					console.log(data)
 				},
 				error: function(info){
 					var a="Erro ao consultar os cadastros de usuário: "+info.status+" - "+info.statusText;
 					var b = a.replace(/'/g, '');
 					Swal.fire(b);
 				}
-			})
-//		}
+			})		
 		
-		var dataa = [1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0]
+	};	
+	CARTACEP.usuario.monthlyChart = function(){
+var dataa = [1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0]
 		
 		var ctx = document.getElementById("myAreaChart");
 		var myLineChart = new Chart(ctx, {
@@ -221,5 +214,5 @@ $(document).ready (function(){
 				}
 			}
 		});
-	};	
+	}
 });

@@ -622,26 +622,12 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		return listaProducoes;
 	}
 	public List<JsonObject> getProductionCountYear (String monthYear){
-		int i = 0;
-		String data = "";
+		String beginDate = monthYear+"-01-01";
+		String finalDate = monthYear+"-12-31";
 		
-		Calendar dataAtual = Calendar.getInstance();
-		int year = (dataAtual .get(Calendar.YEAR));	
-		while(i!=12) {
-			int a = i+1;
-//			if(i>0&&i<10) {
-//				data = year+"-"+"0"+a;
-//			}else {
-//				data = year+"-"+a;
-//			}
-			data = year+"-"+a;
-		}
-		System.out.println("data"+data);
-//		if(i<12) {
-			//int year = (dataAtual .get(Calendar.YEAR));	
-		String comando = "select count(*) as total from producao where date(dataInicio) like '"+monthYear+"%';";
+		String comando = "select producao.* from producao " + 
+				"where date(dataInicio) BETWEEN  '"+beginDate+"' and '"+finalDate+"' ";
 
-		//comando += "ORDER BY producao.cliente ASC";		
 		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
 		JsonObject producao = null;
 
@@ -651,11 +637,24 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 				ResultSet rs = stmt.executeQuery(comando);
 
 				while(rs.next()) {
-
-					int total = rs.getInt("total");
+					int id = rs.getInt("idProducao");
+					String codigo = rs.getString("codigo");
+					String nomeCliente = rs.getString("cliente");
+					String dataI = rs.getString("dataInicio");
+					String dataF = rs.getString("dataFinal");
+					int codeRefEsp = rs.getInt("codeRefEsp");
+					Boolean status = rs.getBoolean("statusFull");
+					int contagemAtual  =rs.getInt("contagemAtual");
 
 					producao = new JsonObject();
-					producao.addProperty("total", total);
+					producao.addProperty("id", id);
+					producao.addProperty("codigo", codigo);
+					producao.addProperty("cliente", nomeCliente);
+					producao.addProperty("dataInicio", dataI);
+					producao.addProperty("dataFinal", dataF);
+					producao.addProperty("codeRefEsp", codeRefEsp);
+					producao.addProperty("status", status);
+					producao.addProperty("contagem", contagemAtual);
 
 					listaProducoes.add(producao);
 				}
