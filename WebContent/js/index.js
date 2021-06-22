@@ -280,17 +280,44 @@ $(document).ready (function(){
 		});
 		var thisMonth = 0
 		var lastMonth = 0
+		var comp = 0
+		var resultThisMonth
+		var arrow = ""
 		for(var i=0;i<fullYear.length;i++){
 			
 			if((new Date().getMonth()+3)==(i+3)&&i>0){
 				thisMonth = fullYear[i+2]
 				lastMonth = fullYear[i+1]
+				console.log(i+3)
+				comp = thisMonth - lastMonth
 			}else if(i==0){
 				thisMonth = fullYear[i]
 			}
 		}
+		if(lastMonth==0){
+			resultThisMonth = thisMonth*100
+		}else if(thisMonth==0){
+			resultThisMonth = comp*100
+		}else
+		{
+			resultThisMonth = ((comp*100)/lastMonth)
+		}
+		if(resultThisMonth<-99){
+			arrow = "<span class='text-danger mr-2'><i class='fa fa-arrow-down'></i>"
+				resultThisMonth=(Math.abs(resultThisMonth))
+		}else if(resultThisMonth<0&&resultThisMonth>-99){
+			arrow = "<span class='text-warning mr-2'><i class='fa fa-arrow-down'></i>"
+				resultThisMonth=(Math.abs(resultThisMonth))
+		}else{
+			arrow = "<span class='text-success mr-2'><i class='fa fa-arrow-up'></i>"
+		}
 		
-		var resultThisMonth = ((thisMonth*100)/lastMonth)
-		console.log(resultThisMonth)
+		$('#widgetProd').html("<div class='text-xs font-weight-bold text-uppercase mb-1'>Produção</div>"+
+											"<div class='h5 mb-0 font-weight-bold text-gray-800'>"+thisMonth+"</div>"+
+											"<div class='mt-2 mb-0 text-muted text-xs'>"+
+											""+arrow+" "+resultThisMonth+"%</span>"+													
+											"</div>");
+
+		console.log(resultThisMonth+" lastMonth "+lastMonth+" thisMonth "+thisMonth)
 	}
 });
