@@ -113,7 +113,6 @@ $(document).ready (function(){
 				data = JSON.parse(data)
 
 				CARTACEP.usuario.monthlyChart(data)
-				console.log(data)
 			},
 			error: function(info){
 				var a="Erro ao consultar os cadastros de usuário: "+info.status+" - "+info.statusText;
@@ -176,6 +175,7 @@ $(document).ready (function(){
 			if(fullYearList[i].dataInicio.match(/.*-12-.*/)&&fullYearList[i].status==true){
 				countDez+=1
 			}
+			
 		}
 		fullYear.push(countJan)
 		fullYear.push(countFev)
@@ -236,7 +236,7 @@ $(document).ready (function(){
 					}],
 					yAxes: [{
 						ticks: {
-							maxTicksLimit: 2,
+							maxTicksLimit: 5,
 							padding: 10,
 							// Include a dollar sign in the ticks
 							callback: function(value, index, values) {
@@ -278,5 +278,19 @@ $(document).ready (function(){
 				}
 			}
 		});
+		var thisMonth = 0
+		var lastMonth = 0
+		for(var i=0;i<fullYear.length;i++){
+			
+			if((new Date().getMonth()+3)==(i+3)&&i>0){
+				thisMonth = fullYear[i+2]
+				lastMonth = fullYear[i+1]
+			}else if(i==0){
+				thisMonth = fullYear[i]
+			}
+		}
+		
+		var resultThisMonth = ((thisMonth*100)/lastMonth)
+		console.log(resultThisMonth)
 	}
 });
