@@ -387,7 +387,7 @@ $(document).ready (function(){
 				
 				if((new Date().getMonth()+1)==(i+1)&&i>0){
 					thisMonth = arrayMonth[i]
-					lastMonth = arrayMonth[i-1]
+					lastMonthT = arrayMonth[i-1]
 					comp = thisMonth - lastMonthT
 				}else if(i==0){
 					thisMonth = arrayMonth[i]
