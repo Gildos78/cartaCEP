@@ -30,7 +30,9 @@ import com.sun.jersey.multipart.FormDataParam;
 
 import br.com.cartacep.bd.Conexao;
 import br.com.cartacep.jdbc.JDBCProducaoDAO;
+import br.com.cartacep.jdbc.JDBCUsuarioDAO;
 import br.com.cartacep.modelo.Producao;
+import br.com.cartacep.modelo.Usuario;
 
 
 @Path("producao")
@@ -584,6 +586,51 @@ public class ProducaoRest extends UtilRest{
 			Connection conexao = conec.abrirConexao();
 			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
 			listaProducoes = jdbcProducao.getProductionCountYear(monthYear);
+
+			conec.fecharConexao();
+
+			String json = new Gson().toJson(listaProducoes);
+			return this.buildResponse(json);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return this.buildErrorResponse(e.getMessage());
+		}				
+	}
+	@GET
+	@Path("/getProductionLastDec")
+	@Consumes("application/*")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getProductionLastDec(@QueryParam("date") String  monthYear) {
+		try {
+			List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
+
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
+			listaProducoes = jdbcProducao.getProductionLastDec(monthYear);
+
+			conec.fecharConexao();
+
+			String json = new Gson().toJson(listaProducoes);
+			return this.buildResponse(json);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return this.buildErrorResponse(e.getMessage());
+		}				
+	}
+	@GET
+	@Path("/getMonthlyReadingCount")
+	@Produces(MediaType.APPLICATION_JSON)
+
+	public Response getMonthlyReadingCount(@QueryParam("dateToday")String dateToday) {
+
+		try {
+			List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
+
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
+			listaProducoes = jdbcProducao.getMonthlyReadingCount(dateToday);
 
 			conec.fecharConexao();
 

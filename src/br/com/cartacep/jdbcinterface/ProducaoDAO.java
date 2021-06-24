@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gson.JsonObject;
 
 import br.com.cartacep.modelo.Producao;
+import br.com.cartacep.modelo.Usuario;
 
 public interface ProducaoDAO {
 	public boolean inserir (Producao producao);
@@ -25,4 +26,7 @@ public interface ProducaoDAO {
 	public List<JsonObject> getTotalTeste(int code);
 	public List<JsonObject> getListProduction(String date30DaysPrior);
 	public List<JsonObject> getProductionCountYear(String monthYear);
+	public List<JsonObject> getProductionLastDec(String monthYear);
+	public List<JsonObject> getMonthlyReadingCount(String producao);
+
 }

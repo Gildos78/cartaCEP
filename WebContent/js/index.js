@@ -27,24 +27,29 @@ $(document).ready (function(){
 		})
 	}
 	window.setTimeout('CARTACEP.usuario.getProfile()', 300);
+	
+	 date = function(dateToday){
+			var day
+			var month
+			var date = new Date(new Date().setDate(new Date().getDate() - 30));
+			if(date.getDate()>1&&date.getDate()<9){
+				alert(date.getDate())
+				day = "0"+date.getDate()
+			}else{
+				day = date.getDate()
+			}
+			if(date.getMonth()>1&&date.getMonth()<9){
+
+				month = "0"+(date.getMonth()+1)
+			}else{
+				month = date.getMonth()+1
+			}
+			return dateToday = date.getFullYear()+"-"+month+"-"+day
+		}
 
 	CARTACEP.usuario.getMonthlyDate = function(){
-		var day
-		var month
-		var date = new Date(new Date().setDate(new Date().getDate() - 30));
-		if(date.getDate()>1&&date.getDate()<9){
-			alert(date.getDate())
-			day = "0"+date.getDate()
-		}else{
-			day = date.getDate()
-		}
-		if(date.getMonth()>1&&date.getMonth()<9){
-
-			month = "0"+(date.getMonth()+1)
-		}else{
-			month = date.getMonth()+1
-		}
-		var date30DaysPrior = date.getFullYear()+"-"+month+"-"+day
+		var date30DaysPrior = date(date30DaysPrior)
+		
 		$.ajax({
 			type: "GET",
 			url: CARTACEP.PATH + "producao/getListProduction",
@@ -63,6 +68,7 @@ $(document).ready (function(){
 
 
 	};
+	
 
 	CARTACEP.usuario.getMonthlyDate()
 	CARTACEP.usuario.getData = function(listaDeProducoes){
@@ -139,6 +145,8 @@ $(document).ready (function(){
 		var fullYear = [];
 
 		for(var i=0;i<fullYearList.length;i++){
+			
+			
 			if(fullYearList[i].dataInicio.match(/.*-01-.*/)&&fullYearList[i].status==true){
 				countJan+=1
 			}
@@ -278,6 +286,9 @@ $(document).ready (function(){
 				}
 			}
 		});
+		
+		/** Widget**/
+		
 		var thisMonth = 0
 		var lastMonth = 0
 		var comp = 0
@@ -285,10 +296,9 @@ $(document).ready (function(){
 		var arrow = ""
 		for(var i=0;i<fullYear.length;i++){
 			
-			if((new Date().getMonth()+3)==(i+3)&&i>0){
-				thisMonth = fullYear[i+2]
-				lastMonth = fullYear[i+1]
-				console.log(i+3)
+			if((new Date().getMonth()+1)==(i+1)&&i>0){
+				thisMonth = fullYear[i]
+				lastMonth = fullYear[i-1]
 				comp = thisMonth - lastMonth
 			}else if(i==0){
 				thisMonth = fullYear[i]
@@ -317,7 +327,97 @@ $(document).ready (function(){
 											"<div class='mt-2 mb-0 text-muted text-xs'>"+
 											""+arrow+" "+resultThisMonth+"%</span>"+													
 											"</div>");
-
-		console.log(resultThisMonth+" lastMonth "+lastMonth+" thisMonth "+thisMonth)
+		CARTACEP.usuario.widgetReading()
 	}
+	
+	CARTACEP.usuario.widgetReading = function(){
+		var month
+		var dateToday = new Date().getFullYear()
+		$.ajax({
+			type: "GET",
+			url: CARTACEP.PATH + "producao/getMonthlyReadingCount",
+			data: "dateToday="+dateToday,
+			
+			success: function(data){
+				data = JSON.parse(data)
+
+				CARTACEP.usuario.showWidgetReading(data)
+
+			},
+			error: function(info){
+				var a="Erro ao consultar os cadastros de usuário: "+info.status+" - "+info.statusText;
+				var b = a.replace(/'/g, '');
+				Swal.fire(b);
+			}
+		})
+		CARTACEP.usuario.showWidgetReading = function(listaMedicoes){
+			var month = 0
+			var lastMonth = 0
+			var date = new Date()
+			var arrayMonth = []
+			var countThisMonth = 0
+			var countLastMonth = 0
+			if(date.getMonth()>1&&date.getMonth()<9){
+				lastMonth = "0"+(date.getMonth())
+				month = "0"+(date.getMonth()+1)
+			}else{
+				lastMonth = date.getMonth()
+				month = date.getMonth()+1
+			}
+			for(var i=0;i<listaMedicoes.length;i++){
+				if(listaMedicoes[i].dataHora.match(lastMonth)){
+					countLastMonth+=1
+				}
+				if(listaMedicoes[i].dataHora.match(month)){
+					countThisMonth+=1
+				}
+				
+			}
+			arrayMonth.push(countLastMonth)
+			arrayMonth.push(countThisMonth)
+			
+			/** Widget**/
+			
+			var thisMonth = 0
+			var lastMonthT = 0
+			var comp = 0
+			var resultThisMonth
+			var arrow = ""
+			for(var i=0;i<arrayMonth.length;i++){
+				
+				if((new Date().getMonth()+1)==(i+1)&&i>0){
+					thisMonth = arrayMonth[i]
+					lastMonth = arrayMonth[i-1]
+					comp = thisMonth - lastMonthT
+				}else if(i==0){
+					thisMonth = arrayMonth[i]
+				}
+			}
+			if(lastMonthT==0){
+				resultThisMonth = thisMonth*100
+			}else if(thisMonth==0){
+				resultThisMonth = comp*100
+			}else
+			{
+				resultThisMonth = ((comp*100)/lastMonthT)
+			}
+			if(resultThisMonth<-99){
+				arrow = "<span class='text-danger mr-2'><i class='fa fa-arrow-down'></i>"
+					resultThisMonth=(Math.abs(resultThisMonth))
+			}else if(resultThisMonth<0&&resultThisMonth>-99){
+				arrow = "<span class='text-warning mr-2'><i class='fa fa-arrow-down'></i>"
+					resultThisMonth=(Math.abs(resultThisMonth))
+			}else{
+				arrow = "<span class='text-success mr-2'><i class='fa fa-arrow-up'></i>"
+			}
+			
+			$('#widgetLeit').html("<div class='text-xs font-weight-bold text-uppercase mb-1'>Leituras</div>"+
+												"<div class='h5 mb-0 font-weight-bold text-gray-800'>"+thisMonth+"</div>"+
+												"<div class='mt-2 mb-0 text-muted text-xs'>"+
+												""+arrow+" "+resultThisMonth+"%</span>"+													
+												"</div>");
+		}
+	}
+	
+	
 });

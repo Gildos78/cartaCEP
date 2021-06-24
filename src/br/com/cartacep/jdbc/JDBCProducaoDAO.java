@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 
 import br.com.cartacep.jdbcinterface.ProducaoDAO;
 import br.com.cartacep.modelo.Producao;
+import br.com.cartacep.modelo.Usuario;
 
 public class JDBCProducaoDAO implements ProducaoDAO{
 
@@ -657,6 +658,86 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 					producao.addProperty("contagem", contagemAtual);
 
 					listaProducoes.add(producao);
+				}
+
+			
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return listaProducoes;
+	}
+	public List<JsonObject> getProductionLastDec (String monthYear){
+		String beginDate = monthYear+"-12-01";
+		String finalDate = monthYear+"-12-31";
+		
+		String comando = "select producao.* from producao " + 
+				"where date(dataInicio) BETWEEN  '"+beginDate+"' and '"+finalDate+"' ";
+//"select count(*) from medicoes where date(dataHora) LIKE  '"+beginDate+"%' and '"+finalDate+"%'   "; 
+		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
+		JsonObject producao = null;
+
+		try {
+			
+				Statement stmt = conexao.createStatement();
+				ResultSet rs = stmt.executeQuery(comando);
+
+				while(rs.next()) {
+					int id = rs.getInt("idProducao");
+					String codigo = rs.getString("codigo");
+					String nomeCliente = rs.getString("cliente");
+					String dataI = rs.getString("dataInicio");
+					String dataF = rs.getString("dataFinal");
+					int codeRefEsp = rs.getInt("codeRefEsp");
+					Boolean status = rs.getBoolean("statusFull");
+					int contagemAtual  =rs.getInt("contagemAtual");
+
+					producao = new JsonObject();
+					producao.addProperty("id", id);
+					producao.addProperty("codigo", codigo);
+					producao.addProperty("cliente", nomeCliente);
+					producao.addProperty("dataInicio", dataI);
+					producao.addProperty("dataFinal", dataF);
+					producao.addProperty("codeRefEsp", codeRefEsp);
+					producao.addProperty("status", status);
+					producao.addProperty("contagem", contagemAtual);
+
+					listaProducoes.add(producao);
+				}
+
+			
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return listaProducoes;
+	}
+	public List<JsonObject> getMonthlyReadingCount(String dateToday) {
+		String beginDate = dateToday+"-01-01";
+		String finalDate = dateToday+"-12-31";	
+		
+		String comando = "select * from medicoes where date(dataHora) BETWEEN  '"+beginDate+"' and  '"+finalDate+"'  ;";
+
+		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
+		JsonObject medicoes = null;
+
+		try {
+			
+				Statement stmt = conexao.createStatement();
+				ResultSet rs = stmt.executeQuery(comando);
+
+				while(rs.next()) {
+					
+					String dataHora = rs.getString("dataHora");
+					
+
+					medicoes = new JsonObject();
+					medicoes.addProperty("dataHora", dataHora);
+					
+
+					listaProducoes.add(medicoes);
 				}
 
 			
