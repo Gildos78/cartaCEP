@@ -128,6 +128,22 @@ $(document).ready (function(){
 		})		
 
 	};	
+	
+	calcularPer = function(countThisMonth, countLastMonth){
+		
+		var comp = countThisMonth-countLastMonth
+		
+		if(countLastMonth==0){				
+			resultThisMonth = countThisMonth*100
+		}else if(countThisMonth==0){
+			
+			resultThisMonth = comp*100
+		}else
+		{
+			resultThisMonth = ((countThisMonth*100)/countLastMonth)
+		}
+		return resultThisMonth
+	}
 	CARTACEP.usuario.monthlyChart = function(fullYearList){
 		var countJan = 0;
 		var countFev = 0;
@@ -292,7 +308,7 @@ $(document).ready (function(){
 		var thisMonth = 0
 		var lastMonth = 0
 		var comp = 0
-		var resultThisMonth
+		
 		var arrow = ""
 		for(var i=0;i<fullYear.length;i++){
 			
@@ -304,20 +320,16 @@ $(document).ready (function(){
 				thisMonth = fullYear[i]
 			}
 		}
-		if(lastMonth==0){
-			resultThisMonth = thisMonth*100
-		}else if(thisMonth==0){
-			resultThisMonth = comp*100
-		}else
-		{
-			resultThisMonth = ((comp*100)/lastMonth)
-		}
+		var resultThisMonth = calcularPer(thisMonth,lastMonth)
+
 		if(resultThisMonth<-99){
 			arrow = "<span class='text-danger mr-2'><i class='fa fa-arrow-down'></i>"
 				resultThisMonth=(Math.abs(resultThisMonth))
 		}else if(resultThisMonth<0&&resultThisMonth>-99){
 			arrow = "<span class='text-warning mr-2'><i class='fa fa-arrow-down'></i>"
 				resultThisMonth=(Math.abs(resultThisMonth))
+		}else if(resultThisMonth==0){
+			arrow = "<span class='text-primary mr-2'><i class='fa fa-equals'></i>"
 		}else{
 			arrow = "<span class='text-success mr-2'><i class='fa fa-arrow-up'></i>"
 		}
@@ -350,13 +362,17 @@ $(document).ready (function(){
 				Swal.fire(b);
 			}
 		})
+		
 		CARTACEP.usuario.showWidgetReading = function(listaMedicoes){
+			console.log(listaMedicoes)
 			var month = 0
 			var lastMonth = 0
 			var date = new Date()
-			var arrayMonth = []
 			var countThisMonth = 0
 			var countLastMonth = 0
+			var countEspecialThisMonth = 0
+			var countEspecialLastMonth = 0
+			
 			if(date.getMonth()>1&&date.getMonth()<9){
 				lastMonth = "0"+(date.getMonth())
 				month = "0"+(date.getMonth()+1)
@@ -367,55 +383,65 @@ $(document).ready (function(){
 			for(var i=0;i<listaMedicoes.length;i++){
 				if(listaMedicoes[i].dataHora.match(lastMonth)){
 					countLastMonth+=1
+					if(listaMedicoes[i].valor<listaMedicoes[i].minimo||listaMedicoes[i].valor>listaMedicoes[i].maximo){
+						countEspecialLastMonth+=1
+					}	
 				}
 				if(listaMedicoes[i].dataHora.match(month)){
 					countThisMonth+=1
+					if(listaMedicoes[i].valor<listaMedicoes[i].minimo||listaMedicoes[i].valor>listaMedicoes[i].maximo){
+						countEspecialThisMonth+=1
+					}	
 				}
-				
+							
 			}
-			arrayMonth.push(countLastMonth)
-			arrayMonth.push(countThisMonth)
 			
 			/** Widget**/
+
 			
-			var thisMonth = 0
-			var lastMonthT = 0
-			var comp = 0
-			var resultThisMonth
+			/**Contagem das leituras **/	
+			
 			var arrow = ""
-			for(var i=0;i<arrayMonth.length;i++){
-				
-				if((new Date().getMonth()+1)==(i+1)&&i>0){
-					thisMonth = arrayMonth[i]
-					lastMonthT = arrayMonth[i-1]
-					comp = thisMonth - lastMonthT
-				}else if(i==0){
-					thisMonth = arrayMonth[i]
-				}
-			}
-			if(lastMonthT==0){
-				resultThisMonth = thisMonth*100
-			}else if(thisMonth==0){
-				resultThisMonth = comp*100
-			}else
-			{
-				resultThisMonth = ((comp*100)/lastMonthT)
-			}
+			
+			var resultThisMonth = calcularPer(countThisMonth,countLastMonth)
+
 			if(resultThisMonth<-99){
 				arrow = "<span class='text-danger mr-2'><i class='fa fa-arrow-down'></i>"
 					resultThisMonth=(Math.abs(resultThisMonth))
 			}else if(resultThisMonth<0&&resultThisMonth>-99){
 				arrow = "<span class='text-warning mr-2'><i class='fa fa-arrow-down'></i>"
 					resultThisMonth=(Math.abs(resultThisMonth))
+			}else if(resultThisMonth==0){
+				arrow = "<span class='text-primary mr-2'><i class='fa fa-equals'></i>"
 			}else{
 				arrow = "<span class='text-success mr-2'><i class='fa fa-arrow-up'></i>"
 			}
 			
 			$('#widgetLeit').html("<div class='text-xs font-weight-bold text-uppercase mb-1'>Leituras</div>"+
-												"<div class='h5 mb-0 font-weight-bold text-gray-800'>"+thisMonth+"</div>"+
+												"<div class='h5 mb-0 font-weight-bold text-gray-800'>"+countThisMonth+"</div>"+
 												"<div class='mt-2 mb-0 text-muted text-xs'>"+
 												""+arrow+" "+resultThisMonth+"%</span>"+													
 												"</div>");
+		/**Contagem dos Especiais**/
+			
+			var resultThisMonthEsp = calcularPer(countEspecialThisMonth,countEspecialLastMonth)
+
+			if(resultThisMonthEsp<-99){
+				arrow = "<span class='text-success mr-2'><i class='fa fa-arrow-down'></i>"
+					resultThisMonthEsp=(Math.abs(resultThisMonthEsp))
+			}else if(resultThisMonthEsp<0&&resultThisMonthEsp>-99){
+				arrow = "<span class='text-primary mr-2'><i class='fa fa-arrow-down'></i>"
+					resultThisMonthEsp=(Math.abs(resultThisMonthEsp))
+			}else if(resultThisMonthEsp==0){
+				arrow = "<span class='text-warning mr-2'><i class='fa fa-equals'></i>"
+			}else{
+				arrow = "<span class='text-danger mr-2'><i class='fa fa-arrow-up'></i>"
+			}
+			$('#widgetEspec').html("<div class='text-xs font-weight-bold text-uppercase mb-1'>Especiais</div>"+
+					"<div class='h5 mb-0 font-weight-bold text-gray-800'>"+countEspecialThisMonth+"</div>"+
+					"<div class='mt-2 mb-0 text-muted text-xs'>"+
+					""+arrow+" "+resultThisMonthEsp+"%</span>"+													
+					"</div>");
 		}
 	}
 	

@@ -718,7 +718,10 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		String beginDate = dateToday+"-01-01";
 		String finalDate = dateToday+"-12-31";	
 		
-		String comando = "select * from medicoes where date(dataHora) BETWEEN  '"+beginDate+"' and  '"+finalDate+"'  ;";
+		String comando = "select medicoes.dataHora  as dataHora, subgrupo_medicoes.valorMedicao valor, especificacoes.espMinimo as minimo, especificacoes.espMaximo as maximo from medicoes " + 
+				"inner join subgrupo_medicoes on subgrupo_medicoes.idMedicoes = medicoes.idMedicoes " + 
+				"inner join especificacoes on especificacoes.idEspecificacoes = subgrupo_medicoes.idEspecificacao " + 
+				"where date(dataHora) BETWEEN  '"+beginDate+"' and  '"+finalDate+"'  ;";
 
 		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
 		JsonObject medicoes = null;
@@ -731,10 +734,18 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 				while(rs.next()) {
 					
 					String dataHora = rs.getString("dataHora");
+					int valor = rs.getInt("valor");
+					int minimo = rs.getInt("minimo");
+					int maximo = rs.getInt("maximo");
+					
 					
 
 					medicoes = new JsonObject();
 					medicoes.addProperty("dataHora", dataHora);
+					medicoes.addProperty("valor", valor);
+					medicoes.addProperty("minimo", minimo);
+					medicoes.addProperty("maximo", maximo);
+				
 					
 
 					listaProducoes.add(medicoes);
