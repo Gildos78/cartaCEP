@@ -145,6 +145,7 @@ $(document).ready (function(){
 		return resultThisMonth
 	}
 	CARTACEP.usuario.monthlyChart = function(fullYearList){
+		
 		var countJan = 0;
 		var countFev = 0;
 		var countMar = 0;
@@ -308,7 +309,7 @@ $(document).ready (function(){
 		var thisMonth = 0
 		var lastMonth = 0
 		var comp = 0
-		
+		console.log(fullYear)
 		var arrow = ""
 		for(var i=0;i<fullYear.length;i++){
 			
