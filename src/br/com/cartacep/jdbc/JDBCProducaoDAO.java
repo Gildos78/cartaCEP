@@ -674,7 +674,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		
 		String comando = "select producao.* from producao " + 
 				"where date(dataInicio) BETWEEN  '"+beginDate+"' and '"+finalDate+"' ";
-//"select count(*) from medicoes where date(dataHora) LIKE  '"+beginDate+"%' and '"+finalDate+"%'   "; 
+		
 		List<JsonObject> listaProducoes = new ArrayList<JsonObject>();
 		JsonObject producao = null;
 

@@ -119,6 +119,7 @@ $(document).ready (function(){
 				data = JSON.parse(data)
 
 				CARTACEP.usuario.monthlyChart(data)
+				CARTACEP.usuario.incompletedCount(data)
 			},
 			error: function(info){
 				var a="Erro ao consultar os cadastros de usuário: "+info.status+" - "+info.statusText;
@@ -309,8 +310,8 @@ $(document).ready (function(){
 		var thisMonth = 0
 		var lastMonth = 0
 		var comp = 0
-		console.log(fullYear)
 		var arrow = ""
+			
 		for(var i=0;i<fullYear.length;i++){
 			
 			if((new Date().getMonth()+1)==(i+1)&&i>0){
@@ -343,6 +344,57 @@ $(document).ready (function(){
 		CARTACEP.usuario.widgetReading()
 	}
 	
+	CARTACEP.usuario.incompletedCount  = function(fullYearList){
+		date = new Date
+		var lastMonth;
+		var thisMonth;
+		var countLastMonth = 0;
+		var countThisMonth = 0;
+		month = date.getMonth()
+		year = date.getFullYear()
+		if(month>0&&month<10){
+			lastMonth = "0"+month
+		}else{
+			lastMonth = month
+		}
+		lastMonth = year="-"+lastMonth
+		if((month+1)>0&&(month+1)<10){
+			thisMonth = "0"+(month+1)
+		}else{
+			thisMonth = (month+1)
+		}
+		thisMonth = year="-"+thisMonth
+		for(var i=0;i<fullYearList.length;i++){
+			if(fullYearList[i].dataFinal.match(lastMonth)&&fullYearList[i].status==false){
+				countLastMonth+=1
+			}
+			if(fullYearList[i].dataFinal.match(thisMonth)&&fullYearList[i].status==false){
+				countThisMonth+=1
+			}
+		}
+		var arrow = ""
+			
+			var resultThisMonth = calcularPer(countThisMonth,countLastMonth)
+
+			if(resultThisMonth<-99){
+				arrow = "<span class='text-success mr-2'><i class='fa fa-arrow-down'></i>"
+					resultThisMonth=(Math.abs(resultThisMonth))
+			}else if(resultThisMonth<0&&resultThisMonth>-99){
+				arrow = "<span class='text-warning mr-2'><i class='fa fa-arrow-down'></i>"
+					resultThisMonth=(Math.abs(resultThisMonth))
+			}else if(resultThisMonth==0){
+				arrow = "<span class='text-primary mr-2'><i class='fa fa-equals'></i>"
+			}else{
+				arrow = "<span class='text-danger mr-2'><i class='fa fa-arrow-up'></i>"
+			}  
+			
+			
+			$('#widgetIncom').html("<div class='text-xs font-weight-bold text-uppercase mb-1'>Amostras Incompletas</div>"+
+												"<div class='h5 mb-0 font-weight-bold text-gray-800'>"+countThisMonth+"</div>"+
+												"<div class='mt-2 mb-0 text-muted text-xs'>"+
+												""+arrow+" "+resultThisMonth+"%</span>"+													
+												"</div>");
+	}
 	CARTACEP.usuario.widgetReading = function(){
 		var month
 		var dateToday = new Date().getFullYear()
