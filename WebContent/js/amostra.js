@@ -154,6 +154,7 @@ $(document).ready(function(){
 	CARTACEP.amostra.getSample()
 
 	CARTACEP.amostra.limitMeasure = function(id){
+
 		$.ajax({
 			type: "GET",
 			url: CARTACEP.PATH + "producao/limitMeasure",
@@ -354,16 +355,20 @@ $(document).ready(function(){
 
 	}
 	CARTACEP.amostra.getLimitList = function(listaLimites){
+		
 		var limit = 0
 		var subgroup = 0
+		var dataFinal;
+		var dataHora;
 		for(var i=0;i<listaLimites.length;i++){
 			limit = listaLimites[i].quantidade*listaLimites[i].numAmostras
 			subgroup = listaLimites[i].quantidade
+			dataFinal = listaLimites[i].dataFinal;
+			dataHora = listaLimites[i].dataHora;
 		}
 		var totalMeasure = listaLimites.length*subgroup
 
 		if(totalMeasure==limit&&!totalMeasure==0){
-
 			Swal.fire({
 				text: 'Atingiu o limite de medições.',
 				icon: 'error',
@@ -375,7 +380,7 @@ $(document).ready(function(){
 				}
 			})	
 		}else{
-
+			console.log(dataFinal+" / "+dataHora)
 			CARTACEP.amostra.cadastrarMedicao()
 		}
 	}

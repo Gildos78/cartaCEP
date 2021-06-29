@@ -385,7 +385,7 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 		return producao;
 	}
 	public List<JsonObject> limitMeasure(int  id) {
-		String comando = "select medicoes.*, producao.numAmostras, subgrupo.quantidade from medicoes "
+		String comando = "select medicoes.*, producao.numAmostras, producao.dataFinal as dataFinal, subgrupo.quantidade from medicoes "
 				+ "inner join especificacoes on especificacoes.idEspecificacoes = medicoes.idEsp "
 				+ "inner join producao on producao.codeRefEsp = especificacoes.codeProd "
 				+ "inner join subgrupo on subgrupo.codeProd = especificacoes.codeProd "
@@ -402,10 +402,14 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 
 				int numAmostras = rs.getInt("numAmostras");				
 				int quantidade = rs.getInt("quantidade");
+				String dataHora = rs.getString("dataHora");
+				String dataFinal = rs.getString("dataFinal");
 
 				producao = new JsonObject();
 				producao.addProperty("numAmostras", numAmostras);
 				producao.addProperty("quantidade", quantidade);
+				producao.addProperty("dataHora", dataHora);
+				producao.addProperty("dataFinal", dataFinal);
 
 
 				listaProducoes.add(producao);
