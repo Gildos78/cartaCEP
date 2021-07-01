@@ -161,6 +161,7 @@ $(document).ready(function(){
 			data: "id="+id,
 			success: function(limite){
 				var totalFilled = limite.subgrupo*limite.numAmostras
+				
 				if(totalFilled==limite.totalEsp){
 					Swal.fire({
 						text: 'Atingiu o limite de medições.',
@@ -355,20 +356,19 @@ $(document).ready(function(){
 
 	}
 	CARTACEP.amostra.getLimitList = function(listaLimites){
-		
 		var limit = 0
 		var subgroup = 0
-		var dataFinal;
-		var dataHora;
+		
 		for(var i=0;i<listaLimites.length;i++){
 			limit = listaLimites[i].quantidade*listaLimites[i].numAmostras
 			subgroup = listaLimites[i].quantidade
-			dataFinal = listaLimites[i].dataFinal;
-			dataHora = listaLimites[i].dataHora;
+			
 		}
 		var totalMeasure = listaLimites.length*subgroup
 
 		if(totalMeasure==limit&&!totalMeasure==0){
+			
+			
 			Swal.fire({
 				text: 'Atingiu o limite de medições.',
 				icon: 'error',
@@ -380,10 +380,38 @@ $(document).ready(function(){
 				}
 			})	
 		}else{
-			console.log(dataFinal+" / "+dataHora)
-			CARTACEP.amostra.cadastrarMedicao()
+			CARTACEP.amostra.getFinalDate()		
 		}
 	}
+	CARTACEP.amostra.getFinalDate = function(){
+		var code = sessionStorage.getItem('code');
+		$.ajax({
+			type: "GET",
+			url: CARTACEP.PATH + "producao/getFinalDate",
+			data: "code="+code,
+			success: function(date){
+				
+				if(document.getElementById('dataLocal').value>date.dataFinal||document.getElementById('dataLocal').value<date.dataInicio){
+					
+					Swal.fire({
+						text: 'As datas estão fora do período cadastrado.',
+						icon: 'error',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: 'OK'
+					})
+				}else{
+					CARTACEP.amostra.cadastrarMedicao()
+				}
+				
+			},
+			error: function(info){
+				var a="Erro ao consultar os cadastros de usuário: "+info.status+" - "+info.statusText;
+				var b = a.replace(/'/g, '');
+				console.log(b);
+			}
+		})
+	}
+	
 	CARTACEP.amostra.cadastrarMedicao = function(){
 
 		var medicao = new Object()
@@ -574,7 +602,6 @@ $(document).ready(function(){
 			var producao= new Object()
 			producao.codeRefEsp = code
 			producao.contagemAtual = totalSoFar
-console.log(totalOverall+"/"+totalSoFar)
 			if(totalSoFar == totalOverall && totalSoFar!=0){
 				producao.statusFull = true
 			}else{

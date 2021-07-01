@@ -641,4 +641,26 @@ public class ProducaoRest extends UtilRest{
 			return this.buildErrorResponse(e.getMessage());
 		}				
 	}
+	@GET
+	@Path("/getFinalDate")
+	@Produces(MediaType.APPLICATION_JSON)
+
+	public Response getFinalDate(@QueryParam("code")int code) {
+
+		try {
+			Producao producao= new Producao();
+			Conexao conec = new Conexao();
+			Connection conexao = conec.abrirConexao();
+			JDBCProducaoDAO jdbcProducao = new JDBCProducaoDAO(conexao);
+
+			producao = jdbcProducao.getFinalDate(code);
+
+			conec.fecharConexao();
+			return this.buildResponse(producao);
+
+		}catch(Exception e) {
+			e.printStackTrace();
+			return this.buildErrorResponse(e.getMessage());
+		}
+	}
 }

@@ -28,5 +28,5 @@ public interface ProducaoDAO {
 	public List<JsonObject> getProductionCountYear(String monthYear);
 	public List<JsonObject> getProductionLastDec(String monthYear);
 	public List<JsonObject> getMonthlyReadingCount(String producao);
-
+	public Producao getFinalDate(int code);
 }

@@ -263,6 +263,7 @@ $(document).ready(function(){
 			data:JSON.stringify(especificacao),
 			success:function(msg){
 				$("#frmEsp").trigger("reset");
+				
 //				var b = msg.replace(/['"]+/g, '');
 //				Swal.fire(b);
 				console.log(msg)
@@ -285,9 +286,9 @@ $(document).ready(function(){
 			success: function(dados){
 
 				dados = JSON.parse(dados);
-
+				document.frmEspecificacoes.descricaoEsp.focus()
 				$("#listaEspecificacoes").html(CARTACEP.producao.exibirEsp(dados));
-
+				
 
 			},
 			error: function(info){
@@ -632,7 +633,6 @@ $(document).ready(function(){
 
 		var fieldFoto = document.getElementById("video").value
 		if(fieldFoto==""){
-			console.log("Vazio")
 			var selectFileName = null
 			CARTACEP.producao.adicionar(selectFileName)
 		}

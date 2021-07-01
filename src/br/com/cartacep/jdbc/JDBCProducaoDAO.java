@@ -749,18 +749,33 @@ public class JDBCProducaoDAO implements ProducaoDAO{
 					medicoes.addProperty("valor", valor);
 					medicoes.addProperty("minimo", minimo);
 					medicoes.addProperty("maximo", maximo);
-				
-					
-
 					listaProducoes.add(medicoes);
 				}
-
-			
-
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		return listaProducoes;
+	}
+	public Producao getFinalDate(int code) {
+
+		String comando = "SELECT producao.dataFinal, producao.dataInicio FROM producao WHERE codeRefEsp = ?";
+		Producao producao = new Producao();
+		try {
+			PreparedStatement p = this.conexao.prepareStatement(comando);
+			p.setInt(1, code);
+			ResultSet rs = p.executeQuery();
+			while (rs.next()) {
+
+				
+				String dataFinal = rs.getString("dataFinal");
+				String dataInicio = rs.getString("dataInicio");
+				producao.setDataFinal(dataFinal);
+				producao.setDataInicio(dataInicio);
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return producao;
 	}
 }

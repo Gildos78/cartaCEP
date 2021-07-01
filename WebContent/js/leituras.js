@@ -89,8 +89,8 @@ $(document).ready(function(){
 			});
 	}
 	CARTACEP.leitura.exibir = function(listaDeProducoes){
-		console.log(listaDeProducoes)
 		var listCount = 0;
+		var bool = true;
 		var tabela = 
 			"<table class='table align-items-center table-flush table-hover'>"+
 			"<thead class='thead-light'>"+
@@ -153,11 +153,10 @@ $(document).ready(function(){
 			}
 
 		}else if (listaDeProducoes == ""){
-
+			bool=false
 			tabela += "<tr><td colspan='11'>Nenhum registro encontrado</td></tr>";
 		}
-		//console.log(listaDeProducoes.length+"/"+listCount)
-		if(listCount==0){
+		if(listCount==0&&bool==true){
 			
 			tabela += "<tr><td colspan='11'>Todas as medições estão completas</td></tr>";
 		}
