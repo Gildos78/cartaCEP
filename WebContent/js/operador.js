@@ -61,45 +61,55 @@ $(document).ready (function(){
 
 
 	CARTACEP.operador.verifyMatricula = function(){
+		var errorMessage = "";
 		var matricula = true
 		var checkMatricula = true;
 		var valorBusca = $("#exampleInputMatricula").val();
 		var nome =  document.frmCadOp.exampleInputNome.value;
 		var expRegNome = new RegExp(/[A-zÀ-ü]{3,}([ ]{1}[A-zÀ-ü]{2,})|([A-zÀ-ü]{3,})+$/);
 		if (!expRegNome.test(nome)){
-			Swal.fire('Preencha o campo Nome corretamente.');
-			window.setTimeout('document.frmCadOp.exampleInputNome.focus()', 1500);
+			 errorMessage = "<br />Preencha o campo Nome corretamente.";
+			 document.frmCadOp.exampleInputNome.focus()
+			        $("#error").html(errorMessage);
+		
 			return false;
+		}else{
+			errorMessage = ""
+				$("#error").html(errorMessage);
 		}
+		
 		var mat = document.frmCadOp.exampleInputMatricula.value;
 		var expRegMat = new RegExp("^[0-9]{6}$");
 
 		if (!expRegMat.test(mat)){
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'Preencha o campo Matricula corretamente com 6 números.'
-			})
-			window.setTimeout('document.frmCadOp.exampleInputMatricula.focus()', 2000);
+			errorMessage = "<br />Preencha o campo Matricula corretamente com 6 números.";
+			document.frmCadOp.exampleInputMatricula.focus()
+			 $("#errorMatricula").html(errorMessage);
 			return false;
+		}else{
+			errorMessage = ""
+				$("#errorMatricula").html(errorMessage);
 		}	
 		var sen = document.frmCadOp.exampleInputPassword.value;
 		var expRegSen = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/);
 
 		if (!expRegSen.test(sen)){
-			Swal.fire("Preencha o campo Senha com o mínimo de 6 caracteres com números e letras..");
-			window.setTimeout('document.frmCadOp.exampleInputPassword.focus()', 2000);
+			errorMessage = "<br />Preencha o campo Senha com o mínimo de 6 caracteres com números e letras.";
+			document.frmCadOp.exampleInputPassword.focus()
+			$("#errorFirstPass").html(errorMessage);
 			return false;
+		}else{
+			errorMessage = ""
+				$("#errorFirstPass").html(errorMessage);
 		}	
 		
 		if( document.frmCadOp.exampleInputPasswordRepeat.value!==sen){
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'As senhas têm que ser iguais.'
-			})
-		}
-		if (expRegNome.test(nome)&&expRegSen.test(sen)&&expRegMat.test(mat)==true&&document.frmCadOp.exampleInputPasswordRepeat.value==sen){
+			errorMessage = "<br />As senhas têm que ser iguais.";
+			$("#errorFirstPass").html(errorMessage);
+		}else{
+			errorMessage = ""
+				$("#errorFirstPass").html(errorMessage);
+		}	
 			$.ajax({
 				type: "GET",
 				url: CARTACEP.PATH + "operador/verificarMatricula",
@@ -117,6 +127,8 @@ $(document).ready (function(){
 					if(checkMatricula==true){
 						CARTACEP.operador.cadastrar();
 					}else{
+						document.frmCadOp.exampleInputMatricula.focus()
+
 						Swal.fire({
 							icon: 'error',
 							title: 'Oops...',
@@ -129,7 +141,6 @@ $(document).ready (function(){
 					Swal.fire("Erro ao consultar o operador: "+info.status+" - "+info.statusText);
 				}
 			});
-		}	
 	}	
 
 	CARTACEP.operador.cadastrar = function(){
@@ -140,7 +151,7 @@ $(document).ready (function(){
 		operador.nome = document.frmCadOp.exampleInputNome.value;
 		operador.senha = emBase64Cad;
 		operador.matricula = document.frmCadOp.exampleInputMatricula.value;
-		operador.telefone = document.frmCadOp.exampleInputFone.value;
+		operador.telefone = null;
 
 		$.ajax({
 			type: "POST",
@@ -151,6 +162,7 @@ $(document).ready (function(){
 				document.getElementById("cadOp").reset();
 				var b = msg.replace(/['"]+/g, '');
 				Swal.fire(b);
+				 document.frmCadOp.exampleInputNome.focus()
 				CARTACEP.operador.buscar()	
 			},
 			error:function(info){
@@ -185,7 +197,7 @@ $(document).ready (function(){
 				"<tr>"+
 				"<th>Nome</th>"+ 
 				"<th>Matrícula</th>" +
-				"<th>Telefone</th>" +
+				
 				"<th>Editar</th>"+
 				"<th>Senha</th>"+
 				"<th>Excluir</th>"+                         
@@ -202,7 +214,7 @@ $(document).ready (function(){
 						"<tr>"+
 						"<td>"+listaDeOperadores[i].nome+"</td>"+
 						"<td>"+listaDeOperadores[i].matricula+"</td>"+
-						"<td>"+listaDeOperadores[i].telefone+"</td>"+
+						
 						"<td><a  data-toggle='modal' data-target='#exampleModal'  onclick=\"CARTACEP.operador.exibirEdicao('"+listaDeOperadores[i].id+"')\" class='btn btn-sm'>"+
 						"<i class='fas fa-edit'></i>" +
 						"</a></td>"+ 
@@ -236,12 +248,14 @@ $(document).ready (function(){
 	
 	
 	CARTACEP.operador.exibirEdicao = function(id){
+		var errorMessage="";
+		$("#errorNameModal").html(errorMessage);
+		$("#errorMatriculaModal").html(errorMessage);
 		$.ajax({
 			type:"GET",
 			url: CARTACEP.PATH +"operador/checkId",
 			data: "id="+id,
 			success: function(operador){
-				console.log(operador)
 				document.frmEditaOperador.idOperador.value = operador.id;			
 				document.frmEditaOperador.operador.value = operador.nome;
 				document.frmEditaOperador.matricula.value = operador.matricula;
@@ -253,8 +267,9 @@ $(document).ready (function(){
 
 		});
 	}
-
+	
 	CARTACEP.operador.editar = function(){		
+		var errorMessage="";
 		var operador = new Object();
 		operador.id = document.frmEditaOperador.idOperador.value;
 		operador.nome = document.frmEditaOperador.operador.value;
@@ -262,26 +277,35 @@ $(document).ready (function(){
 		var nome =  document.frmEditaOperador.nome.value;
 		var expRegNome = new RegExp(/[A-zÀ-ü]{3,}([ ]{1}[A-zÀ-ü]{2,})|([A-zÀ-ü]{3,})+$/);
 		if (!expRegNome.test(nome)){
-			Swal.fire('Preencha o campo Nome corretamente.');
-			document.frmCadOp.exampleInputNome.focus();
+			errorMessage = "<br />Preencha o campo Nome corretamente.";
+			 document.frmEditaOperador.nome.focus()
+			        $("#errorNameModal").html(errorMessage);
 			return false;
 		}
+		if(expRegNome.test(nome)){
+			errorMessage = ""
+				$("#errorNameModal").html(errorMessage);
+		}
+			
+		
 		
 		var mat = document.frmEditaOperador.matricula.value;
 		var expRegMat = new RegExp("^[0-9]{6}$");
 		if (!expRegMat.test(mat)){
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'Preencha o campo Matricula corretamente com 6 números.'
-			})
+			errorMessage = "<br />Preencha o campo Matricula corretamente com 6 números.";
+			        $("#errorMatriculaModal").html(errorMessage);
+			
 
 			document.frmEditaOperador.matricula.focus();
 			return false;
 		}	
+		if(expRegMat.test(mat)){
+			errorMessage = ""
+				$("#errorNameModal").html(errorMessage);
+		}
 
 		operador.matricula = document.frmEditaOperador.matricula.value;
-		operador.telefone = document.frmEditaOperador.telefone.value;
+		operador.telefone = null;
 		$.ajax({
 			type:"PUT",
 			url: CARTACEP.PATH + "operador/alterar",
@@ -313,23 +337,17 @@ $(document).ready (function(){
 
 		if(!senha==""||!senhaRep==""){
 			if(!expRegSenha.test(senha)||!expRegSenhaRep.test(senhaRep)){
-				Swal.fire({
-					icon: 'error',
-					title: 'Oops...',
-					text: 'A senha deve ter letras e números!',
-				})
-
+				errorMessage = "<br />A senha deve ter letras e números.";
+		        $("#errorPassModal").html(errorMessage);
 
 				document.frmEditaOperador.senhaOp.focus();
 				return false;
 			}
 		}
 		if(senha==""||senhaRep==""){
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'Preencha todos os campos!',
-			})
+			errorMessage = "<br />Preencha todos os campos.";
+	        $("#errorPassModal").html(errorMessage);
+			
 		}else 
 			if(senha==senhaRep){
 				var pass = senha;
@@ -356,11 +374,8 @@ $(document).ready (function(){
 				})
 
 			}else{
-				Swal.fire({
-					icon: 'error',
-					title: 'Oops...',
-					text: 'A senha deve ser igual!',
-				})
+				errorMessage = "<br />A senha deve ser igual!";
+		        $("#errorPassModal").html(errorMessage);
 
 			}		
 	}

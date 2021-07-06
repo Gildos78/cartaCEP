@@ -417,7 +417,6 @@ $(document).ready (function(){
 		})
 		
 		CARTACEP.usuario.showWidgetReading = function(listaMedicoes){
-			console.log(listaMedicoes)
 			var month = 0
 			var lastMonth = 0
 			var date = new Date()

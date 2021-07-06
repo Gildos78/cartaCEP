@@ -7,42 +7,58 @@ $(document).ready (function(){
 	
 	CARTACEP.usuario.verifyEmail = function(){
 		event.preventDefault();
+		var errorMessage = "";
 		var email = true
 		var checkEmail = true;
 		var valorBusca = $("#exampleInputEmail").val();
 		var nome =  document.frmSignIn.exampleInputFirstName.value;
 		var expRegNome = new RegExp(/[A-zÀ-ü]{3,}([ ]{1}[A-zÀ-ü]{2,})|([A-zÀ-ü]{3,})+$/);
 			if (!expRegNome.test(nome)){
-				Swal.fire('Preencha o campo Nome corretamente.')
-				//document.frmSignIn.exampleInputFirstName.focus();
+				 errorMessage = "<br />Preencha o campo Nome corretamente.";
+				document.frmSignIn.exampleInputFirstName.focus();
+				$("#errorName").html(errorMessage);
 				return false;
+			}else{
+				errorMessage = ""
+					$("#errorName").html(errorMessage);
 			}
 			var sen = document.frmSignIn.exampleInputPassword.value;
 			var expRegMat = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/);
 			
 			if (!expRegMat.test(sen)){
-				Swal.fire("Preencha o campo Senha com o mínimo de 6 caracteres com números e letras..");
-				//document.frmSignIn.exampleInputPassword.focus();
+				errorMessage = "<br/>Preencha o campo Senha com o mínimo de 6 caracteres com números e letras.";
+				document.frmSignIn.exampleInputPassword.focus();
+				$("#errorPass1").html(errorMessage);
 				return false;
-			}	
-			if(!  document.frmSignIn.exampleInputEmail.value==""){
+			}else{
+				errorMessage = ""
+					$("#errorPass1").html(errorMessage);
+			}
+			if(document.frmSignIn.exampleInputEmail.value==""){
+				errorMessage = "<br/>Por favor, informe um E-MAIL válido!";
+				document.frmSignIn.exampleInputEmail.focus();
+				$("#errorEmail").html(errorMessage);
+			}else
+			if(!document.frmSignIn.exampleInputEmail.value==""){
 				if(   document.frmSignIn.exampleInputEmail.value=="" 
 					   || document.forms[0].exampleInputEmail.value.indexOf('@')==-1 
 					     || document.forms[0].exampleInputEmail.value.indexOf('.')==-1 )
 						{
-					Swal.fire( "Por favor, informe um E-MAIL válido!" );
+					errorMessage = "<br/>Por favor, informe um E-MAIL válido!";
+					
+					$("#errorEmail").html(errorMessage);
 					email=false;
 						  return false;
 						}
 				}
 		if( document.frmSignIn.exampleInputPasswordRepeat.value!==sen){
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'As senhas têm que ser iguais.'
-			})
-		}
-		if (expRegNome.test(nome)&&expRegMat.test(sen)&&email==true&&document.frmSignIn.exampleInputPasswordRepeat.value==sen){
+			errorMessage = "<br/>As senhas têm que ser iguais.";
+			$("#errorPass1").html(errorMessage);
+		}else{
+			errorMessage = ""
+				$("#errorPass1").html(errorMessage);
+		}	
+		if (!document.frmSignIn.exampleInputEmail.value ==""){
 			$.ajax({
 				type: "GET",
 				url: CARTACEP.PATH + "usuario/verificarEmail",

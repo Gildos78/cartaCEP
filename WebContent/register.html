@@ -39,20 +39,24 @@
                     <div class="form-group">
                       <label>Nome</label>
                       <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Nome">
+                      <div id="errorName"></div>
                     </div>
                     <div class="form-group">
                       <label>Email</label>
                       <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp"
                         placeholder="Email" >
+                        <div id="errorEmail"></div>
                     </div>
                     <div class="form-group">
                       <label>Password</label>
-                      <input type="password" class="form-control" id="exampleInputPassword" placeholder="Senha"  >
+                      <input type="password" class="form-control" id="exampleInputPassword" placeholder="Senha">
+                      <div id="errorPass1"></div>
                     </div>
                     <div class="form-group">
                       <label>Repeat Password</label>
                       <input type="password" class="form-control" id="exampleInputPasswordRepeat"
                         placeholder="Repita a senha">
+                          <div id="errorPass2"></div>
                     </div>
                     <div class="form-group">
                       <button class="btn btn-primary btn-block" onclick="CARTACEP.usuario.verifyEmail()" id="signinBtn">Cadastrar</button>
