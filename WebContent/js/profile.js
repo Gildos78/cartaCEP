@@ -80,6 +80,7 @@ $(document).ready (function(){
 		})
 	}
 	CARTACEP.usuario.passwordProfile = function(){
+		var errorMessage = "";
 		var usuario = new Object();
 		usuario.id = document.frmEditaUsuario.idUsuario.value;
 		var senha = document.frmEditaUsuario.senhaPerfil.value;
@@ -89,24 +90,24 @@ $(document).ready (function(){
 
 		if(!senha==""||!senhaRep==""){
 			if(!expRegSenha.test(senha)||!expRegSenhaRep.test(senhaRep)){
-				Swal.fire({
-					icon: 'error',
-					title: 'Oops...',
-					text: 'A senha deve ter letras e números!',
-				})
-
+				errorMessage = "<br />A senha deve ter letras e números!";
+				 $("#errorPassModal").html(errorMessage);
 
 				document.frmProfile.senhaPerfil.focus();
 				return false;
-			}
+			}else{
+				errorMessage = ""
+					$("#errorPassModal").html(errorMessage);
+			}	
 		}
 		if(senha==""||senhaRep==""){
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'Preencha todos os campos!',
-			})
+			errorMessage = "<br />Preencha todos os campos!";
+			 $("#errorPassModal").html(errorMessage);
+			 document.frmProfile.senhaPerfil.focus();
+			
 		}else 
+			errorMessage = ""
+				$("#errorPassModal").html(errorMessage);
 			if(senha==senhaRep){
 				var pass = senha;
 				var emBase64 = btoa(pass);

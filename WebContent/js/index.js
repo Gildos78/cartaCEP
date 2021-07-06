@@ -33,7 +33,6 @@ $(document).ready (function(){
 			var month
 			var date = new Date(new Date().setDate(new Date().getDate() - 30));
 			if(date.getDate()>1&&date.getDate()<9){
-				alert(date.getDate())
 				day = "0"+date.getDate()
 			}else{
 				day = date.getDate()

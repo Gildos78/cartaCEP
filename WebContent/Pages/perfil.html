@@ -70,7 +70,8 @@
 								será finalizada no próximo login(editar).</strong>
 						</div>
 
-						<form class="form-horizontal" name="frmProfile" enctype="multipart/form-data">
+						<form class="form-horizontal" name="frmProfile"
+							enctype="multipart/form-data">
 							<div class="form-group">
 								<label class="col-lg-3 control-label">Nome:</label>
 								<div class="col-lg-8">
@@ -144,7 +145,7 @@
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-outline-danger"
-										data-dismiss="modal" >Cancelar</button>
+										data-dismiss="modal">Cancelar</button>
 									<button type="button" class="btn btn-primary"
 										onclick="CARTACEP.amostra.uploadRename()" id="loginBtn1">Salvar</button>
 								</div>
@@ -173,7 +174,9 @@
 												</th>
 												<td><input class="form-control" type="password"
 													id="senhaPerfil"></td>
-
+												<td>
+													<div id="errorPassModal"></div>
+												</td>
 											</tr>
 											<tr>
 
