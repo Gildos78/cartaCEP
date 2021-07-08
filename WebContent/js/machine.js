@@ -32,6 +32,19 @@ $(document).ready (function(){
 	window.setTimeout('CARTACEP.usuario.getProfile()', 300);
 
 	CARTACEP.cadMaquina.cadastrar = function(){
+		var errorMessage = "";
+		event.preventDefault();
+		if (document.frmAddCadOperacao.maquina.value===""){
+			 errorMessage = "<br />Preencha o campo Nome corretamente.";
+			 document.frmAddCadOperacao.maquina.focus()
+			        $("#error").html(errorMessage);
+		
+			return false;
+		}else{
+			errorMessage = ""
+				$("#error").html(errorMessage);
+		
+		
 		var cadMaquina = new Object();
 		cadMaquina.nome = document.frmAddCadOperacao.maquina.value;
 
@@ -50,6 +63,7 @@ $(document).ready (function(){
 				Swal.fire("Erro ao cadastrar uma nova maquina: "+ info.status + " - "+ info.statusText);	
 			}
 		});	
+		}
 	}
 	
 	CARTACEP.cadMaquina.buscar = function(){

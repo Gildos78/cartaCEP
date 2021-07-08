@@ -122,14 +122,14 @@
 										<div class="form-group">
 											<label for="exampleInputEmail1">Nome</label> 
 											<input
-												type="email" class="form-control" id="exampleInputEmail1"
-												aria-describedby="emailHelp" placeholder="Nome da Operação" 
-												 onkeyup='CARTACEP.cadOperacao.buttonEnter()'>
+												type="text" class="form-control" id="exampleInputEmail1"
+												aria-describedby="emailHelp" placeholder="Nome da Operação">
+												<div id="error"></div>
 										</div>
 
 
-										<a type="button" class="btn btn-primary" id="loginBtnEnd"
-											onclick="CARTACEP.cadOperacao.cadastrar()">Cadastrar</a>
+										<button class="btn btn-primary" id="loginBtnEnd"
+											onclick="CARTACEP.cadOperacao.cadastrar()">Cadastrar</button>
 									</form>
 								</div>
 							</div>

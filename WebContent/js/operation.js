@@ -14,6 +14,18 @@ $(document).ready (function(){
 	}
 	
 	CARTACEP.cadOperacao.cadastrar = function(){
+		var errorMessage = "";
+		event.preventDefault();
+		if (document.frmAddCadOperacao.exampleInputEmail1.value===""){
+			 errorMessage = "<br />Preencha o campo Nome corretamente.";
+			 document.frmAddCadOperacao.exampleInputEmail1.focus()
+			        $("#error").html(errorMessage);
+		
+			return false;
+		}else{
+			errorMessage = ""
+				$("#error").html(errorMessage);
+		
 		var cadOperacao = new Object();
 		cadOperacao.nome = document.frmAddCadOperacao.exampleInputEmail1.value;
 
@@ -33,6 +45,7 @@ $(document).ready (function(){
 				Swal.fire("Erro ao cadastrar uma nova operação: "+ info.status + " - "+ info.statusText);	
 			}
 		});	
+		}
 	};
 	CARTACEP.usuario.getProfile = function(){
 		var email = sessionStorage.getItem('email');

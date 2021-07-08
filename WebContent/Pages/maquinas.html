@@ -110,12 +110,13 @@
 										class="frmInserir">
                         <div class="form-group">
                           <label for="exampleInputEmail1">Nome</label>
-                          <input type="email" class="form-control" id="maquina" aria-describedby="emailHelp"
-                            placeholder="Nome da Máquina" onkeyup='CARTACEP.cadMaquina.buttonEnter()'>
+                          <input type="text" class="form-control" id="maquina" aria-describedby="textMachine"
+                            placeholder="Nome da Máquina">
+                            <div id="error"></div>
                         </div>
                         
   
-                        <a type="button"  class="btn btn-primary" id="loginBtnEnd" onclick="CARTACEP.cadMaquina.cadastrar()">Cadastrar</a>
+                        <button  class="btn btn-primary" id="loginBtnEnd" onclick="CARTACEP.cadMaquina.cadastrar()">Cadastrar</button>
                       </form>
                     </div>
                 </div>
