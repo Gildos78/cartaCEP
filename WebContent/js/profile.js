@@ -131,12 +131,9 @@ $(document).ready (function(){
 				})
 
 			}else{
-				Swal.fire({
-					icon: 'error',
-					title: 'Oops...',
-					text: 'A senha deve ser igual!',
-				})
-
+				errorMessage = "<br />A senha deve ser igual!";
+				 $("#errorPassModal").html(errorMessage);
+				 document.frmProfile.senhaPerfil.focus();			
 			}		
 	}
 	//Declara o objeto que vai receber o arquivo
