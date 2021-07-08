@@ -110,6 +110,8 @@ $(document).ready (function(){
 			errorMessage = ""
 				$("#errorFirstPass").html(errorMessage);
 		}	
+		if(errorMessage==''){
+			
 			$.ajax({
 				type: "GET",
 				url: CARTACEP.PATH + "operador/verificarMatricula",
@@ -141,6 +143,7 @@ $(document).ready (function(){
 					Swal.fire("Erro ao consultar o operador: "+info.status+" - "+info.statusText);
 				}
 			});
+		}
 	}	
 
 	CARTACEP.operador.cadastrar = function(){
@@ -161,8 +164,17 @@ $(document).ready (function(){
 				//$('#frmCadOp').trigger("reset")
 				document.getElementById("cadOp").reset();
 				var b = msg.replace(/['"]+/g, '');
-				Swal.fire(b);
-				 document.frmCadOp.exampleInputNome.focus()
+				
+				Swal.fire({
+					text: b,
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: 'OK'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						window.setTimeout('document.frmCadOp.exampleInputNome.focus()', 300);
+						 
+					}
+				})	
 				CARTACEP.operador.buscar()	
 			},
 			error:function(info){
