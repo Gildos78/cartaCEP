@@ -83,37 +83,49 @@
 										<label for="cliente">Cliente</label> <input type="text"
 											class="form-control form-control-sm" name="cliente"
 											id="cliente" aria-describedby="emailHelp"
-											placeholder="Nome do cliente" onkeyup='CARTACEP.producao.buttonEnterProd()'>
+											placeholder="Nome do cliente"
+											onkeyup='CARTACEP.producao.buttonEnterProd()'>
+									<div id="errorName"></div>
 									</div>
 									<div class="form-group">
 										<label for="ordem">Ordem de Produção</label> <input
 											type="text" class="form-control form-control-sm" id="ordemP"
 											name="ordemP" aria-describedby="emailHelp"
-											placeholder="# Ordem" onkeyup='CARTACEP.producao.buttonEnterProd()'>
+											placeholder="# Ordem"
+											onkeyup='CARTACEP.producao.buttonEnterProd()'>
+									<div id="errorOrder"></div>
 									</div>
 									<div class="form-group">
 										<label for="ordem">Data Inicial</label> <input
 											type="datetime-local" class="form-control form-control-sm"
 											id="dataI" aria-describedby="emailHelp"
-											placeholder="Data Inicial" onkeyup='CARTACEP.producao.buttonEnterProd()'>
+											placeholder="Data Inicial"
+											onkeyup='CARTACEP.producao.buttonEnterProd()'>
+										<div id="errorIniDate"></div>
 									</div>
 									<div class="form-group">
 										<label for="dataF">Data Final</label> <input
 											type="datetime-local" class="form-control form-control-sm"
 											id="dataF" aria-describedby="emailHelp"
-											placeholder="Data Final" onkeyup='CARTACEP.producao.buttonEnterProd()'>
+											placeholder="Data Final"
+											onkeyup='CARTACEP.producao.buttonEnterProd()'>
+										<div id="errorFinalDate"></div>
 									</div>
 									<div class="form-group">
 										<label for="descricao">Descrição da Peça</label> <input
 											type="text" class="form-control form-control-sm"
 											id="descricao" aria-describedby="emailHelp"
-											placeholder="Descrição da Peça" onkeyup='CARTACEP.producao.buttonEnterProd()'>
+											placeholder="Descrição da Peça"
+											onkeyup='CARTACEP.producao.buttonEnterProd()'>
+										<td><div id="errorDescription"></div></td>
 									</div>
 									<div class="form-group">
 										<label for="qtdAm">Número de Amostras</label> <input
 											type="number" min="1" class="form-control form-control-sm"
 											id="qtdAmostras" aria-describedby="emailHelp"
-											placeholder="Número de Amostras" onkeyup='CARTACEP.producao.buttonEnterProd()'>
+											placeholder="Número de Amostras"
+											onkeyup='CARTACEP.producao.buttonEnterProd()'>
+										<td><div id="errorNumberSamples"></div></td>
 									</div>
 									<div class="form-group">
 										<label for="maquina">Máquina</label> <select
@@ -122,26 +134,32 @@
 											<option value="." class="buscando">Aguarde, buscando
 												máquinas...</option>
 										</select>
+										<div id="errorMachine"></div>
 									</div>
 									<div class="form-group">
 										<label for="exampleFormControlSelect1">Operador</label> <select
 											class="form-control form-control-sm" name="operadorId"
-											id="selOperador" onkeyup='CARTACEP.producao.buttonEnterProd()'>
+											id="selOperador"
+											onkeyup='CARTACEP.producao.buttonEnterProd()'>
 											<option value="" class="buscando">Aguarde, buscando
 												operadores...</option>
 										</select>
+										<div id="errorWorker"></div>
 									</div>
 									<div class="form-group">
 										<label for="operacao">Operação</label> <select
 											class="form-control form-control-sm" name="operacaoId"
-											id="selOperacao" onkeyup='CARTACEP.producao.buttonEnterProd()'>
+											id="selOperacao"
+											onkeyup='CARTACEP.producao.buttonEnterProd()'>
 											<option value="" class="buscando">Aguarde, buscando
 												operações...</option>
 										</select>
+										<div id="errorOperation"></div>
 									</div>
 									<div class="form-group">
 										<label for="exampleFormControlSelect1">Subgrupo</label> <select
-											class="form-control form-control-sm" id="subgrupo" onkeyup='CARTACEP.producao.buttonEnterProd()'>
+											class="form-control form-control-sm" id="subgrupo"
+											onkeyup='CARTACEP.producao.buttonEnterProd()'>
 											<option>1</option>
 											<option>2</option>
 											<option>3</option>
@@ -155,7 +173,7 @@
 
 										</select>
 									</div>
-
+										<div id="errorSubgroup"></div>
 								</form>
 
 							</div>
@@ -176,33 +194,39 @@
 											<label for="exampleInputEmail1">Descrição da Medição</label>
 											<input type="text" class="form-control form-control-sm"
 												id="descricaoEsp" aria-describedby="emailHelp"
-												placeholder="Descrição da Medição" onkeyup='CARTACEP.producao.buttonEnter()'>
+												placeholder="Descrição da Medição"
+												>
+												<div id="errorMedName"></div>
 										</div>
 										<div class="form-group">
 											<label for="ordem">Especificação Mínima</label> <input
 												type="text" class="form-control form-control-sm" id="espMin"
 												aria-describedby="emailHelp"
-												placeholder="Especificação Mínima" onkeyup='CARTACEP.producao.buttonEnter()'>
+												placeholder="Especificação Mínima"
+												>
+												<div id="errorMinLim"></div>
 										</div>
 										<div class="form-group">
 											<label for="ordem">Especificação Máxima</label> <input
 												type="text" class="form-control form-control-sm" id="espMax"
 												aria-describedby="emailHelp"
-												placeholder="Especificação Máxima" onkeyup='CARTACEP.producao.buttonEnter()'>
+												placeholder="Especificação Máxima"
+												>
+												<div id="errorMaxLim"></div>
 										</div>
 										<div class="form-group">
 											<label for="ordem">Imagem</label>
 											<div class="custom-file">
 												<input type="file" class="custom-file-input" id="video"
 													name="video"> <label class="custom-file-label"
-													for="customFile" >Escolha a Imagem</label>
+													for="customFile">Escolha a Imagem</label>
 											</div>
 										</div>
 										<input type="hidden" id="codeProd">
 										<div class="form-group m-4 text-right">
-											<a type="button" class="btn btn-success" id="loginBtnEnd"
+											<button class="btn btn-success" id="loginBtnEnd"
 												onclick="CARTACEP.amostra.uploadRename()">Adicionar
-												Medição</a>
+												Medição</button>
 										</div>
 										<div id="listaEspecificacoes"></div>
 

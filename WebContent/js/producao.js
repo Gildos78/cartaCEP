@@ -218,33 +218,204 @@ $(document).ready(function(){
 		});
 	}
 	CARTACEP.producao.carregaOperador();
+	CARTACEP.producao.validateFields = function(){
+		event.preventDefault();
+		var errorMessage = "";
+		var bool = true;
+		if(document.frmOrdemProd.cliente.value===""){
+			errorMessage = "<br />Preencha o campo Nome do Cliente corretamente.";
+			document.frmOrdemProd.cliente.focus()
+			$("#errorName").html(errorMessage);
+			bool=false;
+		}else{
+			errorMessage = ""
+				$("#errorName").html(errorMessage);
+			bool=true;
+		}
+		if(document.frmOrdemProd.ordemP.value===""){
+			errorMessage = "<br />Preencha o campo Ordem de Produção corretamente.";
+			document.frmOrdemProd.ordemP.focus()
+			$("#errorOrder").html(errorMessage);
+			bool=false;
+		}else{
+			errorMessage = ""
+				$("#errorOrder").html(errorMessage);
+			bool=true;
+		}
+		/*Datas*/
+		if(document.frmOrdemProd.dataI.value===""){
+			errorMessage = "<br />Preencha o campo Data Inicial corretamente.";
+			document.frmOrdemProd.dataI.focus()
+			$("#errorIniDate").html(errorMessage);
+			bool=false;
+		}else{
+			errorMessage = ""
+				$("#errorIniDate").html(errorMessage);
+			bool=true;
+		}
+		if(document.frmOrdemProd.dataF.value===""){
+			errorMessage = "<br />Preencha o campo Data Final corretamente.";
+			document.frmOrdemProd.dataF.focus()
+			$("#errorFinalDate").html(errorMessage);
+			bool=false;
+		}else{
+			errorMessage = ""
+				$("#errorFinalDate").html(errorMessage);
+			bool=true;
+		}
+		if(document.frmOrdemProd.dataF.value<=document.frmOrdemProd.dataI.value){
+			errorMessage = "<br />A Data Final tem que ser maior que a Data Inicial.";
+			document.frmOrdemProd.dataF.focus()
+			$("#errorFinalDate").html(errorMessage);
+			bool=false;
+		}else{
+			errorMessage = ""
+				$("#errorFinalDate").html(errorMessage);
+			bool=true;
+		}
+
+		/*Descriçao da peça*/
+		if(document.frmOrdemProd.descricao.value===""){
+			errorMessage = "<br />Preencha o campo Descrição da Peça corretamente.";
+			document.frmOrdemProd.descricao.focus()
+			$("#errorDescription").html(errorMessage);
+			bool=false;
+		}else{
+			errorMessage = ""
+				$("#errorDescription").html(errorMessage);
+			bool=true;
+		}
+		/*Número de amostras*/
+		if(document.frmOrdemProd.qtdAmostras.value<=0){
+			errorMessage = "<br />O número mínimo de amostras é 1.";
+			document.frmOrdemProd.qtdAmostras.focus()
+			$("#errorNumberSamples").html(errorMessage);
+			bool=false;
+		}else{
+			errorMessage = ""
+				$("#errorNumberSamples").html(errorMessage);
+			bool=true;
+		}
+		/*Máquina*/
+		if(document.frmOrdemProd.selMaquina.value===""){
+			errorMessage = "<br />Escolha a máquina desejada.";
+			document.frmOrdemProd.selMaquina.focus()
+			$("#errorMachine").html(errorMessage);
+			bool=false;
+		}else{
+			errorMessage = ""
+				$("#errorMachine").html(errorMessage);
+			bool=true;
+		}
+
+		/*Operador*/
+		if(document.frmOrdemProd.selOperador.value===""){
+			errorMessage = "<br />Escolha o operador desejado.";
+			document.frmOrdemProd.selOperador.focus()
+			$("#errorWorker").html(errorMessage);
+			bool=false;
+		}else{
+			errorMessage = ""
+				$("#errorWorker").html(errorMessage);
+			bool=true;
+		}
+
+		/*Operação*/
+		if(document.frmOrdemProd.selOperacao.value===""){
+			errorMessage = "<br />Escolha a operação desejada.";
+			document.frmOrdemProd.selOperacao.focus()
+			$("#errorOperation").html(errorMessage);
+			bool=false;
+		}else{
+			errorMessage = ""
+				$("#errorOperation").html(errorMessage);
+			bool=true;
+		}
+		
+		return bool;
+	}
+	
+	CARTACEP.producao.validMeasuresFields = function(){
+		event.preventDefault();
+		var errorMessage = "";
+		var boolM = true;
+		var descript = document.frmEspecificacoes.descricaoEsp.value;
+		var min = document.frmEspecificacoes.espMin.value;
+		var max = document.frmEspecificacoes.espMax.value;
+		/*Medições*/
+		if(descript===""){
+			errorMessage = "<br />Preencha o campo Descrição da Medição corretamente.";
+			document.frmEspecificacoes.descricaoEsp.focus()
+			$("#errorMedName").html(errorMessage);
+			boolM=false;
+		}else{
+			errorMessage = ""
+				$("#errorMedName").html(errorMessage);
+			boolM=true;
+		}
+		if(min<=0||min===""){
+			errorMessage = "<br />Valor do Limite Mínimo não permitido.";
+			document.frmEspecificacoes.espMin.focus()
+			$("#errorMinLim").html(errorMessage);
+			boolM=false;
+		}else{
+			errorMessage = ""
+				$("#errorMinLim").html(errorMessage);
+			boolM=true;
+		}if(max<=0||max===""){
+			errorMessage = "<br />Valor do Limite Máximo não permitido.";
+			document.frmEspecificacoes.espMax.focus()
+			$("#errorMaxLim").html(errorMessage);
+			boolM=false;
+		}else{
+			errorMessage = ""
+				$("#errorMaxLim").html(errorMessage);
+			boolM=true;
+		}
+		if(max<=min){
+			errorMessage = "<br />Valor do Limite Máximo tem que ser maior que o Limite Máximo.";
+			document.frmEspecificacoes.espMax.focus()
+			$("#errorMaxLim").html(errorMessage);
+			boolM=false;
+		}else{
+			errorMessage = ""
+				$("#errorMaxLim").html(errorMessage);
+			boolM=true;
+		}
+		if(descript===""||min===""||min<=0||max===""||max<=0){
+			boolM = false;
+		}
+		return boolM;
+	}
 
 	CARTACEP.producao.getTotalEsp = function(){
-		var code =	document.frmEspecificacoes.codeProd.value;
-		$.ajax({
-			type: "GET",
-			url: CARTACEP.PATH + "producao/getTotalEsp",
-			data: "code="+code,
-			success: function(data){
-				console.log(data.totalEsp)
-				if(data.totalEsp==0){
-					Swal.fire({
-						icon: 'error',
-						title: 'Atenção',
-						text: 'Cadastro incompleto.'
-					})	
-				}else{
-					CARTACEP.producao.cadastrarOrdem(data)
+		CARTACEP.producao.validateFields()
+		if(CARTACEP.producao.validateFields()===true){
+			var code =	document.frmEspecificacoes.codeProd.value;
+			$.ajax({
+				type: "GET",
+				url: CARTACEP.PATH + "producao/getTotalEsp",
+				data: "code="+code,
+				success: function(data){
+					console.log(data.totalEsp)
+					if(data.totalEsp==0){
+						Swal.fire({
+							icon: 'error',
+							title: 'Atenção',
+							text: 'Preencha a parte 2) Adicionar Medições.'
+						})	
+					}else{
+						CARTACEP.producao.cadastrarOrdem(data)
 
+					}
+				},
+				error: function(info){
+					var a="Erro ao consultar os cadastros de producao: "+info.status+" - "+info.statusText;
+					var b = a.replace(/'/g, '');
+					Swal.fire(b);
 				}
-			},
-			error: function(info){
-				var a="Erro ao consultar os cadastros de producao: "+info.status+" - "+info.statusText;
-				var b = a.replace(/'/g, '');
-				Swal.fire(b);
-			}
-		});
-
+			});
+		}
 	}
 
 
@@ -263,16 +434,16 @@ $(document).ready(function(){
 			data:JSON.stringify(especificacao),
 			success:function(msg){
 				$("#frmEsp").trigger("reset");
-				
+
 //				var b = msg.replace(/['"]+/g, '');
 //				Swal.fire(b);
 				console.log(msg)
 				CARTACEP.producao.buscarEsp();
 			},
 			error:function(info){
-				var erro = "Erro ao cadastrar uma nova maquina: "+ info.status + " - "+ info.statusText;
-				var b = erro.replace(/['"]+/g, '');
-				Swal.fire(b);	
+//				var erro = "Erro ao cadastrar uma nova maquina: "+ info.status + " - "+ info.statusText;
+//				var b = erro.replace(/['"]+/g, '');
+//				Swal.fire(b);	
 			}
 		});	
 
@@ -288,7 +459,7 @@ $(document).ready(function(){
 				dados = JSON.parse(dados);
 				document.frmEspecificacoes.descricaoEsp.focus()
 				$("#listaEspecificacoes").html(CARTACEP.producao.exibirEsp(dados));
-				
+
 
 			},
 			error: function(info){
@@ -548,7 +719,7 @@ $(document).ready(function(){
 				for(var i=0; i<dados.length; i++){
 					idMed=dados[i].idEsp
 				}
-				
+
 				if(idMed==""){
 					CARTACEP.producao.deleteProducao(code)
 				}else{
@@ -630,44 +801,49 @@ $(document).ready(function(){
 
 	//Função para permitir renomear o arquivo
 	CARTACEP.amostra.uploadRename = function() {
+		CARTACEP.producao.validateFields()
+		CARTACEP.producao.validMeasuresFields()
+		
+		alert(CARTACEP.producao.validMeasuresFields())
+		if(CARTACEP.producao.validateFields()===true&&CARTACEP.producao.validMeasuresFields()===true){
+			var fieldFoto = document.getElementById("video").value
+			if(fieldFoto==""){
+				var selectFileName = null
+				CARTACEP.producao.adicionar(selectFileName)
+			}
+			else{
 
-		var fieldFoto = document.getElementById("video").value
-		if(fieldFoto==""){
-			var selectFileName = null
-			CARTACEP.producao.adicionar(selectFileName)
-		}
-		else{
+				//Verifica se algum arquivo foi selecionado
+				var selectFileRename = $('#video').val();
 
-			//Verifica se algum arquivo foi selecionado
-			var selectFileRename = $('#video').val();
+				if (selectFileRename == "") {
 
-			if (selectFileRename == "") {
+					//	$("#alertaErro").html("Você não selecionou um arquivo!");
 
-				//	$("#alertaErro").html("Você não selecionou um arquivo!");
+					//$("#modalErro").modal('show');
 
-				//$("#modalErro").modal('show');
+				} else {
 
-			} else {
+//					//Cria o objeto para enviar o video e o nome do arquivo
+					//newUploadRename = new FormData();
 
-//				//Cria o objeto para enviar o video e o nome do arquivo
-				//newUploadRename = new FormData();
+//					//Adiciona o arquivo ao objeto
+					//newUploadRename.append('file', $('#video')[0].files[0]);
 
-//				//Adiciona o arquivo ao objeto
-				//newUploadRename.append('file', $('#video')[0].files[0]);
+//					//Captura o nome do arquivo
+					//var fileName = $('#video')[0].files[0].name;
 
-//				//Captura o nome do arquivo
-				//var fileName = $('#video')[0].files[0].name;
+//					//Adiciona o nome atual ao input para o usuario editar
+					//document.getElementById("renameUpload").value = fileName;
 
-//				//Adiciona o nome atual ao input para o usuario editar
-				//document.getElementById("renameUpload").value = fileName;
-
-				//Exibe a modal para o usuario colocar o novo nome
-//				$("#modalRename").modal('show');
-//				alert("show")
-				//Ativa o focus no input para renomear
-//				$('#modalRename').on('shown.bs.modal', function() {
-				$('#renameUpload').focus();
-//				})
+					//Exibe a modal para o usuario colocar o novo nome
+//					$("#modalRename").modal('show');
+//					alert("show")
+					//Ativa o focus no input para renomear
+//					$('#modalRename').on('shown.bs.modal', function() {
+					$('#renameUpload').focus();
+//					})
+				}
 			}
 		}
 	};

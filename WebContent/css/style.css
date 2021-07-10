@@ -103,7 +103,10 @@
 	margin: auto;
 }
 
-#error, #errorMatricula, #errorFirstPass, #errorName, #errorEmail, #errorPass1 {
+#error, #errorMatricula, #errorFirstPass, #errorName, #errorEmail,
+	#errorPass1, #errorName, #errorOrder, #errorIniDate, #errorFinalDate,
+	#errorDescription, #errorNumberSamples, #errorMachine, #errorWorker,
+	#errorOperation, #errorSubgroup, #errorMedName, #errorMinLim, #errorMaxLim {
 	color: red;
 }
 
