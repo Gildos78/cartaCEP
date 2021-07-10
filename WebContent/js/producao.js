@@ -413,7 +413,6 @@ $(document).ready(function(){
 
 	CARTACEP.producao.getTotalEsp = function(){
 		CARTACEP.producao.validateFields()
-		alert(CARTACEP.producao.validateFields())
 		if(CARTACEP.producao.validateFields()===true){
 			var code =	document.frmEspecificacoes.codeProd.value;
 			$.ajax({
