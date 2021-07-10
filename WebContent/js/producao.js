@@ -222,7 +222,17 @@ $(document).ready(function(){
 		event.preventDefault();
 		var errorMessage = "";
 		var bool = true;
-		if(document.frmOrdemProd.cliente.value===""){
+		var name = document.frmOrdemProd.cliente.value;
+		var ordemP = document.frmOrdemProd.ordemP.value;
+		var dataI = document.frmOrdemProd.dataI.value;
+		var dataF = document.frmOrdemProd.dataF.value;
+		var descricao = document.frmOrdemProd.descricao.value;
+		var qtdAmostras = document.frmOrdemProd.qtdAmostras.value;
+		var selMaquina = document.frmOrdemProd.selMaquina.value;
+		var selOperador = document.frmOrdemProd.selOperador.value;
+		var selOperacao = document.frmOrdemProd.selOperacao.value;
+		
+		if(name===""){
 			errorMessage = "<br />Preencha o campo Nome do Cliente corretamente.";
 			document.frmOrdemProd.cliente.focus()
 			$("#errorName").html(errorMessage);
@@ -232,7 +242,7 @@ $(document).ready(function(){
 				$("#errorName").html(errorMessage);
 			bool=true;
 		}
-		if(document.frmOrdemProd.ordemP.value===""){
+		if(ordemP===""){
 			errorMessage = "<br />Preencha o campo Ordem de Produção corretamente.";
 			document.frmOrdemProd.ordemP.focus()
 			$("#errorOrder").html(errorMessage);
@@ -243,7 +253,7 @@ $(document).ready(function(){
 			bool=true;
 		}
 		/*Datas*/
-		if(document.frmOrdemProd.dataI.value===""){
+		if(dataI===""){
 			errorMessage = "<br />Preencha o campo Data Inicial corretamente.";
 			document.frmOrdemProd.dataI.focus()
 			$("#errorIniDate").html(errorMessage);
@@ -253,7 +263,7 @@ $(document).ready(function(){
 				$("#errorIniDate").html(errorMessage);
 			bool=true;
 		}
-		if(document.frmOrdemProd.dataF.value===""){
+		if(dataF===""){
 			errorMessage = "<br />Preencha o campo Data Final corretamente.";
 			document.frmOrdemProd.dataF.focus()
 			$("#errorFinalDate").html(errorMessage);
@@ -263,7 +273,7 @@ $(document).ready(function(){
 				$("#errorFinalDate").html(errorMessage);
 			bool=true;
 		}
-		if(document.frmOrdemProd.dataF.value<=document.frmOrdemProd.dataI.value){
+		if(dataF<=dataI){
 			errorMessage = "<br />A Data Final tem que ser maior que a Data Inicial.";
 			document.frmOrdemProd.dataF.focus()
 			$("#errorFinalDate").html(errorMessage);
@@ -275,7 +285,7 @@ $(document).ready(function(){
 		}
 
 		/*Descriçao da peça*/
-		if(document.frmOrdemProd.descricao.value===""){
+		if(descricao===""){
 			errorMessage = "<br />Preencha o campo Descrição da Peça corretamente.";
 			document.frmOrdemProd.descricao.focus()
 			$("#errorDescription").html(errorMessage);
@@ -286,7 +296,7 @@ $(document).ready(function(){
 			bool=true;
 		}
 		/*Número de amostras*/
-		if(document.frmOrdemProd.qtdAmostras.value<=0){
+		if(qtdAmostras<=0){
 			errorMessage = "<br />O número mínimo de amostras é 1.";
 			document.frmOrdemProd.qtdAmostras.focus()
 			$("#errorNumberSamples").html(errorMessage);
@@ -297,7 +307,7 @@ $(document).ready(function(){
 			bool=true;
 		}
 		/*Máquina*/
-		if(document.frmOrdemProd.selMaquina.value===""){
+		if(selMaquina===""){
 			errorMessage = "<br />Escolha a máquina desejada.";
 			document.frmOrdemProd.selMaquina.focus()
 			$("#errorMachine").html(errorMessage);
@@ -309,7 +319,7 @@ $(document).ready(function(){
 		}
 
 		/*Operador*/
-		if(document.frmOrdemProd.selOperador.value===""){
+		if(selOperador===""){
 			errorMessage = "<br />Escolha o operador desejado.";
 			document.frmOrdemProd.selOperador.focus()
 			$("#errorWorker").html(errorMessage);
@@ -321,7 +331,7 @@ $(document).ready(function(){
 		}
 
 		/*Operação*/
-		if(document.frmOrdemProd.selOperacao.value===""){
+		if(selOperacao===""){
 			errorMessage = "<br />Escolha a operação desejada.";
 			document.frmOrdemProd.selOperacao.focus()
 			$("#errorOperation").html(errorMessage);
@@ -330,6 +340,19 @@ $(document).ready(function(){
 			errorMessage = ""
 				$("#errorOperation").html(errorMessage);
 			bool=true;
+		}
+		var name = document.frmOrdemProd.cliente.value;
+		var ordemP = document.frmOrdemProd.ordemP.value;
+		var dataI = document.frmOrdemProd.dataI.value;
+		var dataF = document.frmOrdemProd.dataF.value;
+		var descricao = document.frmOrdemProd.descricao.value;
+		var qtdAmostras = document.frmOrdemProd.qtdAmostras.value;
+		var selMaquina = document.frmOrdemProd.selMaquina.value;
+		var selOperador = document.frmOrdemProd.selOperador.value;
+		var selOperacao = document.frmOrdemProd.selOperacao.value;
+		
+		if(name===""||ordemP===""||dataI===""||dataF==""||dataF<=dataI||descricao==""||qtdAmostras<=0||selMaquina===""||selOperador===""||selOperacao===""){
+			bool=false;
 		}
 		
 		return bool;
@@ -390,6 +413,7 @@ $(document).ready(function(){
 
 	CARTACEP.producao.getTotalEsp = function(){
 		CARTACEP.producao.validateFields()
+		alert(CARTACEP.producao.validateFields())
 		if(CARTACEP.producao.validateFields()===true){
 			var code =	document.frmEspecificacoes.codeProd.value;
 			$.ajax({
@@ -397,7 +421,6 @@ $(document).ready(function(){
 				url: CARTACEP.PATH + "producao/getTotalEsp",
 				data: "code="+code,
 				success: function(data){
-					console.log(data.totalEsp)
 					if(data.totalEsp==0){
 						Swal.fire({
 							icon: 'error',
@@ -715,7 +738,6 @@ $(document).ready(function(){
 			data: "code="+code,
 			success: function(dados){
 				dados = JSON.parse(dados);
-				console.log(dados)
 				for(var i=0; i<dados.length; i++){
 					idMed=dados[i].idEsp
 				}
@@ -804,7 +826,6 @@ $(document).ready(function(){
 		CARTACEP.producao.validateFields()
 		CARTACEP.producao.validMeasuresFields()
 		
-		alert(CARTACEP.producao.validMeasuresFields())
 		if(CARTACEP.producao.validateFields()===true&&CARTACEP.producao.validMeasuresFields()===true){
 			var fieldFoto = document.getElementById("video").value
 			if(fieldFoto==""){
